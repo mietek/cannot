@@ -1,0 +1,11 @@
+{
+  "name": "cannot",
+  "description": "Microframework for building websites",
+  "authors": [
+    "Miëtek Bak <hello@mietek.io>"
+  ],
+  "license": "MIT X11",
+  "dependencies": {
+    "ease-scroll": "^1.0.5"
+  }
+}

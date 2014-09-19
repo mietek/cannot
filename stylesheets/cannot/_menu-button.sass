@@ -1,0 +1,142 @@
+// NOTE: The z-index helps prevent Safari from flickering between antialiased and subpixel-antialised text *in other elements with a dark background* when this element animates. The 'pointer-events: none' counters the 'z-index' and lets pointer events through to the underlying layers.
+
+.menu-button
+  z-index: 2
+
+.menu-button a
+  @include no-underline
+  @include text-button
+  @include text-hidden
+  display: block
+  width: ln(2) + $icon-size
+  height: ln(2)
+
+.menu-button:before, .menu-button:after
+  width: $icon-size
+  height: $icon-size
+  position: absolute
+  top: (ln(2) - $icon-size) / 2
+  right: (ln(2) + $icon-size - $icon-size) / 2
+  z-index: 3
+  pointer-events: none
+  content: ""
+
+
+// Default
+
+.menu-button
+  opacity: $icon-opacity
+
+.touch .menu-button:active
+  opacity: $active-icon-opacity
+
+.no-touch .menu-button:active
+  opacity: $icon-opacity
+
+.no-touch .menu-button:hover
+  opacity: $active-icon-opacity
+
+.no-touch .menu-button:hover:active
+  opacity: $active-icon-opacity
+
+
+.menu-button:before
+  @include icon("closed", $object-color)
+  @include image-glow(none)
+
+.touch .menu-button:active:before
+  @include icon("closed", $accent-color)
+  @include active-image-glow($accent-color)
+
+.no-touch .menu-button:active:before
+  @include icon("closed", $accent-color)
+  @include image-glow(none)
+
+.no-touch .menu-button:hover:before
+  @include icon("closed", $accent-color)
+  @include image-glow($accent-color)
+
+.no-touch .menu-button:hover:active:before
+  @include icon("closed", $accent-color)
+  @include active-image-glow($accent-color)
+
+
+.menu-button:after
+  @include background-color($object-color)
+  @include image-glow(none)
+
+.touch .menu-button:active:after
+  @include background-color($accent-color)
+  @include active-image-glow($accent-color)
+
+.no-touch .menu-button:active:after
+  @include background-color($accent-color)
+  @include image-glow(none)
+
+.no-touch .menu-button:hover:after
+  @include background-color($accent-color)
+  @include image-glow($accent-color)
+
+.no-touch .menu-button:hover:active:after
+  @include background-color($accent-color)
+  @include active-image-glow($accent-color)
+
+
+// Dark
+
+.dark .menu-button
+  opacity: $dark-icon-opacity
+
+.touch .dark .menu-button:active
+  opacity: $dark-active-icon-opacity
+
+.no-touch .dark .menu-button:active
+  opacity: $dark-icon-opacity
+
+.no-touch .dark .menu-button:hover
+  opacity: $dark-active-icon-opacity
+
+.no-touch .dark .menu-button:hover:active
+  opacity: $dark-active-icon-opacity
+
+
+.dark .menu-button:before
+  @include icon("closed", $dark-object-color)
+  @include dark-image-glow(none)
+
+.touch .dark .menu-button:active:before
+  @include icon("closed", $dark-accent-color)
+  @include dark-active-image-glow($dark-accent-color)
+
+.no-touch .dark .menu-button:active:before
+  @include icon("closed", $dark-accent-color)
+  @include dark-image-glow(none)
+
+.no-touch .dark .menu-button:hover:before
+  @include icon("closed", $dark-accent-color)
+  @include dark-image-glow($dark-accent-color)
+
+.no-touch .dark .menu-button:hover:active:before
+  @include icon("closed", $dark-accent-color)
+  @include dark-active-image-glow($dark-accent-color)
+
+
+.dark .menu-button:after
+  @include background-color($dark-object-color)
+  @include dark-image-glow(none)
+
+.touch .dark .menu-button:active:after
+  @include background-color($dark-accent-color)
+  @include dark-active-image-glow($dark-accent-color)
+
+.no-touch .dark .menu-button:active:after
+  @include background-color($dark-accent-color)
+  @include dark-image-glow(none)
+
+.no-touch .dark .menu-button:hover:after
+  @include background-color($dark-accent-color)
+  @include dark-image-glow($dark-accent-color)
+
+.no-touch .dark .menu-button:hover:active:after
+  @include background-color($dark-accent-color)
+  @include dark-active-image-glow($dark-accent-color)

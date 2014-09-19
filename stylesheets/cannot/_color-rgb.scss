@@ -1,0 +1,33 @@
+@function color-rgb($name) {
+  @if $name == black   { @return #000000; }
+  @if $name == white   { @return #ffffff; }
+  @if $name == gray0   { @return #0d0500; }
+  @if $name == gray3   { @return #3d3631; }
+  @if $name == gray6   { @return #6d6661; }
+  @if $name == gray9   { @return #9e9792; }
+  @if $name == grayC   { @return #cec7c2; }
+  @if $name == grayD   { @return #dfd8d3; }
+  @if $name == grayE   { @return #efe8e3; }
+  @if $name == grayF   { @return #fff9f4; }
+  @if $name == blue    { @return #3f96f0; }
+  @if $name == blue3   { @return #66abf3; }
+  @if $name == blue6   { @return #8cc0f6; }
+  @if $name == blue9   { @return #b3d5f9; }
+  @if $name == blueC   { @return #d9eafc; }
+  @if $name == orange  { @return #f0690f; }
+  @if $name == orange3 { @return #f3873f; }
+  @if $name == orange6 { @return #f6a56f; }
+  @if $name == orange9 { @return #f9c39f; }
+  @if $name == orangeC { @return #fce1cf; }
+  @if $name == violet  { @return #ac5cf0; }
+  @if $name == violet3 { @return #bd7df3; }
+  @if $name == violet6 { @return #ce9ef6; }
+  @if $name == violet9 { @return #debef9; }
+  @if $name == violetC { @return #efdffc; }
+  @if $name == motoworks-red { @return #ba3b39; }
+  @if $name == motoworks-cream { @return #fffff3; }
+  @if $name == motoworks-light-grey { @return #9f9f93; }
+  @if $name == motoworks-medium-grey { @return #6f6f63; }
+  @if $name == motoworks-dark-grey { @return #3f3f33; }
+  @error "Unexpected color: #{$name}"
+}

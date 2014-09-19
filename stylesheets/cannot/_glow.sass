@@ -1,0 +1,71 @@
+$glow-radius: 2px !default
+$dark-glow-radius: 3px !default
+
+$text-glow-rounds: 2 !default
+$active-text-glow-rounds: 4 !default
+$dark-text-glow-rounds: 3 !default
+$dark-active-text-glow-rounds: 6 !default
+
+$image-glow-rounds: 2 !default
+$active-image-glow-rounds: 4 !default
+$dark-image-glow-rounds: 3 !default
+$dark-active-image-glow-rounds: 6 !default
+
+
+@function _text-shadow($color, $radius, $rounds)
+  $result: ""
+  @for $i from 1 through $rounds
+    @if $result != ""
+      $result: ", #{$result}"
+    $result: "0 0 #{$radius} #{color-value($color)} #{$result}"
+  @return unquote($result)
+
+@function _filter($color, $radius, $rounds)
+  $result: ""
+  @for $i from 1 through $rounds
+    @if $result != ""
+      $result: " #{$result}"
+    $result: "drop-shadow(0 0 #{$radius} #{color-value($color)}) #{$result}"
+  @return unquote($result)
+
+
+@mixin _text-glow($color, $radius, $rounds)
+  @if $color == none
+    text-shadow: none
+  @else
+    text-shadow: _text-shadow($color, $radius, $rounds)
+
+@mixin _image-glow($color, $radius, $rounds)
+  @if $color == none
+    filter: none
+    -webkit-filter: none
+  @else
+    $filter: _filter($color, $radius, $rounds)
+    filter: $filter
+    -webkit-filter: $filter
+
+
+@mixin text-glow($color)
+  @include _text-glow($color, $glow-radius, $text-glow-rounds)
+
+@mixin active-text-glow($color)
+  @include _text-glow($color, $glow-radius, $active-text-glow-rounds)
+
+@mixin dark-text-glow($color)
+  @include _text-glow($color, $dark-glow-radius, $dark-text-glow-rounds)
+
+@mixin dark-active-text-glow($color)
+  @include _text-glow($color, $dark-glow-radius, $dark-active-text-glow-rounds)
+
+
+@mixin image-glow($color)
+  @include _image-glow($color, $glow-radius, $image-glow-rounds)
+
+@mixin active-image-glow($color)
+  @include _image-glow($color, $glow-radius, $active-image-glow-rounds)
+
+@mixin dark-image-glow($color)
+  @include _image-glow($color, $dark-glow-radius, $dark-image-glow-rounds)
+
+@mixin dark-active-image-glow($color)
+  @include _image-glow($color, $dark-glow-radius, $dark-active-image-glow-rounds)

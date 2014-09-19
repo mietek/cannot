@@ -1,0 +1,192 @@
+@function em($n)
+  @return font-size($n) * 1px
+
+@function ln($n)
+  @return line-height($n) * 1px
+
+
+html
+  @include background-color($background-color)
+  color: color-value($body-color)
+
+.dark
+  @include background-color($dark-background-color)
+  color: color-value($dark-body-color)
+
+
+html
+  height: 100%
+
+body
+  height: 100%
+  font-size: em(1)
+  line-height: ln(1)
+
+em
+  font-style: italic
+
+strong
+  font-weight: bold
+
+
+header
+  position: relative
+  z-index: 1
+
+main
+  min-height: 100%
+  margin-top: ln(-2)
+
+footer
+  // margin-top: ln(8)
+
+
+h1, h2, h3, h4, h5, h6
+  font-weight: bold
+
+main h1
+  @include color($accent-color)
+  font-size: em(2)
+  line-height: ln(2)
+  margin-top: ln(4)
+  margin-bottom: ln(1)
+
+main h1:first-of-type
+  margin-top: 0
+  padding-top: ln(4)
+
+// TODO: Seriously now, enough with the dark.  Also, this breaks when the header is more than 1 line high.
+.dark main h1, main.dark h1, h1.dark
+  @include color($dark-body-color)
+  font-size: em(2)
+  margin-bottom: ln(2)
+  &:before
+    @include background-color($dark-background-color)
+    position: absolute
+    left: 0
+    right: 0
+    margin: ln(-18) 0 0 0 // TODO?!
+    padding: ln(20) 0 ln(1) 0 // TODO?!
+    z-index: -1
+    content: ""
+
+main h2
+  @include color($accent-color)
+  font-size: em(3/2)
+  line-height: ln(2)
+  margin-top: ln(7/2)
+  margin-bottom: ln(1/2)
+
+main h3
+  @include color($accent-color)
+  font-size: em(4/3)
+  line-height: ln(3/2)
+  margin-top: ln(3)
+  margin-bottom: ln(1/2)
+
+main h4
+  @include color($accent-color)
+  margin-top: ln(5/2)
+  margin-bottom: ln(1/2)
+
+main h5
+  margin-top: ln(3/2)
+  margin-bottom: ln(1/2)
+
+main h6
+  @include color($object-color)
+  margin-top: ln(1)
+  margin-bottom: ln(1/2)
+
+
+hr
+  border: none
+  border-top: 1px color-value($accent-color) solid
+  height: ln(1)
+  margin-top: ln(5)
+  margin-bottom: ln(1/2)
+
+p, main ul, main ol
+  margin-top: ln(1/2)
+  margin-bottom: ln(1/2)
+
+main p:last-of-type
+  margin-bottom: 0
+
+// TODO: sup
+// sup
+//   font-size: em(2/3)
+//   position: relative
+//   bottom: em(1/2)
+
+
+footer aside
+  font-size: em(3/4)
+
+
+footer
+  color: color-value($subject-color)
+
+footer a
+  color: color-value($subject-color)
+
+
+.dark footer
+  color: color-value($dark-subject-color)
+
+.dark footer a
+  color: color-value($dark-subject-color)
+
+
+nav h1 a
+  @include no-underline
+  @include text-button
+  @if $no-logo == false
+    @include text-hidden
+  background-size: auto ln(1)
+  display: block
+  -webkit-font-smoothing: antialiased
+
+
+header.hero
+  min-height: 100%
+
+main.hero
+  min-height: 0
+  margin-top: ln(4)
+
+main.hero h1:first-of-type
+  margin-top: 0
+
+#hero
+  width: 100%
+  position: absolute
+  top: 50%
+  left: 0
+  margin-top: ln(-3)
+  text-align: center
+
+#hero h1
+  font-size: em(3)
+  line-height: ln(3)
+  margin: 0
+
+#hero h2
+  margin-top: ln(1/2)
+
+#hero p
+  margin-top: ln(1/2)
+
+
+
+#what-browser
+  bottom: 0
+  height: ln(2)
+  line-height: ln(2)
+  padding-right: ln(1)
+  padding-left: ln(1)
+  position: fixed
+  width: 100%
+
+
+@import "layout/common"

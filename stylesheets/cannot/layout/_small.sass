@@ -1,0 +1,57 @@
+$layout-width: $layout-width-small
+
+@function font-size($n)
+  @return $n * $font-size-small
+
+@function line-height($n)
+  @return $n * $line-height-small
+
+@import "cannot/layout/common"
+@import "cannot/layout/small-medium"
+
+@import "cannot/touch"
+
+
+header .not-nav
+  padding-left: ln(1)
+  padding-right: ln(1)
+
+main
+  padding-left: ln(1)
+  padding-right: ln(1)
+
+footer .not-nav
+  padding-left: ln(1)
+  padding-right: ln(1)
+
+
+footer aside
+  margin-top: ln(1)
+  padding-bottom: ln(1)
+
+
+nav h1 a
+  background-position: ln(1) ln(1/2)
+  width: 100%
+  height: ln(2)
+  line-height: ln(2)
+  padding-left: ln(1)
+  padding-right: ln(1)
+  // TODO: Somehow, this causes the border-bottom to flicker on shake. Can be fixed by moving the border to nav h1, but...
+  @include frob
+    border-bottom: 1px color-value($object-color, $border-opacity) solid
+  @include dark-frob
+    border-bottom: 1px color-value($dark-object-color, $dark-border-opacity) solid
+
+.dark nav h1 a
+  background-position: ln(1) ln(1/2)
+
+
+footer nav h1 a
+  @include frob
+    border-top: 1px color-value($object-color, $border-opacity) solid
+  @include dark-frob
+    border-top: 1px color-value($dark-object-color, $dark-border-opacity) solid
+
+
+@import "layout/small"

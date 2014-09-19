@@ -1,0 +1,17 @@
+$icon-size: 24px !default
+$icon-stroke: 4px !default
+$iconsheet-name: "iconsheet" !default
+$iconsheet-format: "png" !default
+
+@import "iconsheet"
+
+@mixin icon($shape, $color)
+  @include image($iconsheet-name, $iconsheet-format)
+  $icon-x: $icon-size * (index($iconsheet-colors, $color) - 1)
+  $icon-y: $icon-size * (index($iconsheet-shapes, $shape) - 1)
+  $iconsheet-width: $icon-size * length($iconsheet-colors)
+  $iconsheet-height: $icon-size * length($iconsheet-shapes)
+  background-position: ($icon-x * -1) ($icon-y * -1)
+  background-size: $iconsheet-width $iconsheet-height
+  /* icon-shape: #{$shape} */
+  /* icon-color: #{$color} */

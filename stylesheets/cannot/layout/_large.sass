@@ -1,0 +1,37 @@
+$layout-width: $layout-width-large
+
+@function font-size($n)
+  @return $n * $font-size-large
+
+@function line-height($n)
+  @return $n * $line-height-large
+
+@import "cannot/layout/common"
+@import "cannot/layout/medium-large"
+
+
+@if $debug
+  html
+    @include image("baseline-grayC-large", "png", true)
+    background-position: left top
+    background-repeat: repeat
+    background-size: ln(1) ln(1)
+
+
+@if $no-logo == false
+  header h1 a
+    @include image("logotype-large", "png")
+
+  footer h1 a
+    @include image("logotype-#{$subject-color}-large", "png")
+
+  .dark header h1 a, header.dark h1 a, .dark footer h1 a, footer.dark h1 a
+    @include image("logotype-#{$dark-subject-color}-large", "png")
+
+
+footer aside
+  position: relative
+  top: 2px
+
+
+@import "layout/large"

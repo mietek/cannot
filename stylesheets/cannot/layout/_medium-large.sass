@@ -1,0 +1,73 @@
+header
+  padding-left: ln(1)
+  padding-right: ln(1)
+
+main
+  padding-left: ln(1)
+  padding-right: ln(1)
+
+footer
+  padding-left: ln(1)
+  padding-right: ln(1)
+
+
+main h1, main h2, main h3, main h4, main h5, main h6, main p, footer aside
+  padding-left: (100% / 3)
+
+footer aside
+  padding-bottom: ln(1)
+
+
+nav
+  position: relative
+  height: ln(2)
+
+nav h1
+  width: (100% / 3)
+  height: ln(2)
+  line-height: ln(2)
+  @if $no-logo == false
+    padding-top: ln(1/2)
+
+nav h1 a
+  height: ln(1)
+
+nav ul
+  width: (2 * 100% / 3)
+  height: ln(2)
+  line-height: ln(2)
+  position: absolute
+  top: 0
+  right: 0
+  display: flex
+  justify-content: space-between
+
+nav ul li
+  display: inline
+
+nav ul li:not(:first-of-type)
+  margin-left: ln(1)
+
+nav ul li a
+  @include no-underline
+
+
+header nav
+  border-bottom: 1px color-value($object-color, $border-opacity) solid
+
+// TODO: Fix this dark business once and for all.
+.dark header nav, header.dark nav
+  border-bottom: 1px color-value($dark-object-color, $dark-border-opacity) solid
+
+footer nav
+  border-top: 1px color-value($object-color, $border-opacity) solid
+
+.dark footer nav, footer.dark nav
+  border-top: 1px color-value($dark-object-color, $dark-border-opacity) solid
+
+
+#header-menu-button
+  display: none
+
+
+@import "layout/medium-large"

@@ -1,0 +1,122 @@
+// Start
+
+.menu li {
+  @include background-color($accent-color);
+  height: 0;
+}
+
+.dark .menu li {
+  @include background-color($dark-accent-color);
+  height: 0;
+}
+
+.menu li a {
+  @include frob {
+    border-bottom: 0px color-value($accent-color, $active-border-opacity) solid;
+  }
+  @include dark-frob {
+    border-bottom: 0px color-value($dark-accent-color, $dark-active-border-opacity) solid;
+  }
+}
+
+.menu li:after {
+  right: -100%;
+}
+
+.menu li a {
+  text-indent: -100%;
+}
+
+
+// End
+
+.menu.open li {
+  @include background-color(transparent);
+  height: ln(2);
+}
+
+.dark .menu.open li {
+  @include background-color(transparent);
+  height: ln(2);
+}
+
+.menu.open li a {
+  @include frob {
+    border-bottom: 1px color-value($object-color, $border-opacity) solid;
+  }
+  @include dark-frob {
+    border-bottom: 1px color-value($dark-object-color, $dark-border-opacity) solid;
+  }
+}
+
+.menu.open li:after {
+  right: $icon-size;
+}
+
+.menu.open li a {
+  text-indent: 0;
+}
+
+
+// Forwards
+
+.menu.open {
+  transition:
+    ease(top, 0, 0),                 // Step <1
+    ease(height, 1, 0);              // Step 1
+}
+
+.menu.open li {
+  transition:
+    ease(height, 1, 0),              // Step 1
+    ease(background-color, 1, 0);    // Step 1
+}
+
+.menu.open li:after {
+  transition:
+    ease(opacity, 1, 0),             // General menu transition
+    ease(filter, 1, 0),              // General menu transition
+    ease(-webkit-filter, 1, 0),      // General menu transition
+    ease(right, 2, 1);               // Step 2
+}
+
+.menu.open li a {
+  transition:
+    ease(color, 1, 0),               // General a transition
+    ease(text-shadow, 1, 0),         // General a transition
+    ease(border-bottom-color, 1, 0), // Step 1
+    ease(border-bottom-width, 0, 0), // Step 1
+    ease(text-indent, 2, 1);         // Step 2
+}
+
+
+// Backwards
+
+.menu li:after {
+  transition:
+    ease(opacity, 1, 0),             // General menu transition
+    ease(filter, 1, 0),              // General menu transition
+    ease(-webkit-filter, 1, 0),      // General menu transition
+    ease(right, 2, 0);               // Step 1
+}
+
+.menu li a {
+  transition:
+    ease(color, 1, 0),               // General a transition
+    ease(text-shadow, 1, 0),         // General a transition
+    ease(text-indent, 2, 0),         // Step 1
+    ease(border-bottom-color, 1, 2), // Step 2
+    ease(border-bottom-width, 0, 2); // Step 2
+}
+
+.menu {
+  transition:
+    ease(height, 1, 2),              // Step 2
+    ease(top, 0, 3);                 // Step 2>
+}
+
+.menu li {
+  transition:
+    ease(height, 1, 2),              // Step 2
+    ease(background-color, 1, 2);    // Step 2
+}

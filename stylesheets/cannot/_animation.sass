@@ -1,0 +1,45 @@
+$animation-tick: 1000ms / 6 !default
+
+@function ts($n)
+  @return $n * $animation-tick
+
+@function transition($property, $duration, $delay, $name)
+  $value: "#{$property} #{ts($duration)} #{ts($delay)} #{$name}"
+  @return unquote($value)
+
+@function linear($property, $duration, $delay)
+  @return transition($property, $duration, $delay, linear)
+
+@function ease($property, $duration, $delay)
+  @return transition($property, $duration, $delay, ease)
+
+@function ease-in($property, $duration, $delay)
+  @return transition($property, $duration, $delay, ease-in)
+
+@function ease-out($property, $duration, $delay)
+  @return transition($property, $duration, $delay, ease-out)
+
+@function ease-in-out($property, $duration, $delay)
+  @return transition($property, $duration, $delay, ease-in-out)
+
+html.resize *
+  transition: none !important
+
+.shake
+  animation-duration: ts(3)
+  animation-name: shake
+  animation-timing-function: ease-in-out
+
+@keyframes shake
+  0%
+    transform: translateY(0)
+  12.5%
+    transform: translateY(-6px)
+  37.5%
+    transform: translateY(5px)
+  62.5%
+    transform: translateY(-3px)
+  87.5%
+    transform: translateY(2px)
+  100%
+    transform: translateY(0)

@@ -1,0 +1,13 @@
+$layout-width: $layout-width-medium
+
+@function font-size($n)
+  @return $n * $font-size-small
+
+@function line-height($n)
+  @return $n * $line-height-small
+
+@import "cannot/layout/common"
+@import "cannot/layout/small-medium"
+@import "cannot/layout/medium-large"
+
+@import "layout/medium"

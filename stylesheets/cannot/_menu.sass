@@ -1,0 +1,97 @@
+.menu
+  width: 100%
+  height: auto
+  overflow: hidden
+  position: relative
+  z-index: 1
+
+
+.menu
+  @include background-color($background-color, 0.8)
+
+.dark .menu
+  @include background-color($dark-background-color, 0.8)
+
+
+.menu li
+  height: ln(2)
+  line-height: ln(2)
+  position: relative
+
+// NOTE: The z-index helps prevent Safari from flickering between antialiased and subpixel-antialised text *in other elements with a dark background* when this element animates. The 'pointer-events: none' counters the 'z-index' and lets pointer events through to the underlying layers.
+
+.menu li:after
+  width: $icon-size
+  height: $icon-size
+  position: absolute
+  top: (ln(2) - $icon-size) / 2
+  right: $icon-size
+  z-index: 2 // TODO: Why 2?
+  pointer-events: none
+  content: ""
+
+.menu li a
+  @include text-button
+  display: block
+  width: 100%
+  height: 100%
+  padding-left: ln(1)
+  padding-right: ln(1)
+  position: relative
+  z-index: 1 // TODO: Why?
+
+
+// Default
+
+.menu li:after
+  opacity: $icon-opacity
+  @include icon("caret", $object-color)
+  @include image-glow(none)
+
+.touch .menu li:active:after
+  opacity: $active-icon-opacity
+  @include icon("caret", $accent-color)
+  @include active-image-glow($accent-color)
+
+.no-touch .menu li:active:after
+  opacity: $icon-opacity
+  @include icon("caret", $accent-color)
+  @include image-glow(none)
+
+.no-touch .menu li:hover:after
+  opacity: $active-icon-opacity
+  @include icon("caret", $accent-color)
+  @include image-glow($accent-color)
+
+.no-touch .menu li:hover:active:after
+  opacity: $active-icon-opacity
+  @include icon("caret", $accent-color)
+  @include active-image-glow($accent-color)
+
+
+// Dark
+
+.dark .menu li:after
+  opacity: $dark-icon-opacity
+  @include icon("caret", $dark-object-color)
+  @include dark-image-glow(none)
+
+.touch .dark .menu li:active:after
+  opacity: $dark-active-icon-opacity
+  @include icon("caret", $dark-accent-color)
+  @include dark-active-image-glow($dark-accent-color)
+
+.no-touch .dark .menu li:active:after
+  opacity: $dark-icon-opacity
+  @include icon("caret", $dark-accent-color)
+  @include dark-image-glow(none)
+
+.no-touch .dark .menu li:hover:after
+  opacity: $dark-active-icon-opacity
+  @include icon("caret", $dark-accent-color)
+  @include dark-image-glow($dark-accent-color)
+
+.no-touch .dark .menu li:hover:active:after
+  opacity: $dark-active-icon-opacity
+  @include icon("caret", $dark-accent-color)
+  @include dark-active-image-glow($dark-accent-color)

@@ -1,0 +1,7 @@
+backslash
+block
+caret
+closed
+dash
+open
+slash
