@@ -103,49 +103,53 @@ vpath %.html.t templates bower_components/cannot/templates
 compile-md = \
   pandoc \
     --metadata=$(1):$(1) \
+    --metadata=project-name:$(notdir $(CURDIR)) \
+    $(foreach key,$(filter page-metadata/%,$^),$(addprefix --metadata=,$(notdir $(key)):$(shell cat $(key)))) \
     --from=markdown+auto_identifiers+header_attributes \
     --to=html5 \
     --smart \
     --standalone \
-    --metadata project:$(notdir $(CURDIR)) \
     --template=$(filter %/main.html.t,$^) \
     --include-before-body=$(filter %/header.html.t,$^) \
     --include-after-body=$(filter %/footer.html.t,$^) \
     --output $@ \
     $<
 
-page-dirs = $(patsubst %.md,out/$(1)/%,$(page-names))
-pages     = out/$(1)/index.html out/$(1)/error.html $(patsubst %.md,out/$(1)/%/index.html,$(page-names))
+page-metadata = $(wildcard page-metadata/$(1)/*)
+page-dirs     = $(patsubst %.md,out/$(1)/%,$(page-names))
+pages         = out/$(1)/index.html out/$(1)/error.html $(patsubst %.md,out/$(1)/%/index.html,$(page-names))
 
 page-files          := $(wildcard pages/*.md)
 page-names          := license.md $(filter-out index.md error.md,$(notdir $(page-files)))
 page-template-names := main.html.t header.html.t footer.html.t
 
 
-dev-page-dirs := $(call page-dirs,dev)
-dev-pages     := $(call pages,dev)
+dev-page-metadata := $(call page-metadata,dev)
+dev-page-dirs     := $(call page-dirs,dev)
+dev-pages         := $(call pages,dev)
 
 .PHONY: dev-pages
 dev-pages: $(dev-pages)
 
-out/dev/%.html: %.md $(page-template-names) | out/dev
+out/dev/%.html: %.md $(page-template-names) $(dev-page-metadata) | out/dev
 	$(call compile-md,dev)
 
-out/dev/%/index.html: %.md $(page-template-names)
+out/dev/%/index.html: %.md $(page-template-names) $(dev-page-metadata)
 	[ -d $(@D) ] || mkdir -p $(@D)
 	$(call compile-md,dev)
 
 
-pub-page-dirs := $(call page-dirs,pub)
-pub-pages     := $(call pages,pub)
+pub-page-metadata := $(call page-metadata,pub)
+pub-page-dirs     := $(call page-dirs,pub)
+pub-pages         := $(call pages,pub)
 
 .PHONY: pub-pages
 pub-pages: $(pub-pages)
 
-out/pub/%.html: %.md $(page-template-names) | out/pub
+out/pub/%.html: %.md $(page-template-names) $(pub-page-metadata) | out/pub
 	$(call compile-md,pub)
 
-out/pub/%/index.html: %.md $(page-template-names)
+out/pub/%/index.html: %.md $(page-template-names) $(pub-page-metadata)
 	[ -d $(@D) ] || mkdir -p $(@D)
 	$(call compile-md,pub)
 
@@ -293,7 +297,7 @@ vpath %.png $(image-dirs)
 vpath %.svg $(image-dirs)
 
 extract-resources = \
-  grep -Eo 'url\(/$(1)/[^)]+\)' $< \
+  grep -Eo 'url\($(1)/[^)]+\)' $< \
   | sed -E 's,^.*/(.*)\).*$$,\1,' \
   | sort -u >$@ \
   || touch $@

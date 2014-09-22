@@ -4,11 +4,12 @@
     <meta charset="utf-8">
     <title>$title$$if(dev)$ (dev)$endif$</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes,minimal-ui">
-    <link rel="icon" type="image/png" href="/_images/favicon-48.png" sizes="48x48">
-    <link rel="icon" type="image/png" href="/_images/favicon-16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="/_images/favicon-32.png" sizes="32x32">
-    <link rel="stylesheet" href="/_stylesheets.css">
-    <script src="/_scripts.js"></script>
+    <base href="$if(base)$$base$$else$/$endif$">
+    <link rel="icon" type="image/png" href="_images/favicon-48.png" sizes="48x48">
+    <link rel="icon" type="image/png" href="_images/favicon-16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="_images/favicon-32.png" sizes="32x32">
+    <link rel="stylesheet" href="_stylesheets.css">
+    <script src="_scripts.js"></script>
     $for(header-includes)$
       $header-includes$
     $endfor$
