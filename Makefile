@@ -78,6 +78,22 @@ pub-clean:
 
 
 # ---------------------------------------------------------------------------
+# Utilities
+# ---------------------------------------------------------------------------
+
+find-files = $(shell find -L $(1) -type f -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
+find-dirs  = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
+
+
+%.gz: %
+	gzip --fast --force --keep --no-name $<
+	$(call optimize-zip)
+
+out/dev out/dev/_fonts out/dev/_images out/pub out/pub/_fonts out/pub/_images out/tmp out/tmp/dev out/tmp/pub:
+	mkdir -p $@
+
+
+# ---------------------------------------------------------------------------
 # Pages
 # ---------------------------------------------------------------------------
 
@@ -91,6 +107,7 @@ compile-md = \
     --to=html5 \
     --smart \
     --standalone \
+    --metadata project:$(notdir $(CURDIR)) \
     --template=$(filter %/main.html.t,$^) \
     --include-before-body=$(filter %/header.html.t,$^) \
     --include-after-body=$(filter %/footer.html.t,$^) \
@@ -190,8 +207,6 @@ out/tmp/dev/_iconsheet.scss: icon-shapes.txt icon-colors.txt | out/tmp/dev
 
 vpath %.sass stylesheets bower_components/cannot/stylesheets
 
-find-files = $(shell find -L $(1) -type f -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
-
 common-helper-roots := stylesheets $(wildcard bower_components/*/stylesheets)
 common-helper-files := $(call find-files,$(common-helper-roots),_*.sass _*.scss)
 
@@ -268,8 +283,6 @@ out/pub/_stylesheets.css: out/tmp/pub/stylesheets.css | out/pub
 # ---------------------------------------------------------------------------
 # Images
 # ---------------------------------------------------------------------------
-
-find-dirs = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
 
 image-roots := images bower_components/cannot/images
 image-dirs  := $(call find-dirs,$(image-roots),*)
@@ -429,15 +442,3 @@ out/dev/_fonts/%.woff: %.woff | out/dev/_fonts
 
 out/pub/_fonts/%.woff: %.woff | out/pub/_fonts
 	cp $< $@
-
-
-# ---------------------------------------------------------------------------
-# Other
-# ---------------------------------------------------------------------------
-
-%.gz: %
-	gzip --fast --force --keep --no-name $<
-	$(call optimize-zip)
-
-out/dev out/dev/_fonts out/dev/_images out/pub out/pub/_fonts out/pub/_images out/tmp out/tmp/dev out/tmp/pub:
-	mkdir -p $@
