@@ -3,7 +3,7 @@ cannot
 
 Microframework for building websites.
 
-Not canned.
+Suitable for static sites and client-side apps.  Not canned.  Work in progress.
 
 
 Usage
@@ -30,6 +30,7 @@ Requires:
 - [Sass](http://sass-lang.com/)
 - [Bower](http://bower.io/)
 - [BrowserSync](http://www.browsersync.io/)
+- [CleanCSS](https://github.com/jakubpawlowicz/clean-css/)
 - [Webpack](http://webpack.github.io/)
 
 ```sh
