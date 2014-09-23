@@ -222,13 +222,13 @@ out/pub/%/index.html: %.md $(page-template-names) $(pub-page-metadata)
 
 vpath %.js scripts bower_components/cannot/scripts
 
-webpack-dev-flags := --debug --output-pathinfo
-webpack-pub-flags := --optimize-minimize --optimize-occurence-order
+dev-webpack-flags := --debug --output-pathinfo
+pub-webpack-flags := --optimize-minimize --optimize-occurence-order
 
 compile-js = \
   webpack \
     --define $(1)=$(1) \
-    $(webpack-$(1)-flags) \
+    $($(1)-webpack-flags) \
     --bail \
     --config=$(filter %/webpack.js,$^) \
     $< \
