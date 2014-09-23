@@ -1,6 +1,6 @@
 .PHONY: all build dev pub clean
 
-all: build
+all: dev-watch
 
 build: dev-build pub-build
 
