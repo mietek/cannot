@@ -81,9 +81,12 @@ pub-clean:
 # Utilities
 # ---------------------------------------------------------------------------
 
+dev-advdef-flags := --iter=1
+pub-advdef-flags := --iter=100
+
 optimize-zip = \
   advdef \
-    --iter=100 \
+    $($(1)-advdef-flags) \
     --shrink-insane \
     --quiet \
     -z \
@@ -145,8 +148,8 @@ find-files = $(shell find -L $(1) -type f -false $(foreach pattern,$(2),-or -nam
 find-dirs  = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
 
 
-%.gz: %
-	$(create-zip)
+out/pub/%.gz: out/pub/%
+	$(call create-zip,pub)
 
 out/dev out/dev/_fonts out/dev/_images out/pub out/pub/_fonts out/pub/_images out/tmp out/tmp/dev out/tmp/pub:
 	mkdir -p $@
@@ -372,6 +375,10 @@ out/tmp/images.mk: out/tmp/image-names.txt
 out/dev/%.ico: %.ico | out/dev
 	cp $< $@
 
+out/dev/_images/%.png: %.png | out/dev/_images
+	cp $< $@
+	$(call optimize-png,dev)
+
 out/dev/_images/%: % | out/dev/_images
 	cp $< $@
 
@@ -385,7 +392,7 @@ out/pub/_images/%.jpg: %.jpg | out/pub/_images
 
 out/pub/_images/%.png: %.png | out/pub/_images
 	cp $< $@
-	$(optimize-png)
+	$(call optimize-png,pub)
 
 out/pub/_images/%: % | out/pub/_images
 	cp $< $@
@@ -404,7 +411,8 @@ icon-column-files  = $(foreach name,$(icon-column-names),$(filter %/$(name),$^))
 compile-iconsheet = \
   convert \
     $(foreach shape,$(icon-shapes),\( $(icon-column-files) -append \)) \
-    +append $@
+    +append $@ \
+  && $(optimize-png)
 
 write-iconsheet-target = \
   echo 'out/$(1)/_images/iconsheet$(2).png: $$(call icon-names,$(1),$(2)) | out/$(1)/_images' >>$@ \
