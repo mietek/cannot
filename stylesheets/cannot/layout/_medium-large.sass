@@ -11,8 +11,8 @@ footer
   padding-right: ln(1)
 
 
-main h1, main h2, main h3, main h4, main h5, main h6, main p, footer aside
-  padding-left: (100% / 3)
+main h1, main h2, main h3, main h4, main h5, main h6, main p, header aside, footer aside
+  padding-left: (1/3 * 100%)
 
 footer aside
   padding-bottom: ln(1)
@@ -44,9 +44,10 @@ nav ul
 
 nav ul li
   display: inline
+  margin-right: ln(1)
 
-nav ul li:not(:first-of-type)
-  margin-left: ln(1)
+nav ul li:last-of-type
+  margin-right: 0
 
 nav ul li a
   @include no-underline
