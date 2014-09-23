@@ -39,7 +39,7 @@ remember-to-stop-watching = \
     while ps -p $${PPID} >/dev/null; do \
       sleep 1; \
     done; \
-    $(call stop-watching) \
+    $(stop-watching) \
   ) &
 
 start-synchronizing = \
@@ -54,9 +54,9 @@ start-synchronizing = \
 dev-build: dev-pages dev-scripts dev-stylesheets dev-images dev-fonts
 
 dev-watch: dev-build
-	-$(call stop-watching)
+	-$(stop-watching)
 	$(call start-watching,dev)
-	$(call remember-to-stop-watching)
+	$(remember-to-stop-watching)
 	$(call start-synchronizing,dev)
 
 dev-clean:
@@ -68,9 +68,9 @@ dev-clean:
 pub-build: pub-pages pub-scripts pub-stylesheets pub-images pub-fonts
 
 pub-watch: pub-build
-	-$(call stop-watching)
+	-$(stop-watching)
 	$(call start-watching,pub)
-	$(call remember-to-stop-watching)
+	$(remember-to-stop-watching)
 	$(call start-synchronizing,pub)
 
 pub-clean:
@@ -81,13 +81,72 @@ pub-clean:
 # Utilities
 # ---------------------------------------------------------------------------
 
+optimize-zip = \
+  advdef \
+    --iter=100 \
+    --shrink-insane \
+    --quiet \
+    -z \
+    $@
+
+create-zip = \
+  gzip \
+    --fast \
+    --force \
+    --keep \
+    --no-name \
+    --to-stdout \
+    $< \
+    >$@ \
+  && $(optimize-zip)
+
+optimize-png = \
+  optipng \
+    -clobber \
+    -o6 \
+    -strip all \
+    -quiet \
+    $@ \
+  && $(optimize-zip)
+
+optimize-jpg = \
+  jpegoptim \
+    -m90 \
+    --strip-all \
+    --quiet \
+    $@
+
+optimize-css = \
+  cleancss \
+    --s0 \
+    --skip-rebase \
+    --output $@ \
+    $<
+
+prefix-css = \
+  autoprefixer \
+    --browsers '> 1%, last 2 versions, Firefox ESR' \
+    --output $@ \
+    $<
+
+extract-comments = \
+  grep -Eo '/\* $(1): .* \*/' $< \
+  | sed -E 's/^.*: (.*) .*$$/\1/' \
+  | sort -u >$@
+
+extract-resources = \
+  grep -Eo 'url\($(1)/[^)]+\)' $< \
+  | sed -E 's,^.*/(.*)\).*$$,\1,' \
+  | sort -u >$@ \
+  || touch $@
+
+
 find-files = $(shell find -L $(1) -type f -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
 find-dirs  = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
 
 
 %.gz: %
-	gzip --fast --force --keep --no-name $<
-	$(call optimize-zip)
+	$(create-zip)
 
 out/dev out/dev/_fonts out/dev/_images out/pub out/pub/_fonts out/pub/_images out/tmp out/tmp/dev out/tmp/pub:
 	mkdir -p $@
@@ -160,10 +219,13 @@ out/pub/%/index.html: %.md $(page-template-names) $(pub-page-metadata)
 
 vpath %.js scripts bower_components/cannot/scripts
 
+webpack-dev-flags := --debug --output-pathinfo
+webpack-pub-flags := --optimize-minimize --optimize-occurence-order
+
 compile-js = \
   webpack \
     --define $(1)=$(1) \
-    $(2) \
+    $(webpack-$(1)-flags) \
     --bail \
     --config=$(filter %/webpack.js,$^) \
     $< \
@@ -176,14 +238,14 @@ script-files := main.js $(wildcard bower_components/*/index.js)
 dev-scripts: out/dev/_scripts.js
 
 out/dev/_scripts.js: main.js $(script-files) webpack.js | out/dev
-	$(call compile-js,dev,--debug --output-pathinfo)
+	$(call compile-js,dev)
 
 
 .PHONY: pub-scripts
 pub-scripts: out/pub/_scripts.js.gz
 
 out/pub/_scripts.js: main.js $(script-files) webpack.js | out/pub
-	$(call compile-js,pub,--optimize-minimize --optimize-occurence-order)
+	$(call compile-js,pub)
 
 
 # ---------------------------------------------------------------------------
@@ -192,7 +254,7 @@ out/pub/_scripts.js: main.js $(script-files) webpack.js | out/pub
 
 vpath %.txt images bower_components/cannot/images
 
-generate-iconsheet-helper = \
+write-iconsheet-helper = \
   echo '$$icon-shapes: ' >$@ \
   && cat $(filter %/icon-shapes.txt,$^) >>$@ \
   && echo ';' >>$@ \
@@ -202,7 +264,7 @@ generate-iconsheet-helper = \
 
 
 out/tmp/dev/_iconsheet.scss: icon-shapes.txt icon-colors.txt | out/tmp/dev
-	$(call generate-iconsheet-helper)
+	$(write-iconsheet-helper)
 
 
 # ---------------------------------------------------------------------------
@@ -221,17 +283,11 @@ compile-sass = \
   sass \
     --line-numbers \
     --sourcemap=none \
-    --style=expanded \
-    --cache-location=out/tmp/$(1)/.sass-cache \
-    $(addprefix --load-path=,$(call helper-roots,$(1))) \
+    --style expanded \
+    --cache-location out/tmp/$(1)/.sass-cache \
+    $(addprefix --load-path ,$(helper-roots)) \
     $< \
     $@
-
-prefix-css = \
-  autoprefixer \
-    --browsers '> 1%, last 2 versions, Firefox ESR' \
-    --output $(1) \
-    $<
 
 
 .PHONY: dev-stylesheets
@@ -241,18 +297,12 @@ out/tmp/dev/stylesheets.css: main.sass $(call helper-files,dev)
 	$(call compile-sass,dev)
 
 out/dev/_stylesheets.css: out/tmp/dev/stylesheets.css | out/dev
-	$(call prefix-css,$@)
+	$(prefix-css)
 
 
 # ---------------------------------------------------------------------------
 # Iconsheet helper (pub)
 # ---------------------------------------------------------------------------
-
-extract-comments = \
-  grep -Eo '/\* $(1): .* \*/' $< \
-  | sed -E 's/^.*: (.*) .*$$/\1/' \
-  | sort -u >$@
-
 
 out/tmp/pub/icon-shapes.txt: out/tmp/dev/stylesheets.css | out/tmp/pub
 	$(call extract-comments,icon-shape)
@@ -261,18 +311,12 @@ out/tmp/pub/icon-colors.txt: out/tmp/dev/stylesheets.css | out/tmp/pub
 	$(call extract-comments,icon-color)
 
 out/tmp/pub/_iconsheet.scss: out/tmp/pub/icon-shapes.txt out/tmp/pub/icon-colors.txt
-	$(call generate-iconsheet-helper)
+	$(write-iconsheet-helper)
 
 
 # ---------------------------------------------------------------------------
 # Stylesheets (pub)
 # ---------------------------------------------------------------------------
-
-compress-css = \
-  cleancss \
-    --s0 \
-    --output $@
-
 
 .PHONY: pub-stylesheets
 pub-stylesheets: out/pub/_stylesheets.css.gz
@@ -280,8 +324,12 @@ pub-stylesheets: out/pub/_stylesheets.css.gz
 out/tmp/pub/stylesheets.css: main.sass $(call helper-files,pub)
 	$(call compile-sass,pub)
 
-out/pub/_stylesheets.css: out/tmp/pub/stylesheets.css | out/pub
-	$(call prefix-css,-) | $(call compress-css)
+.INTERMEDIATE: out/tmp/pub/stylesheets-prefixed.css
+out/tmp/pub/stylesheets-prefixed.css: out/tmp/pub/stylesheets.css
+	$(prefix-css)
+
+out/pub/_stylesheets.css: out/tmp/pub/stylesheets-prefixed.css | out/pub
+	$(optimize-css)
 
 
 # ---------------------------------------------------------------------------
@@ -296,35 +344,6 @@ vpath %.jpg $(image-dirs)
 vpath %.png $(image-dirs)
 vpath %.svg $(image-dirs)
 
-extract-resources = \
-  grep -Eo 'url\($(1)/[^)]+\)' $< \
-  | sed -E 's,^.*/(.*)\).*$$,\1,' \
-  | sort -u >$@ \
-  || touch $@
-
-optimize-jpg = \
-  jpegoptim \
-    -m90 \
-    --strip-all \
-    --quiet \
-    $@
-
-optimize-png = \
-  optipng \
-    -clobber \
-    -o6 \
-    -strip all \
-    -quiet \
-    $@
-
-optimize-zip = \
-  advdef \
-    --iter=100 \
-    --shrink-insane \
-    --quiet \
-    -z \
-    $@
-
 
 out/tmp/image-names.txt: out/tmp/dev/stylesheets.css | out/tmp
 	$(call extract-resources,_images)
@@ -333,12 +352,19 @@ image-names = favicon-16.png favicon-32.png favicon-48.png $(filter-out iconshee
 dev-images  = out/dev/favicon.ico $(addprefix out/dev/_images/,$(image-names))
 pub-images  = out/pub/favicon.ico $(addprefix out/pub/_images/,$(image-names) $(addsuffix .gz,$(filter %.svg,$(image-names))))
 
+write-image-target = \
+  echo '$(1)-images: $$($(1)-images)' >>$@
+
+write-image-targets = \
+  echo >$@ \
+  && $(call write-image-target,dev) \
+  && $(call write-image-target,pub)
+
 
 .PHONY: dev-images
 .PHONY: pub-images
 out/tmp/images.mk: out/tmp/image-names.txt
-	echo 'dev-images: $(dev-images)' >$@
-	echo 'pub-images: $(pub-images)' >>$@
+	$(write-image-targets)
 
 -include out/tmp/images.mk
 
@@ -355,19 +381,18 @@ out/pub/%.ico: %.ico | out/pub
 
 out/pub/_images/%.jpg: %.jpg | out/pub/_images
 	cp $< $@
-	$(call optimize-jpg)
+	$(optimize-jpg)
 
 out/pub/_images/%.png: %.png | out/pub/_images
 	cp $< $@
-	$(call optimize-png)
-	$(call optimize-zip)
+	$(optimize-png)
 
 out/pub/_images/%: % | out/pub/_images
 	cp $< $@
 
 
 # ---------------------------------------------------------------------------
-# Iconsheet images
+# Iconsheet
 # ---------------------------------------------------------------------------
 
 icon-shapes = $(shell cat out/tmp/$(1)/icon-shapes.txt)
@@ -431,12 +456,19 @@ font-names = $(shell cat out/tmp/font-names.txt)
 dev-fonts  = $(addprefix out/dev/_fonts/,$(font-names))
 pub-fonts  = $(addprefix out/pub/_fonts/,$(font-names))
 
+write-font-target = \
+  echo '$(1)-fonts: $$($(1)-fonts)' >>$@
+
+write-font-targets = \
+  echo >$@ \
+  && $(call write-font-target,dev) \
+  && $(call write-font-target,pub)
+
 
 .PHONY: dev-fonts
 .PHONY: pub-fonts
 out/tmp/fonts.mk: out/tmp/font-names.txt
-	echo 'dev-fonts: $(dev-fonts)' >$@
-	echo 'pub-fonts: $(pub-fonts)' >>$@
+	$(write-font-targets)
 
 -include out/tmp/fonts.mk
 
