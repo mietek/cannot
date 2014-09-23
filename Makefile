@@ -51,7 +51,7 @@ start-synchronizing = \
 
 .PHONY: dev-build dev-watch dev-clean
 
-dev-build: dev-pages dev-scripts dev-stylesheets dev-images dev-fonts
+dev-build: dev-pages dev-scripts dev-stylesheets dev-images dev-iconsheet dev-fonts
 
 dev-watch: dev-build
 	-$(stop-watching)
@@ -65,7 +65,7 @@ dev-clean:
 
 .PHONY: pub-build pub-watch pub-clean
 
-pub-build: pub-pages pub-scripts pub-stylesheets pub-images pub-fonts
+pub-build: pub-pages pub-scripts pub-stylesheets pub-images pub-iconsheet pub-fonts
 
 pub-watch: pub-build
 	-$(stop-watching)
@@ -395,48 +395,46 @@ out/pub/_images/%: % | out/pub/_images
 # Iconsheet
 # ---------------------------------------------------------------------------
 
-icon-shapes = $(shell cat out/tmp/$(1)/icon-shapes.txt)
-icon-colors = $(shell cat out/tmp/$(1)/icon-colors.txt)
+icon-shapes        = $(shell cat out/tmp/$(1)/icon-shapes.txt)
+icon-colors        = $(shell cat out/tmp/$(1)/icon-colors.txt)
+icon-column-names  = $(patsubst %,icon-$(shape)-%$(2).png,$(icon-colors))
+icon-names         = $(foreach shape,$(icon-shapes),$(icon-column-names))
+icon-column-files  = $(foreach name,$(icon-column-names),$(filter %/$(name),$^))
 
-icon-names = $(foreach shape,$(call icon-shapes,$(1)),$(patsubst %,icon-$(shape)-%$(2).png,$(call icon-colors,$(1))))
-
-generate-iconsheet = \
+compile-iconsheet = \
   convert \
-    $(foreach shape,$(call icon-shapes,$(1)),\( $(filter %/$(patsubst %,icon-$(shape)-%$(2).png,$(call icon-colors,$(1))),$^) -append \)) \
+    $(foreach shape,$(icon-shapes),\( $(icon-column-files) -append \)) \
     +append $@
 
+write-iconsheet-target = \
+  echo 'out/$(1)/_images/iconsheet$(2).png: $$(call icon-names,$(1),$(2)) | out/$(1)/_images' >>$@ \
+  && echo '	$$(call compile-iconsheet,$(1),$(2))' >>$@
+
+write-iconsheet-targets = \
+  echo >$@ \
+  && $(call write-iconsheet-target,$(1),) \
+  && $(call write-iconsheet-target,$(1),@2x)
+
+
+.PHONY: dev-iconsheet
+dev-iconsheet: out/dev/_images/iconsheet.png out/dev/_images/iconsheet@2x.png
 
 out/tmp/dev/%.txt: %.txt | out/tmp/dev
 	cp $< $@
 
 out/tmp/dev/iconsheet.mk: out/tmp/dev/icon-shapes.txt out/tmp/dev/icon-colors.txt
-	echo 'out/dev/_images/iconsheet.png: $(call icon-names,dev,) | out/dev/_images' >$@
-	echo 'out/dev/_images/iconsheet@2x.png: $(call icon-names,dev,@2x) | out/dev/_images' >>$@
+	$(call write-iconsheet-targets,dev)
 
 -include out/tmp/dev/iconsheet.mk
 
-out/dev/_images/iconsheet.png:
-	$(call generate-iconsheet,dev,)
 
-out/dev/_images/iconsheet@2x.png:
-	$(call generate-iconsheet,dev,@2x)
-
+.PHONY: pub-iconsheet
+pub-iconsheet: out/pub/_images/iconsheet.png out/pub/_images/iconsheet@2x.png
 
 out/tmp/pub/iconsheet.mk: out/tmp/pub/icon-shapes.txt out/tmp/pub/icon-colors.txt
-	echo 'out/pub/_images/iconsheet.png: $(call icon-names,pub,) | out/pub/_images' >$@
-	echo 'out/pub/_images/iconsheet@2x.png: $(call icon-names,pub,@2x) | out/pub/_images' >>$@
+	$(call write-iconsheet-targets,pub)
 
 -include out/tmp/pub/iconsheet.mk
-
-out/pub/_images/iconsheet.png:
-	$(call generate-iconsheet,pub,)
-	$(call optimize-png)
-	$(call optimize-zip)
-
-out/pub/_images/iconsheet@2x.png:
-	$(call generate-iconsheet,pub,@2x)
-	$(call optimize-png)
-	$(call optimize-zip)
 
 
 # ---------------------------------------------------------------------------

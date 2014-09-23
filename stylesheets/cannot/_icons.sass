@@ -7,10 +7,10 @@ $iconsheet-format: "png" !default
 
 @mixin icon($shape, $color)
   @include image($iconsheet-name, $iconsheet-format)
-  $icon-x: $icon-size * (index($iconsheet-colors, $color) - 1)
-  $icon-y: $icon-size * (index($iconsheet-shapes, $shape) - 1)
-  $iconsheet-width: $icon-size * length($iconsheet-colors)
-  $iconsheet-height: $icon-size * length($iconsheet-shapes)
+  $icon-x: $icon-size * (index($icon-shapes, $shape) - 1)
+  $icon-y: $icon-size * (index($icon-colors, $color) - 1)
+  $iconsheet-width: $icon-size * length($icon-shapes)
+  $iconsheet-height: $icon-size * length($icon-colors)
   background-position: ($icon-x * -1) ($icon-y * -1)
   background-size: $iconsheet-width $iconsheet-height
   /* icon-shape: #{$shape} */
