@@ -1,0 +1,23 @@
+$icon-size: 24px !default
+$icon-stroke: 4px !default
+$iconsheet-name: "iconsheet" !default
+$iconsheet-format: "png" !default
+
+@import "iconsheet"
+
+@mixin icon($shape, $color)
+  @include image($iconsheet-name, $iconsheet-format)
+  $shape-index: index($icon-shapes, $shape)
+  @if $shape-index == null
+    @error "Unexpected icon shape #{$shape}"
+  $color-index: index($icon-colors, $color)
+  @if $color-index == null
+    @error "Unexpected icon color #{$color}"
+  $x: $icon-size * ($shape-index - 1)
+  $y: $icon-size * ($color-index - 1)
+  $width: $icon-size * length($icon-shapes)
+  $height: $icon-size * length($icon-colors)
+  background-position: ($x * -1) ($y * -1)
+  background-size: $width $height
+  /* icon-shape: #{$shape} */
+  /* icon-color: #{$color} */

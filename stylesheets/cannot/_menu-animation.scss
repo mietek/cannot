@@ -1,21 +1,21 @@
 // Start
 
 .menu li {
-  @include background-color($accent-color);
+  background-color: $accent-color;
   height: 0;
 }
 
 .dark .menu li {
-  @include background-color($dark-accent-color);
+  background-color: $dark-accent-color;
   height: 0;
 }
 
 .menu li a {
   @include frob {
-    border-bottom: 0px color-value($accent-color, $active-border-opacity) solid;
+    border-bottom: 0px rgba($accent-color, $active-border-opacity) solid;
   }
   @include dark-frob {
-    border-bottom: 0px color-value($dark-accent-color, $dark-active-border-opacity) solid;
+    border-bottom: 0px rgba($dark-accent-color, $dark-active-border-opacity) solid;
   }
 }
 
@@ -31,21 +31,21 @@
 // End
 
 .menu.open li {
-  @include background-color(transparent);
+  background-color: transparent;
   height: ln(2);
 }
 
 .dark .menu.open li {
-  @include background-color(transparent);
+  background-color: transparent;
   height: ln(2);
 }
 
 .menu.open li a {
   @include frob {
-    border-bottom: 1px color-value($object-color, $border-opacity) solid;
+    border-bottom: 1px rgba($object-color, $border-opacity) solid;
   }
   @include dark-frob {
-    border-bottom: 1px color-value($dark-object-color, $dark-border-opacity) solid;
+    border-bottom: 1px rgba($dark-object-color, $dark-border-opacity) solid;
   }
 }
 

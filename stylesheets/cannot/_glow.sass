@@ -17,7 +17,7 @@ $dark-active-image-glow-rounds: 6 !default
   @for $i from 1 through $rounds
     @if $result != ""
       $result: ", #{$result}"
-    $result: "0 0 #{$radius} #{color-value($color)} #{$result}"
+    $result: "0 0 #{$radius} #{$color} #{$result}"
   @return unquote($result)
 
 @function _filter($color, $radius, $rounds)
@@ -25,7 +25,7 @@ $dark-active-image-glow-rounds: 6 !default
   @for $i from 1 through $rounds
     @if $result != ""
       $result: " #{$result}"
-    $result: "drop-shadow(0 0 #{$radius} #{color-value($color)}) #{$result}"
+    $result: "drop-shadow(0 0 #{$radius} #{$color}) #{$result}"
   @return unquote($result)
 
 

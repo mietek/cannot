@@ -37,54 +37,54 @@ a, a:active, a:hover, a:hover:active
 
 
 a
-  color: color-value($object-color)
-  border-bottom: 1px rgba(color-value($object-color), $underline-opacity) solid
+  color: $object-color
+  border-bottom: 1px rgba($object-color, $underline-opacity) solid
   @include text-glow(none)
 
 .touch a:active
-  color: color-value($accent-color)
-  border-bottom: 1px rgba(color-value($accent-color), $active-underline-opacity) solid
+  color: $accent-color
+  border-bottom: 1px rgba($accent-color, $active-underline-opacity) solid
   @include active-text-glow($accent-color)
 
 .no-touch a:active
-  color: color-value($accent-color)
-  border-bottom: 1px rgba(color-value($accent-color), $active-underline-opacity) solid
+  color: $accent-color
+  border-bottom: 1px rgba($accent-color, $active-underline-opacity) solid
   @include text-glow(none)
 
 .no-touch a:hover
-  color: color-value($accent-color)
-  border-bottom: 1px rgba(color-value($accent-color), $active-underline-opacity) solid
+  color: $accent-color
+  border-bottom: 1px rgba($accent-color, $active-underline-opacity) solid
   @include text-glow($accent-color)
 
 .no-touch a:hover:active
-  color: color-value($accent-color)
-  border-bottom: 1px rgba(color-value($accent-color), $active-underline-opacity) solid
+  color: $accent-color
+  border-bottom: 1px rgba($accent-color, $active-underline-opacity) solid
   @include active-text-glow($accent-color)
 
 
 // Dark
 
 .dark a
-  color: color-value($dark-object-color)
-  border-bottom: 1px rgba(color-value($dark-object-color), $dark-underline-opacity) solid
+  color: $dark-object-color
+  border-bottom: 1px rgba($dark-object-color, $dark-underline-opacity) solid
   @include dark-text-glow(none)
 
 .touch .dark a:active
-  color: color-value($dark-accent-color)
-  border-bottom: 1px rgba(color-value($dark-accent-color), $dark-active-underline-opacity) solid
+  color: $dark-accent-color
+  border-bottom: 1px rgba($dark-accent-color, $dark-active-underline-opacity) solid
   @include dark-active-text-glow($dark-accent-color)
 
 .no-touch .dark a:active
-  color: color-value($dark-accent-color)
-  border-bottom: 1px rgba(color-value($dark-accent-color), $dark-active-underline-opacity) solid
+  color: $dark-accent-color
+  border-bottom: 1px rgba($dark-accent-color, $dark-active-underline-opacity) solid
   @include dark-text-glow(none)
 
 .no-touch .dark a:hover
-  color: color-value($dark-accent-color)
-  border-bottom: 1px rgba(color-value($dark-accent-color), $dark-active-underline-opacity) solid
+  color: $dark-accent-color
+  border-bottom: 1px rgba($dark-accent-color, $dark-active-underline-opacity) solid
   @include dark-text-glow($dark-accent-color)
 
 .no-touch .dark a:hover:active
-  color: color-value($dark-accent-color)
-  border-bottom: 1px rgba(color-value($dark-accent-color), $dark-active-underline-opacity) solid
+  color: $dark-accent-color
+  border-bottom: 1px rgba($dark-accent-color, $dark-active-underline-opacity) solid
   @include dark-active-text-glow($dark-accent-color)

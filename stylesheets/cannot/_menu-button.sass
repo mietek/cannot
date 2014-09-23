@@ -41,44 +41,44 @@
 
 
 .menu-button:before
-  @include icon("closed", $object-color)
+  @include icon("closed", $object-color-name)
   @include image-glow(none)
 
 .touch .menu-button:active:before
-  @include icon("closed", $accent-color)
-  @include active-image-glow($accent-color)
+  @include icon("closed", $accent-color-name)
+  @include active-image-glow($accent-color-name)
 
 .no-touch .menu-button:active:before
-  @include icon("closed", $accent-color)
+  @include icon("closed", $accent-color-name)
   @include image-glow(none)
 
 .no-touch .menu-button:hover:before
-  @include icon("closed", $accent-color)
+  @include icon("closed", $accent-color-name)
   @include image-glow($accent-color)
 
 .no-touch .menu-button:hover:active:before
-  @include icon("closed", $accent-color)
+  @include icon("closed", $accent-color-name)
   @include active-image-glow($accent-color)
 
 
 .menu-button:after
-  @include background-color($object-color)
+  background-color: $object-color
   @include image-glow(none)
 
 .touch .menu-button:active:after
-  @include background-color($accent-color)
+  background-color: $accent-color
   @include active-image-glow($accent-color)
 
 .no-touch .menu-button:active:after
-  @include background-color($accent-color)
+  background-color: $accent-color
   @include image-glow(none)
 
 .no-touch .menu-button:hover:after
-  @include background-color($accent-color)
+  background-color: $accent-color
   @include image-glow($accent-color)
 
 .no-touch .menu-button:hover:active:after
-  @include background-color($accent-color)
+  background-color: $accent-color
   @include active-image-glow($accent-color)
 
 
@@ -101,42 +101,42 @@
 
 
 .dark .menu-button:before
-  @include icon("closed", $dark-object-color)
+  @include icon("closed", $dark-object-color-name)
   @include dark-image-glow(none)
 
 .touch .dark .menu-button:active:before
-  @include icon("closed", $dark-accent-color)
+  @include icon("closed", $dark-accent-color-name)
   @include dark-active-image-glow($dark-accent-color)
 
 .no-touch .dark .menu-button:active:before
-  @include icon("closed", $dark-accent-color)
+  @include icon("closed", $dark-accent-color-name)
   @include dark-image-glow(none)
 
 .no-touch .dark .menu-button:hover:before
-  @include icon("closed", $dark-accent-color)
+  @include icon("closed", $dark-accent-color-name)
   @include dark-image-glow($dark-accent-color)
 
 .no-touch .dark .menu-button:hover:active:before
-  @include icon("closed", $dark-accent-color)
+  @include icon("closed", $dark-accent-color-name)
   @include dark-active-image-glow($dark-accent-color)
 
 
 .dark .menu-button:after
-  @include background-color($dark-object-color)
+  background-color: $dark-object-color
   @include dark-image-glow(none)
 
 .touch .dark .menu-button:active:after
-  @include background-color($dark-accent-color)
+  background-color: $dark-accent-color
   @include dark-active-image-glow($dark-accent-color)
 
 .no-touch .dark .menu-button:active:after
-  @include background-color($dark-accent-color)
+  background-color: $dark-accent-color
   @include dark-image-glow(none)
 
 .no-touch .dark .menu-button:hover:after
-  @include background-color($dark-accent-color)
+  background-color: $dark-accent-color
   @include dark-image-glow($dark-accent-color)
 
 .no-touch .dark .menu-button:hover:active:after
-  @include background-color($dark-accent-color)
+  background-color: $dark-accent-color
   @include dark-active-image-glow($dark-accent-color)

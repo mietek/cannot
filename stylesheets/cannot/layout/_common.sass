@@ -6,12 +6,12 @@
 
 
 html
-  @include background-color($background-color)
-  color: color-value($body-color)
+  background-color: $background-color
+  color: $body-color
 
 .dark
-  @include background-color($dark-background-color)
-  color: color-value($dark-body-color)
+  background-color: $dark-background-color
+  color: $dark-body-color
 
 
 html
@@ -46,7 +46,7 @@ h1, h2, h3, h4, h5, h6
   font-weight: bold
 
 main h1
-  @include color($accent-color)
+  color: $accent-color
   font-size: em(2)
   line-height: ln(2)
   margin-top: ln(4)
@@ -58,11 +58,11 @@ main h1:first-of-type
 
 // TODO: Seriously now, enough with the dark.  Also, this breaks when the header is more than 1 line high.
 .dark main h1, main.dark h1, h1.dark
-  @include color($dark-body-color)
+  color: $dark-body-color
   font-size: em(2)
   margin-bottom: ln(2)
   &:before
-    @include background-color($dark-background-color)
+    background-color: $dark-background-color
     position: absolute
     left: 0
     right: 0
@@ -72,21 +72,21 @@ main h1:first-of-type
     content: ""
 
 main h2
-  @include color($accent-color)
+  color: $accent-color
   font-size: em(3/2)
   line-height: ln(2)
   margin-top: ln(7/2)
   margin-bottom: ln(1/2)
 
 main h3
-  @include color($accent-color)
+  color: $accent-color
   font-size: em(4/3)
   line-height: ln(3/2)
   margin-top: ln(3)
   margin-bottom: ln(1/2)
 
 main h4
-  @include color($accent-color)
+  color: $accent-color
   margin-top: ln(5/2)
   margin-bottom: ln(1/2)
 
@@ -95,14 +95,14 @@ main h5
   margin-bottom: ln(1/2)
 
 main h6
-  @include color($object-color)
+  color: $object-color
   margin-top: ln(1)
   margin-bottom: ln(1/2)
 
 
 hr
   border: none
-  border-top: 1px color-value($accent-color) solid
+  border-top: 1px $accent-color solid
   height: ln(1)
   margin-top: ln(5)
   margin-bottom: ln(1/2)
@@ -126,17 +126,17 @@ footer aside
 
 
 footer
-  color: color-value($subject-color)
+  color: $subject-color
 
 footer a
-  color: color-value($subject-color)
+  color: $subject-color
 
 
 .dark footer
-  color: color-value($dark-subject-color)
+  color: $dark-subject-color
 
 .dark footer a
-  color: color-value($dark-subject-color)
+  color: $dark-subject-color
 
 
 nav h1 a
