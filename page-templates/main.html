@@ -1,10 +1,10 @@
 <!doctype html>
-<html $if(dev)$class="dev"$endif$ lang="en">
+<html $if(html-class)$class="$html-class$"$endif$ lang="en">
   <head>
     <meta charset="utf-8">
-    <title>$title$$if(dev)$ (dev)$endif$</title>
+    <title>$if(project-title)$$project-title$$endif$$if(title)$ — $title$$endif$</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes,minimal-ui">
-    <base href="$if(base)$$base$$else$/$endif$">
+    <base href="$if(base-url)$$base-url$$else$/$endif$">
     <link rel="icon" type="image/png" href="_images/favicon-48.png" sizes="48x48">
     <link rel="icon" type="image/png" href="_images/favicon-16.png" sizes="16x16">
     <link rel="icon" type="image/png" href="_images/favicon-32.png" sizes="32x32">
@@ -13,7 +13,7 @@
     $for(header-includes)$
       $header-includes$
     $endfor$
-    $if(head)$$head$$endif$
+    $if(extra-head)$$head$$endif$
   </head>
   <body $if(body-class)$class="$body-class$"$endif$>
     <header id="header" $if(header-class)$class="$header-class$"$endif$>
@@ -21,7 +21,7 @@
         $for(include-before)$
         $include-before$
         $endfor$
-        $if(header)$$header$$endif$
+        $if(extra-header)$$extra-header$$endif$
       </div>
     </header>
     <main id="main" $if(main-class)$class="$main-class$"$endif$>
@@ -31,14 +31,14 @@
     </main>
     <footer id="footer" $if(footer-class)$class="$footer-class$"$endif$>
       <div class="wrapper">
-        $if(footer)$$footer$$endif$
+        $if(extra-footer)$$extra-footer$$endif$
         $for(include-after)$
         $include-after$
         $endfor$
       </div>
     </footer>
     <!--[if lte IE 9]>
-    <div id="what-browser" class="dark">
+    <div id="what-browser">
       <div class="wrapper">
         <p>Please update your browser. <a href="http://whatbrowser.org/">What browser?</a></p>
       </div>

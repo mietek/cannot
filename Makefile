@@ -97,31 +97,31 @@ out/dev out/dev/_fonts out/dev/_images out/pub out/pub/_fonts out/pub/_images ou
 # Pages
 # ---------------------------------------------------------------------------
 
-vpath %.md     pages     bower_components/cannot/pages
-vpath %.html.t templates bower_components/cannot/templates
+vpath %.md   pages          bower_components/cannot/pages
+vpath %.html page-templates bower_components/cannot/page-templates
 
 compile-md = \
   pandoc \
     --metadata=$(1):$(1) \
     --metadata=project-name:$(notdir $(CURDIR)) \
-    $(foreach key,$(filter page-metadata/%,$^),$(addprefix --metadata=,$(notdir $(key)):$(shell cat $(key)))) \
+    $(foreach key,$(filter page-metadata/%,$^),--metadata=$(notdir $(key)):"`cat $(key)`") \
     --from=markdown+auto_identifiers+header_attributes \
     --to=html5 \
     --smart \
     --standalone \
-    --template=$(filter %/main.html.t,$^) \
-    --include-before-body=$(filter %/header.html.t,$^) \
-    --include-after-body=$(filter %/footer.html.t,$^) \
+    --template=$(filter %/main.html,$^) \
+    --include-before-body=$(filter %/header.html,$^) \
+    --include-after-body=$(filter %/footer.html,$^) \
     --output $@ \
     $<
 
-page-metadata = $(wildcard page-metadata/$(1)/*)
+page-metadata = $(filter-out page-metadata/dev page-metadata/pub,$(wildcard page-metadata/* page-metadata/$(1)/*))
 page-dirs     = $(patsubst %.md,out/$(1)/%,$(page-names))
 pages         = out/$(1)/index.html out/$(1)/error.html $(patsubst %.md,out/$(1)/%/index.html,$(page-names))
 
 page-files          := $(wildcard pages/*.md)
 page-names          := license.md $(filter-out index.md error.md,$(notdir $(page-files)))
-page-template-names := main.html.t header.html.t footer.html.t
+page-template-names := main.html header.html footer.html
 
 
 dev-page-metadata := $(call page-metadata,dev)

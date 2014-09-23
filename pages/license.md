@@ -1,5 +1,5 @@
 ---
-title: Cannot — License
+title: License
 ---
 
 

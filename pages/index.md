@@ -1,7 +1,6 @@
 ---
-title: Cannot
 header-class: dark hero
-header: <div id="hero"><h1>Cannot</h1><h2>Not <a href="#main" class="click-to-main">canned.</a></h2></div>
+extra-header: <div id="hero"><h1>Cannot.</h1><h2>Not <a href="#main" class="click-to-main">canned.</a></h2></div>
 main-class: hero
 ---
 
