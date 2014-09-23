@@ -63,7 +63,7 @@ exports.restartAnimation = function (target) {
     [].forEach.call(document.getElementsByClassName('click-to-main'), function (element) {
       element.addEventListener('click', function (event) {
         event.preventDefault();
-        easeScroll.scrollToElementById('main');
+        easeScroll.scrollToElementById('main', exports.ts(3));
       });
     });
   });
