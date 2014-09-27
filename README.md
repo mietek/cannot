@@ -3,7 +3,9 @@ cannot
 
 Microframework for building websites.
 
-Suitable for static sites and client-side apps.  Not canned.  Work in progress.
+Suitable for static sites and client-side apps.  Not canned.
+
+Work in progress.
 
 
 Usage
@@ -13,9 +15,9 @@ Do you need a website?  Say hello@mietek.io
 
 Examples:
 
-- [cannot-website](https://github.com/mietek/cannot-website)
 - [least-fixed-website](https://github.com/mietek/least-fixed-website)
 - [mietek-website](https://github.com/mietek/mietek-website)
+- [motoworks-website](https://github.com/mietek/motoworks-website)
 
 
 ### Installation
