@@ -1,5 +1,5 @@
 'use strict';
 
 window.easeScroll = require('ease-scroll');
-window.magic = require('./magic');
+window.cannot = require('./magic');
 require('./touch');
