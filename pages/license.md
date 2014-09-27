@@ -3,7 +3,7 @@ title: License
 ---
 
 
-# MIT X11 License
+# License
 
 Copyright © 2014 [Miëtek Bak](http://mietek.io/).
 
