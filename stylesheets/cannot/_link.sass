@@ -1,4 +1,14 @@
-// Default
+@mixin text-button
+  cursor: pointer
+  user-select: none
+  -webkit-tap-highlight-color: transparent
+
+@mixin text-hidden
+  color: transparent
+  overflow: hidden
+  text-indent: 150%
+  white-space: nowrap
+
 
 @mixin frob
   &
@@ -12,22 +22,8 @@
   .no-touch &:hover:active
     @content
 
-@mixin dark-frob
-  .dark &
-    @content
-  .touch .dark &:active
-    @content
-  .no-touch .dark &:hover
-    @content
-  .no-touch .dark &:active
-    @content
-  .no-touch .dark &:hover:active
-    @content
-
 @mixin no-underline
   @include frob
-    border-bottom: none
-  @include dark-frob
     border-bottom: none
 
 
@@ -60,31 +56,3 @@ a
   color: $accent-color
   border-bottom: 1px rgba($accent-color, $active-underline-opacity) solid
   @include active-text-glow($accent-color)
-
-
-// Dark
-
-.dark a
-  color: $dark-object-color
-  border-bottom: 1px rgba($dark-object-color, $dark-underline-opacity) solid
-  @include dark-text-glow(none)
-
-.touch .dark a:active
-  color: $dark-accent-color
-  border-bottom: 1px rgba($dark-accent-color, $dark-active-underline-opacity) solid
-  @include dark-active-text-glow($dark-accent-color)
-
-.no-touch .dark a:active
-  color: $dark-accent-color
-  border-bottom: 1px rgba($dark-accent-color, $dark-active-underline-opacity) solid
-  @include dark-text-glow(none)
-
-.no-touch .dark a:hover
-  color: $dark-accent-color
-  border-bottom: 1px rgba($dark-accent-color, $dark-active-underline-opacity) solid
-  @include dark-text-glow($dark-accent-color)
-
-.no-touch .dark a:hover:active
-  color: $dark-accent-color
-  border-bottom: 1px rgba($dark-accent-color, $dark-active-underline-opacity) solid
-  @include dark-active-text-glow($dark-accent-color)

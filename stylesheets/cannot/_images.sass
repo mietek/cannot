@@ -1,5 +1,4 @@
 $image-url-base: "_images" !default
-$image-button-format: "png" !default
 
 
 @import "cannot/hires"
@@ -25,19 +24,3 @@ $image-button-format: "png" !default
   @else
     background-image: image-url($name, 1x, $format)
   background-repeat: no-repeat
-
-@mixin text-hidden
-  color: transparent
-  overflow: hidden
-  text-indent: 150%
-  white-space: nowrap
-
-@mixin text-button
-  cursor: pointer
-  user-select: none
-  -webkit-tap-highlight-color: transparent
-
-@mixin image-button($name)
-  @include text-button
-  @include text-hidden
-  @include image($name, $image-button-format)

@@ -5,17 +5,9 @@
   height: 0;
 }
 
-.dark .menu li {
-  background-color: $dark-accent-color;
-  height: 0;
-}
-
 .menu li a {
   @include frob {
     border-bottom: 0px rgba($accent-color, $active-border-opacity) solid;
-  }
-  @include dark-frob {
-    border-bottom: 0px rgba($dark-accent-color, $dark-active-border-opacity) solid;
   }
 }
 
@@ -35,17 +27,9 @@
   height: ln(2);
 }
 
-.dark .menu.open li {
-  background-color: transparent;
-  height: ln(2);
-}
-
 .menu.open li a {
   @include frob {
     border-bottom: 1px rgba($object-color, $border-opacity) solid;
-  }
-  @include dark-frob {
-    border-bottom: 1px rgba($dark-object-color, $dark-border-opacity) solid;
   }
 }
 

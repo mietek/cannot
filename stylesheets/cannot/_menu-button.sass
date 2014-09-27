@@ -22,8 +22,6 @@
   content: ""
 
 
-// Default
-
 .menu-button
   opacity: $icon-opacity
 
@@ -80,63 +78,3 @@
 .no-touch .menu-button:hover:active:after
   background-color: $accent-color
   @include active-image-glow($accent-color)
-
-
-// Dark
-
-.dark .menu-button
-  opacity: $dark-icon-opacity
-
-.touch .dark .menu-button:active
-  opacity: $dark-active-icon-opacity
-
-.no-touch .dark .menu-button:active
-  opacity: $dark-icon-opacity
-
-.no-touch .dark .menu-button:hover
-  opacity: $dark-active-icon-opacity
-
-.no-touch .dark .menu-button:hover:active
-  opacity: $dark-active-icon-opacity
-
-
-.dark .menu-button:before
-  @include icon("closed", $dark-object-color-name)
-  @include dark-image-glow(none)
-
-.touch .dark .menu-button:active:before
-  @include icon("closed", $dark-accent-color-name)
-  @include dark-active-image-glow($dark-accent-color)
-
-.no-touch .dark .menu-button:active:before
-  @include icon("closed", $dark-accent-color-name)
-  @include dark-image-glow(none)
-
-.no-touch .dark .menu-button:hover:before
-  @include icon("closed", $dark-accent-color-name)
-  @include dark-image-glow($dark-accent-color)
-
-.no-touch .dark .menu-button:hover:active:before
-  @include icon("closed", $dark-accent-color-name)
-  @include dark-active-image-glow($dark-accent-color)
-
-
-.dark .menu-button:after
-  background-color: $dark-object-color
-  @include dark-image-glow(none)
-
-.touch .dark .menu-button:active:after
-  background-color: $dark-accent-color
-  @include dark-active-image-glow($dark-accent-color)
-
-.no-touch .dark .menu-button:active:after
-  background-color: $dark-accent-color
-  @include dark-image-glow(none)
-
-.no-touch .dark .menu-button:hover:after
-  background-color: $dark-accent-color
-  @include dark-image-glow($dark-accent-color)
-
-.no-touch .dark .menu-button:hover:active:after
-  background-color: $dark-accent-color
-  @include dark-active-image-glow($dark-accent-color)

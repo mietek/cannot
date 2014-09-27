@@ -1,3 +1,7 @@
+#header-menu-button
+  display: none
+
+
 header
   padding-left: ln(1)
   padding-right: ln(1)
@@ -11,33 +15,47 @@ footer
   padding-right: ln(1)
 
 
-main h1, main h2, main h3, main h4, main h5, main h6, main p, header aside, footer aside
+
+header aside
+  margin-left: (1/3 * 100%)
+
+main section.level1 > *
+  padding-left: (1/3 * 100%)
+
+main section.level2
+  padding-left: 0
+
+main section.level2 > *
+  padding-left: (1/3 * 100%)
+
+main section.level3
+  padding-left: 0
+  margin-left: (1/3 * 100%)
+
+main section.footnotes > *
   padding-left: (1/3 * 100%)
 
 footer aside
-  padding-bottom: ln(1)
+  margin-left: (1/3 * 100%)
 
 
 nav
   position: relative
-  height: ln(2)
 
 nav h1
-  width: (100% / 3)
-  height: ln(2)
-  line-height: ln(2)
-  @if $no-logo == false
-    padding-top: ln(1/2)
+  position: relative
+  padding-top: ln(1/2)
+  padding-bottom: ln(1/2)
 
 nav h1 a
+  background-position: left center
   height: ln(1)
 
 nav ul
-  width: (2 * 100% / 3)
-  height: ln(2)
-  line-height: ln(2)
+  width: (2/3 * 100%)
+  height: ln(1)
   position: absolute
-  top: 0
+  top: ln(1/2)
   right: 0
   display: flex
   justify-content: space-between
@@ -51,24 +69,6 @@ nav ul li:last-of-type
 
 nav ul li a
   @include no-underline
-
-
-header nav
-  border-bottom: 1px rgba($object-color, $border-opacity) solid
-
-// TODO: Fix this dark business once and for all.
-.dark header nav, header.dark nav
-  border-bottom: 1px rgba($dark-object-color, $dark-border-opacity) solid
-
-footer nav
-  border-top: 1px rgba($object-color, $border-opacity) solid
-
-.dark footer nav, footer.dark nav
-  border-top: 1px rgba($dark-object-color, $dark-border-opacity) solid
-
-
-#header-menu-button
-  display: none
 
 
 @import "layout/medium-large"

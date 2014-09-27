@@ -6,20 +6,4 @@
     background-size: ln(1) ln(1)
 
 
-@if $no-logo == false
-  header h1 a
-    @include image("logotype-small", "png")
-
-  footer h1 a
-    @include image("logotype-#{$subject-color-name}-small", "png")
-
-  .dark header h1 a, header.dark h1 a, .dark footer h1 a, footer.dark h1 a
-    @include image("logotype-#{$dark-subject-color-name}-small", "png")
-
-
-aside
-  position: relative
-  top: 1px
-
-
 @import "layout/small-medium"

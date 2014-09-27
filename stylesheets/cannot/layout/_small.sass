@@ -9,49 +9,53 @@ $layout-width: $layout-width-small
 @import "cannot/layout/common"
 @import "cannot/layout/small-medium"
 
-@import "cannot/touch"
+@import "cannot/menu"
+@import "cannot/menu-button"
+@import "cannot/menu-animation"
+@import "cannot/menu-button-animation"
 
 
-header .not-nav
+header
+  position: relative
+  overflow: hidden
+
+#header-menu-button
+  position: absolute
+  top: 0
+  right: 0
+
+
+header .wrapper > *
   padding-left: ln(1)
   padding-right: ln(1)
+
+header .wrapper nav
+  padding-left: 0
+  padding-right: 0
 
 main
   padding-left: ln(1)
   padding-right: ln(1)
 
-footer .not-nav
+footer .wrapper > *
   padding-left: ln(1)
   padding-right: ln(1)
 
-
-footer aside
-  margin-top: ln(1)
-  padding-bottom: ln(1)
+footer .wrapper nav
+  padding-left: 0
+  padding-right: 0
 
 
 nav h1 a
-  background-position: ln(1) ln(1/2)
-  width: 100%
-  height: ln(2)
-  line-height: ln(2)
+  background-position: ln(1) center
   padding-left: ln(1)
   padding-right: ln(1)
-  // TODO: Somehow, this causes the border-bottom to flicker on shake. Can be fixed by moving the border to nav h1, but...
-  @include frob
-    border-bottom: 1px rgba($object-color, $border-opacity) solid
-  @include dark-frob
-    border-bottom: 1px rgba($dark-object-color, $dark-border-opacity) solid
-
-.dark nav h1 a
-  background-position: ln(1) ln(1/2)
+  height: ln(2)
+  line-height: ln(2)
 
 
 footer nav h1 a
-  @include frob
-    border-top: 1px rgba($object-color, $border-opacity) solid
-  @include dark-frob
-    border-top: 1px rgba($dark-object-color, $dark-border-opacity) solid
+  @include rule-after
 
 
 @import "layout/small"

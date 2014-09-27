@@ -1,16 +1,10 @@
 .menu
+  background-color: rgba($background-color, 0.8)
   width: 100%
   height: auto
   overflow: hidden
   position: relative
   z-index: 1
-
-
-.menu
-  background-color: rgba($background-color, 0.8)
-
-.dark .menu
-  background-color: rgba($dark-background-color, 0.8)
 
 
 .menu li
@@ -41,8 +35,6 @@
   z-index: 1 // TODO: Why?
 
 
-// Default
-
 .menu li:after
   opacity: $icon-opacity
   @include icon("caret", $object-color-name)
@@ -67,31 +59,3 @@
   opacity: $active-icon-opacity
   @include icon("caret", $accent-color-name)
   @include active-image-glow($accent-color)
-
-
-// Dark
-
-.dark .menu li:after
-  opacity: $dark-icon-opacity
-  @include icon("caret", $dark-object-color-name)
-  @include dark-image-glow(none)
-
-.touch .dark .menu li:active:after
-  opacity: $dark-active-icon-opacity
-  @include icon("caret", $dark-accent-color-name)
-  @include dark-active-image-glow($dark-accent-color)
-
-.no-touch .dark .menu li:active:after
-  opacity: $dark-icon-opacity
-  @include icon("caret", $dark-accent-color-name)
-  @include dark-image-glow(none)
-
-.no-touch .dark .menu li:hover:after
-  opacity: $dark-active-icon-opacity
-  @include icon("caret", $dark-accent-color-name)
-  @include dark-image-glow($dark-accent-color)
-
-.no-touch .dark .menu li:hover:active:after
-  opacity: $dark-active-icon-opacity
-  @include icon("caret", $dark-accent-color-name)
-  @include dark-active-image-glow($dark-accent-color)

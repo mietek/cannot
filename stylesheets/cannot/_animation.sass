@@ -1,7 +1,9 @@
 $animation-tick: 1000ms / 6 !default
 
+
 @function ts($n)
   @return $n * $animation-tick
+
 
 @function transition($property, $duration, $delay, $name)
   $value: "#{$property} #{ts($duration)} #{ts($delay)} #{$name}"
@@ -22,8 +24,10 @@ $animation-tick: 1000ms / 6 !default
 @function ease-in-out($property, $duration, $delay)
   @return transition($property, $duration, $delay, ease-in-out)
 
+
 html.resize *
   transition: none !important
+
 
 .shake
   animation-duration: ts(3)

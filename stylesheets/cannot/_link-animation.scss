@@ -1,34 +1,8 @@
 a {
-  transition:
-    ease(color, 1, 0),
-    ease(border-bottom-color, 1, 0),
-    ease(text-shadow, 1, 0);
-}
-
-.touch a:active {
-  transition:
-    ease(color, 1, 0),
-    ease(border-bottom-color, 1, 0),
-    ease(text-shadow, 1, 0);
-}
-
-.no-touch a:active {
-  transition:
-    ease(color, 1, 0),
-    ease(border-bottom-color, 1, 0),
-    ease(text-shadow, 1, 0);
-}
-
-.no-touch a:hover {
-  transition:
-    ease(color, 1, 0),
-    ease(border-bottom-color, 1, 0),
-    ease(text-shadow, 1, 0);
-}
-
-.no-touch a:hover:active {
-  transition:
-    ease(color, 1, 0),
-    ease(border-bottom-color, 1, 0),
-    ease(text-shadow, 1, 0);
+	@include frob {
+	  transition:
+	    ease(color, 1, 0),
+	    ease(border-bottom-color, 1, 0),
+	    ease(text-shadow, 1, 0);
+	}
 }
