@@ -6,7 +6,7 @@ build: dev-build pub-build
 
 dev: dev-watch
 
-pub: pub-watch
+pub: pub-push
 
 clean:
 	rm -rf out
@@ -31,7 +31,7 @@ start-watching = \
     >out/tmp/fswatch.pid
 
 stop-watching = \
-  kill `cat out/tmp/fswatch.pid` \
+  kill `cat out/tmp/fswatch.pid 2>/dev/null` \
     2>/dev/null
 
 remember-to-stop-watching = \
@@ -48,6 +48,25 @@ start-synchronizing = \
     --files 'out/$(1)/**/*' \
     --server out/$(1)
 
+pub-git-remote-name = $(shell git config --get cannot.pub.remote)
+pub-git-branch      = $(shell git config --get cannot.pub.branch)
+pub-git-remote-url  = $(shell git config --get remote.$(pub-git-remote-name).url)
+
+clone-pub-branch = \
+  git clone $(pub-git-remote-url) --branch $(pub-git-branch) out/pub \
+  && find out/pub \
+    | xargs touch -t 0101010101 -am
+
+push-to-pub-branch = \
+  [ -z "`git -C out/pub status --porcelain`" ] \
+  || \
+  ( \
+    git -C out/pub add -A . \
+    && git -C out/pub commit -m "Make" \
+    && git -C out/pub push \
+    && git fetch $(pub-git-remote-name) $(pub-git-branch) \
+  )
+
 
 .PHONY: dev-build dev-watch dev-clean
 
@@ -63,9 +82,21 @@ dev-clean:
 	rm -rf out/dev
 
 
-.PHONY: pub-build pub-watch pub-clean
+.PHONY: pub-build pub-clone pub-post-clone pub-push pub-watch pub-clean
 
-pub-build: pub-pages pub-scripts pub-stylesheets pub-images pub-iconsheet pub-fonts
+pub-build:
+	$(MAKE) pub-clone
+	$(MAKE) pub-post-clone
+
+pub-clone: out/pub
+
+out/pub:
+	$(clone-pub-branch)
+
+pub-post-clone: pub-pages pub-scripts pub-stylesheets pub-images pub-iconsheet pub-fonts
+
+pub-push: pub-build
+	$(push-to-pub-branch)
 
 pub-watch: pub-build
 	-$(stop-watching)
@@ -151,7 +182,7 @@ find-dirs  = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -nam
 out/pub/%.gz: out/pub/%
 	$(call create-zip,pub)
 
-out/dev out/dev/_fonts out/dev/_images out/pub out/pub/_fonts out/pub/_images out/tmp out/tmp/dev out/tmp/pub:
+out/dev out/dev/_fonts out/dev/_images out/pub/_fonts out/pub/_images out/tmp out/tmp/dev out/tmp/pub:
 	mkdir -p $@
 
 
@@ -160,58 +191,56 @@ out/dev out/dev/_fonts out/dev/_images out/pub out/pub/_fonts out/pub/_images ou
 # ---------------------------------------------------------------------------
 
 vpath %.md   pages          bower_components/cannot/pages
+vpath %.txt  page-metadata  bower_components/cannot/page-metadata
+vpath %.html page-includes  bower_components/cannot/page-includes
 vpath %.html page-templates bower_components/cannot/page-templates
 
 compile-md = \
   pandoc \
     --metadata=$(1):$(1) \
     --metadata=project-name:$(notdir $(CURDIR)) \
-    $(foreach key,$(filter page-metadata/%,$^),--metadata=$(notdir $(key)):"`cat $(key)`") \
+    --metadata=path:$(subst index.html,,$(patsubst out/$(1)/%,%,$@)) \
+    $(foreach metadatum,$(filter %.txt,$^),--metadata=$(patsubst %.txt,%,$(notdir $(metadatum))):"`cat $(metadatum)`") \
     --from=markdown+auto_identifiers+header_attributes \
+    $(foreach include,$(filter %.html,$(filter-out %/main.html,$^)),--metadata=$(patsubst %.html,%,$(notdir $(include))):"`cat $(include)`") \
     --to=html5 \
-    --smart \
+    --section-divs \
     --standalone \
     --template=$(filter %/main.html,$^) \
-    --include-before-body=$(filter %/header.html,$^) \
-    --include-after-body=$(filter %/footer.html,$^) \
     --output $@ \
     $<
 
-page-metadata = $(filter-out page-metadata/dev page-metadata/pub,$(wildcard page-metadata/* page-metadata/$(1)/*))
-page-dirs     = $(patsubst %.md,out/$(1)/%,$(page-names))
-pages         = out/$(1)/index.html out/$(1)/error.html $(patsubst %.md,out/$(1)/%/index.html,$(page-names))
+local-page-metadata  = $(wildcard page-metadata/*.txt)
+global-page-metadata = $(filter-out $(addprefix %/,$(local-page-metadata)),$(wildcard bower_components/cannot/page-metadata/*.txt))
 
-page-files          := $(wildcard pages/*.md)
-page-names          := license.md $(filter-out index.md error.md,$(notdir $(page-files)))
-page-template-names := main.html header.html footer.html
+page-metadata = $(local-page-metadata) $(global-page-metadata)
+
+page-files := $(call find-files,pages,*.md)
+page-paths := index.md error.md license/index.md $(subst pages/,,$(page-files))
+
+pages = $(patsubst %.md,out/$(1)/%.html,$(page-paths))
+
+page-structure := main.html menu-items.html head-extra.html header-extra.html footer-extra.html
 
 
 dev-page-metadata := $(call page-metadata,dev)
-dev-page-dirs     := $(call page-dirs,dev)
 dev-pages         := $(call pages,dev)
 
 .PHONY: dev-pages
 dev-pages: $(dev-pages)
 
-out/dev/%.html: %.md $(page-template-names) $(dev-page-metadata) | out/dev
-	$(call compile-md,dev)
-
-out/dev/%/index.html: %.md $(page-template-names) $(dev-page-metadata)
+out/dev/%.html: %.md $(page-structure) $(dev-page-metadata) | out/dev
 	[ -d $(@D) ] || mkdir -p $(@D)
 	$(call compile-md,dev)
 
 
 pub-page-metadata := $(call page-metadata,pub)
-pub-page-dirs     := $(call page-dirs,pub)
 pub-pages         := $(call pages,pub)
 
 .PHONY: pub-pages
 pub-pages: $(pub-pages)
 
-out/pub/%.html: %.md $(page-template-names) $(pub-page-metadata) | out/pub
-	$(call compile-md,pub)
-
-out/pub/%/index.html: %.md $(page-template-names) $(pub-page-metadata)
+out/pub/%.html: %.md $(page-structure) $(pub-page-metadata) | out/pub
 	[ -d $(@D) ] || mkdir -p $(@D)
 	$(call compile-md,pub)
 
@@ -255,7 +284,7 @@ out/pub/_scripts.js: main.js $(script-files) webpack.js | out/pub
 # Iconsheet helper (dev)
 # ---------------------------------------------------------------------------
 
-vpath %.txt images bower_components/cannot/images
+vpath %.txt image-metadata bower_components/cannot/image-metadata
 
 write-iconsheet-helper = \
   echo '$$icon-shapes: ' >$@ \
@@ -327,7 +356,6 @@ pub-stylesheets: out/pub/_stylesheets.css.gz
 out/tmp/pub/stylesheets.css: main.sass $(call helper-files,pub)
 	$(call compile-sass,pub)
 
-.INTERMEDIATE: out/tmp/pub/stylesheets-prefixed.css
 out/tmp/pub/stylesheets-prefixed.css: out/tmp/pub/stylesheets.css
 	$(prefix-css)
 
@@ -402,11 +430,11 @@ out/pub/_images/%: % | out/pub/_images
 # Iconsheet
 # ---------------------------------------------------------------------------
 
-icon-shapes        = $(shell cat out/tmp/$(1)/icon-shapes.txt)
-icon-colors        = $(shell cat out/tmp/$(1)/icon-colors.txt)
-icon-column-names  = $(patsubst %,icon-$(shape)-%$(2).png,$(icon-colors))
-icon-names         = $(foreach shape,$(icon-shapes),$(icon-column-names))
-icon-column-files  = $(foreach name,$(icon-column-names),$(filter %/$(name),$^))
+icon-shapes       = $(shell cat out/tmp/$(1)/icon-shapes.txt)
+icon-colors       = $(shell cat out/tmp/$(1)/icon-colors.txt)
+icon-column-names = $(patsubst %,icon-$(shape)-%$(2).png,$(icon-colors))
+icon-names        = $(foreach shape,$(icon-shapes),$(icon-column-names))
+icon-column-files = $(foreach name,$(icon-column-names),$(filter %/$(name),$^))
 
 compile-iconsheet = \
   convert \
