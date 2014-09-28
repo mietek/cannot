@@ -442,41 +442,7 @@ out/tmp/image-names.txt: out/tmp/dev/stylesheets.css | out/tmp
 	$(call extract-resources,_images)
 
 image-names = favicon-16.png favicon-32.png favicon-48.png $(filter-out iconsheet%,$(shell cat out/tmp/image-names.txt))
-dev-images  = out/dev/favicon.ico $(addprefix out/dev/_images/,$(image-names))
-pub-images  = out/pub/favicon.ico $(addprefix out/pub/_images/,$(image-names) $(addsuffix .gz,$(filter %.svg,$(image-names))))
 
-define write-image-target
-  echo '$(1)-images: $$($(1)-images)' >>$@
-endef
-
-define write-image-targets
-  echo >$@
-  $(call write-image-target,dev)
-  $(call write-image-target,pub)
-endef
-
-
-.PHONY: dev-images
-.PHONY: pub-images
-out/tmp/images.mk: out/tmp/image-names.txt
-	$(write-image-targets)
-
--include out/tmp/images.mk
-
-
-out/dev/%.ico: %.ico | out/dev
-	cp $< $@
-
-out/dev/_images/%.png: %.png | out/dev/_images
-	cp $< $@
-	$(call optimize-png,dev)
-
-out/dev/_images/%: % | out/dev/_images
-	cp $< $@
-
-
-out/pub/%.ico: %.ico | out/pub
-	cp $< $@
 
 out/pub/_images/%.jpg: %.jpg | out/pub/_images
 	cp $< $@
@@ -486,8 +452,21 @@ out/pub/_images/%.png: %.png | out/pub/_images
 	cp $< $@
 	$(call optimize-png,pub)
 
-out/pub/_images/%: % | out/pub/_images
-	cp $< $@
+
+define images
+  $(mode)-images = out/$(mode)/favicon.ico $$(addprefix out/$(mode)/_images/,$(image-names))
+
+  out/tmp/$(mode)/images.mk: out/tmp/image-names.txt; echo '$(mode)-images: $$($(mode)-images)' >$$@
+
+  .PHONY: $(mode)-images
+  -include out/tmp/$(mode)/images.mk
+
+  out/$(mode)/%.ico: %.ico | out/$(mode); cp $$< $$@
+
+  out/$(mode)/_images/%: % | out/$(mode)/_images; cp $$< $$@
+endef
+
+$(foreach mode,dev pub,$(eval $(images)))
 
 
 # ---------------------------------------------------------------------------
