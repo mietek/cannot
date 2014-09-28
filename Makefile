@@ -1,21 +1,53 @@
-.PHONY: all build dev pub clean
+# ---------------------------------------------------------------------------
+# Cannot
+# ---------------------------------------------------------------------------
 
+.PHONY: all
 all: dev-watch
 
+.PHONY: build
 build: dev-build pub-build
 
+.PHONY: dev
 dev: dev-watch
 
+.PHONY: pub
 pub: pub-push
 
+.PHONY: clean
 clean:
 	rm -rf out
+
+
+.PHONY: dev-build
+dev-build: dev-pages dev-scripts dev-stylesheets dev-images dev-iconsheet dev-fonts
+
+.PHONY: dev-clean
+dev-clean:
+	rm -rf out/dev
+
+
+.PHONY: pub-build
+pub-build:
+	$(MAKE) pub-build-1
+	$(MAKE) pub-build-2
+
+.PHONY: pub-build-1
+pub-build-1: out/pub
+
+.PHONY: pub-build-2
+pub-build-2: pub-pages pub-scripts pub-stylesheets pub-images pub-iconsheet pub-fonts
+
+.PHONY: pub-clean
+pub-clean:
+	rm -rf out/pub
+
 
 .DELETE_ON_ERROR:
 
 
 # ---------------------------------------------------------------------------
-# Goals
+# Watching
 # ---------------------------------------------------------------------------
 
 # NOTE: This will not pick up new symlinks without restarting
@@ -31,8 +63,7 @@ start-watching = \
     >out/tmp/fswatch.pid
 
 stop-watching = \
-  kill `cat out/tmp/fswatch.pid 2>/dev/null` \
-    2>/dev/null
+  kill `cat out/tmp/fswatch.pid 2>/dev/null` 2>/dev/null
 
 remember-to-stop-watching = \
   ( \
@@ -48,9 +79,41 @@ start-synchronizing = \
     --files 'out/$(1)/**/*' \
     --server out/$(1)
 
-pub-git-remote-name = $(shell git config --get cannot.pub.remote)
-pub-git-branch      = $(shell git config --get cannot.pub.branch)
-pub-git-remote-url  = $(shell git config --get remote.$(pub-git-remote-name).url)
+
+.PHONY: dev-watch
+dev-watch: dev-build
+	-$(stop-watching)
+	$(call start-watching,dev)
+	$(remember-to-stop-watching)
+	$(call start-synchronizing,dev)
+
+.PHONY: pub-watch
+pub-watch: pub-build
+	-$(stop-watching)
+	$(call start-watching,pub)
+	$(remember-to-stop-watching)
+	$(call start-synchronizing,pub)
+
+
+# ---------------------------------------------------------------------------
+# Publishing
+# ---------------------------------------------------------------------------
+
+pub-remote-name = $(shell git config --get cannot.pub.remote)
+pub-remote-url  = $(shell git config --get remote.$(pub-remote-name).url)
+pub-branch      = $(shell git config --get cannot.pub.branch)
+
+init-pub-branch = \
+  git checkout --orphan -b gh-pages \
+  && git config --add cannot.pub.remote origin \
+  && git config --add cannot.pub.branch gh-pages \
+  && git rm -rf . \
+  && touch .nojekyll \
+  && git add . \
+  && git commit -m "Initial commit" \
+  && git push -u origin gh-pages \
+  && git checkout master \
+  && git branch -d gh-pages
 
 clone-pub-branch = \
   git clone $(pub-git-remote-url) --branch $(pub-git-branch) out/pub \
@@ -68,44 +131,16 @@ push-to-pub-branch = \
   )
 
 
-.PHONY: dev-build dev-watch dev-clean
-
-dev-build: dev-pages dev-scripts dev-stylesheets dev-images dev-iconsheet dev-fonts
-
-dev-watch: dev-build
-	-$(stop-watching)
-	$(call start-watching,dev)
-	$(remember-to-stop-watching)
-	$(call start-synchronizing,dev)
-
-dev-clean:
-	rm -rf out/dev
-
-
-.PHONY: pub-build pub-clone pub-post-clone pub-push pub-watch pub-clean
-
-pub-build:
-	$(MAKE) pub-clone
-	$(MAKE) pub-post-clone
-
-pub-clone: out/pub
+.PHONY: pub-init
+pub-init:
+	$(init-pub-branch)
 
 out/pub:
 	$(clone-pub-branch)
 
-pub-post-clone: pub-pages pub-scripts pub-stylesheets pub-images pub-iconsheet pub-fonts
-
+.PHONY: pub-push
 pub-push: pub-build
 	$(push-to-pub-branch)
-
-pub-watch: pub-build
-	-$(stop-watching)
-	$(call start-watching,pub)
-	$(remember-to-stop-watching)
-	$(call start-synchronizing,pub)
-
-pub-clean:
-	rm -rf out/pub
 
 
 # ---------------------------------------------------------------------------
