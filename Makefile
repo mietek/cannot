@@ -473,26 +473,28 @@ out/pub/_images/%: % | out/pub/_images
 # Iconsheet
 # ---------------------------------------------------------------------------
 
-icon-shapes       = $(shell cat out/tmp/$(1)/icon-shapes.txt)
-icon-colors       = $(shell cat out/tmp/$(1)/icon-colors.txt)
-icon-column-names = $(patsubst %,icon-$(shape)-%$(2).png,$(icon-colors))
-icon-names        = $(foreach shape,$(icon-shapes),$(icon-column-names))
-icon-column-files = $(foreach name,$(icon-column-names),$(filter %/$(name),$^))
+icon-shapes = $(shell cat out/tmp/$(1)/icon-shapes.txt)
+icon-colors = $(shell cat out/tmp/$(1)/icon-colors.txt)
+
+icon-cell-files   = $(patsubst %,icon-$${shape}-%$(2).png,$(icon-colors))
+icon-column-files = $(foreach shape,$(icon-shapes),out/tmp/$(1)/icon-column-$(shape)$(2).png)
+
+compile-icon-column = \
+  convert $^ -append $@
 
 compile-iconsheet = \
-  convert \
-    $(foreach shape,$(icon-shapes),\( $(icon-column-files) -append \)) \
-    +append $@ \
-  && $(optimize-png)
+  convert $^ +append $@ && $(optimize-png)
+
+write-icon-column-target = \
+  echo "out/tmp/$(1)/icon-column-$${shape}$(2).png: $(call icon-cell-files,$(1),$(2)) | out/tmp/$(1)" >>$@ \
+  && echo '	$$(call compile-icon-column,$(1),$(2))' >>$@
+
+write-icon-column-targets = \
+  for shape in $(icon-shapes); do $(write-icon-column-target); done
 
 write-iconsheet-target = \
-  echo 'out/$(1)/_images/iconsheet$(2).png: $$(call icon-names,$(1),$(2)) | out/$(1)/_images' >>$@ \
+  echo 'out/$(1)/_images/iconsheet$(2).png: $(call icon-column-files,$(1),$(2)) | out/$(1)/_images' >>$@ \
   && echo '	$$(call compile-iconsheet,$(1),$(2))' >>$@
-
-write-iconsheet-targets = \
-  echo >$@ \
-  && $(call write-iconsheet-target,$(1),) \
-  && $(call write-iconsheet-target,$(1),@2x)
 
 
 .PHONY: dev-iconsheet
@@ -502,7 +504,11 @@ out/tmp/dev/%.txt: %.txt | out/tmp/dev
 	cp $< $@
 
 out/tmp/dev/iconsheet.mk: out/tmp/dev/icon-shapes.txt out/tmp/dev/icon-colors.txt
-	$(call write-iconsheet-targets,dev)
+	echo >$@
+	$(call write-icon-column-targets,dev,)
+	$(call write-icon-column-targets,dev,@2x)
+	$(call write-iconsheet-target,dev,)
+	$(call write-iconsheet-target,dev,@2x)
 
 -include out/tmp/dev/iconsheet.mk
 
@@ -511,7 +517,11 @@ out/tmp/dev/iconsheet.mk: out/tmp/dev/icon-shapes.txt out/tmp/dev/icon-colors.tx
 pub-iconsheet: out/pub/_images/iconsheet.png out/pub/_images/iconsheet@2x.png
 
 out/tmp/pub/iconsheet.mk: out/tmp/pub/icon-shapes.txt out/tmp/pub/icon-colors.txt
-	$(call write-iconsheet-targets,pub)
+	echo >$@
+	$(call write-icon-column-targets,pub,)
+	$(call write-icon-column-targets,pub,@2x)
+	$(call write-iconsheet-target,pub,)
+	$(call write-iconsheet-target,pub,@2x)
 
 -include out/tmp/pub/iconsheet.mk
 
