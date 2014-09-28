@@ -59,53 +59,43 @@ pub-clean:
 # Watching
 # ---------------------------------------------------------------------------
 
-# NOTE: This will not pick up new symlinks without restarting
-define start-watching
-  fswatch \
-    --one-per-batch \
-    --recursive \
-    --exclude='$(CURDIR)/out' \
-    $(patsubst %,'%',$(realpath . $(shell find . -type l))) \
-  | xargs -n1 -I{} \
-    '$(MAKE)' $(1)-build \
-  & echo $$! \
-    >out/tmp/fswatch.pid
+fswatch-args := --exclude='$(CURDIR)/out' --one-per-batch --recursive
+fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
+fswatch := fswatch $(fswatch-args) $(fswatch-roots)
+
+browsersync-args := --no-online
+browsersync := browser-sync start $(browsersync-args)
+
+define watch-template
+  # NOTE: This will not pick up new symlinks without restarting
+  define $(mode)-start-watch
+    $(fswatch) | xargs -n1 -I{} '$(MAKE)' $(mode)-build & echo $$$$! >out/tmp/$(mode)/fswatch.pid
+  endef
+
+  define $(mode)-stop-watch
+    kill `cat out/tmp/$(mode)/fswatch.pid 2>/dev/null` 2>/dev/null
+  endef
+
+  define $(mode)-delay-stop-watch
+    ( while ps -p $$$${PPID} >/dev/null; do sleep 1; done; $$($(mode)-stop-watch) ) &
+  endef
+
+  define $(mode)-start-sync
+    $(browsersync) --files 'out/$(mode)/**/*' --server out/$(mode)
+  endef
+
+  define $(mode)-watch
+    -$$($(mode)-stop-watch)
+    $$($(mode)-start-watch)
+    $$($(mode)-delay-stop-watch)
+    $$($(mode)-start-sync)
+  endef
+
+  .PHONY: $(mode)-watch
+  $(mode)-watch: $(mode)-build; $$($(mode)-watch)
 endef
 
-define stop-watching
-  kill `cat out/tmp/fswatch.pid 2>/dev/null` 2>/dev/null
-endef
-
-define remember-to-stop-watching
-  ( \
-    while ps -p $${PPID} >/dev/null; do \
-      sleep 1; \
-    done; \
-    $(stop-watching) \
-  ) &
-endef
-
-define start-synchronizing
-  browser-sync start \
-    --no-online \
-    --files 'out/$(1)/**/*' \
-    --server out/$(1)
-endef
-
-
-.PHONY: dev-watch
-dev-watch: dev-build
-	-$(stop-watching)
-	$(call start-watching,dev)
-	$(remember-to-stop-watching)
-	$(call start-synchronizing,dev)
-
-.PHONY: pub-watch
-pub-watch: pub-build
-	-$(stop-watching)
-	$(call start-watching,pub)
-	$(remember-to-stop-watching)
-	$(call start-synchronizing,pub)
+$(foreach mode,dev pub,$(eval $(watch-template)))
 
 
 # ---------------------------------------------------------------------------
@@ -284,8 +274,10 @@ define pages-template
       -o $$@ $$<
   endef
 
+  $(mode)-pages := $(patsubst %.md,out/$(mode)/%.html,$(page-paths))
+
   .PHONY: $(mode)-pages
-  $(mode)-pages: $(patsubst %.md,out/$(mode)/%.html,$(page-paths))
+  $(mode)-pages: $$($(mode)-pages)
 
   out/$(mode)/%.html: %.md $(page-structure) $(page-metadata) | out/$(mode); $$($(mode)-compile-md)
 endef
@@ -314,8 +306,10 @@ define scripts
       $$< $$@
   endef
 
+  $(mode)-scripts := out/$(mode)/_scripts.js
+
   .PHONY: $(mode)-scripts
-  $(mode)-scripts: out/$(mode)/_scripts.js
+  $(mode)-scripts: $$($(mode)-scripts)
 
   out/$(mode)/_scripts.js: main.js $$(script-files) webpack.js | out/$(mode); $$($(mode)-compile-js)
 endef
@@ -428,15 +422,13 @@ image-names = favicon-16.png favicon-32.png favicon-48.png $(filter-out iconshee
 
 
 define images
-  $(mode)-images = out/$(mode)/favicon.ico $$(addprefix out/$(mode)/_images/,$(image-names))
-
-  out/tmp/$(mode)/images.mk: out/tmp/image-names.txt; echo '$(mode)-images: $$($(mode)-images)' >$$@
+  $(mode)-images = out/$(mode)/favicon.ico $$(addprefix out/$(mode)/_images/,$$(image-names))
 
   .PHONY: $(mode)-images
+  out/tmp/$(mode)/images.mk: out/tmp/image-names.txt; echo '$(mode)-images: $$($(mode)-images)' >$$@
   -include out/tmp/$(mode)/images.mk
 
   out/$(mode)/%.ico: %.ico | out/$(mode); cp $$< $$@
-
   out/$(mode)/_images/%: % | out/$(mode)/_images; cp $$< $$@
 endef
 
