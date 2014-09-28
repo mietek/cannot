@@ -258,50 +258,39 @@ vpath %.txt  page-metadata  bower_components/cannot/page-metadata
 vpath %.html page-includes  bower_components/cannot/page-includes
 vpath %.html page-templates bower_components/cannot/page-templates
 
-define compile-md
-  pandoc \
-    --metadata=$(1):$(1) \
-    --metadata=project-name:$(notdir $(CURDIR)) \
-    --metadata=path:$(subst index.html,,$(patsubst out/$(1)/%,%,$@)) \
-    $(foreach metadatum,$(filter %.txt,$^),--metadata=$(patsubst %.txt,%,$(notdir $(metadatum))):"`cat $(metadatum)`") \
-    --from=markdown+auto_identifiers+header_attributes \
-    $(foreach include,$(filter %.html,$(filter-out %/main.html,$^)),--metadata=$(patsubst %.html,%,$(notdir $(include))):"`cat $(include)`") \
-    --to=html5 \
-    --section-divs \
-    --standalone \
-    --template=$(filter %/main.html,$^) \
-    --output $@ \
-    $<
-endef
 
-page-metadata := $(wildcard page-metadata/*.txt)
+page-metadata  := $(wildcard page-metadata/*.txt)
 
-page-files := $(call find-files,pages,*.md)
-page-paths := index.md error.md license/index.md $(subst pages/,,$(page-files))
-
-pages = $(patsubst %.md,out/$(1)/%.html,$(page-paths))
+page-files     := $(call find-files,pages,*.md)
+page-paths     := index.md error.md license/index.md $(subst pages/,,$(page-files))
 
 page-structure := main.html menu-items.html head-extra.html header-extra.html footer-extra.html
 
 
-dev-pages         := $(call pages,dev)
+define pages-template
+  define $(mode)-compile-md
+    [ -d $$(@D) ] || mkdir -p $$(@D)
+    pandoc \
+      --metadata=$(mode):$(mode) \
+      --metadata=project-name:$(notdir $(CURDIR)) \
+      --metadata=path:$(subst index.html,,$(patsubst out/$(mode)/%,%,$$@)) \
+      --from=markdown+auto_identifiers+header_attributes \
+      --to=html5 \
+      --section-divs \
+      --standalone \
+      $$(foreach metadatum,$$(filter %.txt,$$^),--metadata=$$(patsubst %.txt,%,$$(notdir $$(metadatum))):"`cat $$(metadatum)`") \
+      $$(foreach include,$$(filter %.html,$$(filter-out %/main.html,$$^)),--metadata=$$(patsubst %.html,%,$$(notdir $$(include))):"`cat $$(include)`") \
+      --template=$$(filter %/main.html,$$^) \
+      -o $$@ $$<
+  endef
 
-.PHONY: dev-pages
-dev-pages: $(dev-pages)
+  .PHONY: $(mode)-pages
+  $(mode)-pages: $(patsubst %.md,out/$(mode)/%.html,$(page-paths))
 
-out/dev/%.html: %.md $(page-structure) $(page-metadata) | out/dev
-	[ -d $(@D) ] || mkdir -p $(@D)
-	$(call compile-md,dev)
+  out/$(mode)/%.html: %.md $(page-structure) $(page-metadata) | out/$(mode); $$($(mode)-compile-md)
+endef
 
-
-pub-pages         := $(call pages,pub)
-
-.PHONY: pub-pages
-pub-pages: $(pub-pages)
-
-out/pub/%.html: %.md $(page-structure) $(page-metadata) | out/pub
-	[ -d $(@D) ] || mkdir -p $(@D)
-	$(call compile-md,pub)
+$(foreach mode,dev pub,$(eval $(pages-template)))
 
 
 # ---------------------------------------------------------------------------
@@ -316,12 +305,19 @@ dev-webpack-flags := --debug --output-pathinfo
 pub-webpack-flags := --optimize-minimize --optimize-occurence-order
 
 define scripts
-  $(mode)-compile-js = webpack --bail --define $(mode)=$(mode) $$($(mode)-webpack-flags) --config=$$(filter %/webpack.js,$$^)
+  define $(mode)-compile-js
+    webpack \
+      --bail \
+      --define $(mode)=$(mode) \
+      $$($(mode)-webpack-flags) \
+      --config=$$(filter %/webpack.js,$$^) \
+      $$< $$@
+  endef
 
   .PHONY: $(mode)-scripts
   $(mode)-scripts: out/$(mode)/_scripts.js
 
-  out/$(mode)/_scripts.js: main.js $$(script-files) webpack.js | out/$(mode); $$($(mode)-compile-js) $$< $$@
+  out/$(mode)/_scripts.js: main.js $$(script-files) webpack.js | out/$(mode); $$($(mode)-compile-js)
 endef
 
 $(foreach mode,dev pub,$(eval $(scripts)))
