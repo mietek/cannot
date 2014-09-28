@@ -34,7 +34,7 @@
 }
 
 .menu.open li:after {
-  right: $icon-size;
+  right: ln(1);
 }
 
 .menu.open li a {
