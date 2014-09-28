@@ -6,12 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes$if(pub)$,minimal-ui$endif$">
 $if(base-url)$<base href="$if(pub)$$base-url$$else$/$endif$">
 <link rel="canonical" href="$base-url$$path$">
-<script>
-var h = document.querySelector('link[rel="canonical"]').getAttribute('href');
-if (document.location.href != h) $if(pub)$document.location.href = h;$else$console.log(h);$endif$
-</script>
-$else$
-<base href="/">$endif$
+$else$<base href="/">$endif$
 <link rel="icon" type="image/png" href="_images/favicon-48.png" sizes="48x48">
 <link rel="icon" type="image/png" href="_images/favicon-16.png" sizes="16x16">
 <link rel="icon" type="image/png" href="_images/favicon-32.png" sizes="32x32">
