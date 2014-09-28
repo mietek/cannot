@@ -60,7 +60,7 @@ pub-clean:
 # ---------------------------------------------------------------------------
 
 # NOTE: This will not pick up new symlinks without restarting
-start-watching = \
+define start-watching
   fswatch \
     --one-per-batch \
     --recursive \
@@ -70,23 +70,27 @@ start-watching = \
     '$(MAKE)' $(1)-build \
   & echo $$! \
     >out/tmp/fswatch.pid
+endef
 
-stop-watching = \
+define stop-watching
   kill `cat out/tmp/fswatch.pid 2>/dev/null` 2>/dev/null
+endef
 
-remember-to-stop-watching = \
+define remember-to-stop-watching
   ( \
     while ps -p $${PPID} >/dev/null; do \
       sleep 1; \
     done; \
     $(stop-watching) \
   ) &
+endef
 
-start-synchronizing = \
+define start-synchronizing
   browser-sync start \
     --no-online \
     --files 'out/$(1)/**/*' \
     --server out/$(1)
+endef
 
 
 .PHONY: dev-watch
@@ -112,24 +116,26 @@ pub-remote-name = $(shell git config --get cannot.pub.remote)
 pub-remote-url  = $(shell git config --get remote.$(pub-remote-name).url)
 pub-branch      = $(shell git config --get cannot.pub.branch)
 
-init-pub-branch = \
-  git checkout --orphan gh-pages \
-  && git config --add cannot.pub.remote origin \
-  && git config --add cannot.pub.branch gh-pages \
-  && git rm -rf . \
-  && touch .nojekyll \
-  && git add .nojekyll \
-  && git commit -m "Initial commit" \
-  && git push -u origin gh-pages \
-  && git checkout master \
-  && git branch -d gh-pages
+define init-pub-branch
+  git checkout --orphan gh-pages
+  git config --add cannot.pub.remote origin
+  git config --add cannot.pub.branch gh-pages
+  git rm -rf .
+  touch .nojekyll
+  git add .nojekyll
+  git commit -m "Initial commit"
+  git push -u origin gh-pages
+  git checkout master
+  git branch -d gh-pages
+endef
 
-clone-pub-branch = \
-  git clone $(pub-remote-url) -b $(pub-branch) --single-branch out/pub \
-  && find out/pub \
+define clone-pub-branch
+  git clone $(pub-remote-url) -b $(pub-branch) --single-branch out/pub
+  find out/pub \
     | xargs touch -t 0101010101 -am
+endef
 
-push-to-pub-branch = \
+define push-to-pub-branch
   [ -z "`git -C out/pub status --porcelain`" ] \
   || \
   ( \
@@ -138,6 +144,7 @@ push-to-pub-branch = \
     && git -C out/pub push \
     && git fetch $(pub-remote-name) $(pub-branch) \
   )
+endef
 
 
 .PHONY: pub-init
@@ -163,15 +170,16 @@ pub-open:
 dev-advdef-flags := --iter=1
 pub-advdef-flags := --iter=100
 
-optimize-zip = \
+define optimize-zip
   advdef \
     $($(1)-advdef-flags) \
     --shrink-insane \
     --quiet \
     -z \
     $@
+endef
 
-create-zip = \
+define create-zip
   gzip \
     --fast \
     --force \
@@ -179,48 +187,55 @@ create-zip = \
     --no-name \
     --to-stdout \
     $< \
-    >$@ \
-  && $(optimize-zip)
+    >$@
+  $(optimize-zip)
+endef
 
-optimize-png = \
+define optimize-png
   optipng \
     -clobber \
     -o6 \
     -strip all \
     -quiet \
-    $@ \
-  && $(optimize-zip)
+    $@
+  $(optimize-zip)
+endef
 
-optimize-jpg = \
+define optimize-jpg
   jpegoptim \
     -m90 \
     --strip-all \
     --quiet \
     $@
+endef
 
-optimize-css = \
+define optimize-css
   cleancss \
     --s0 \
     --skip-rebase \
     --output $@ \
     $<
+endef
 
-prefix-css = \
+define prefix-css
   autoprefixer \
     --browsers '> 1%, last 2 versions, Firefox ESR' \
     --output $@ \
     $<
+endef
 
-extract-comments = \
+define extract-comments
   grep -Eo '/\* $(1): .* \*/' $< \
   | sed -E 's/^.*: (.*) .*$$/\1/' \
   | sort -u >$@
+endef
 
-extract-resources = \
+define extract-resources
   grep -Eo 'url\($(1)/[^)]+\)' $< \
   | sed -E 's,^.*/(.*)\).*$$,\1,' \
   | sort -u >$@ \
   || touch $@
+endef
 
 
 find-files = $(shell find -L $(1) -type f -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
@@ -243,7 +258,7 @@ vpath %.txt  page-metadata  bower_components/cannot/page-metadata
 vpath %.html page-includes  bower_components/cannot/page-includes
 vpath %.html page-templates bower_components/cannot/page-templates
 
-compile-md = \
+define compile-md
   pandoc \
     --metadata=$(1):$(1) \
     --metadata=project-name:$(notdir $(CURDIR)) \
@@ -257,6 +272,7 @@ compile-md = \
     --template=$(filter %/main.html,$^) \
     --output $@ \
     $<
+endef
 
 page-metadata := $(wildcard page-metadata/*.txt)
 
@@ -297,7 +313,7 @@ vpath %.js scripts bower_components/cannot/scripts
 dev-webpack-flags := --debug --output-pathinfo
 pub-webpack-flags := --optimize-minimize --optimize-occurence-order
 
-compile-js = \
+define compile-js
   webpack \
     --define $(1)=$(1) \
     $($(1)-webpack-flags) \
@@ -305,6 +321,7 @@ compile-js = \
     --config=$(filter %/webpack.js,$^) \
     $< \
     $@
+endef
 
 script-files := main.js $(wildcard bower_components/*/index.js)
 
@@ -329,13 +346,14 @@ out/pub/_scripts.js: main.js $(script-files) webpack.js | out/pub
 
 vpath %.txt image-metadata bower_components/cannot/image-metadata
 
-write-iconsheet-helper = \
-  echo '$$icon-shapes: ' >$@ \
-  && cat $(filter %/icon-shapes.txt,$^) >>$@ \
-  && echo ';' >>$@ \
-  && echo '$$icon-colors: ' >>$@ \
-  && cat $(filter %/icon-colors.txt,$^) >>$@ \
-  && echo ';' >>$@
+define write-iconsheet-helper
+  echo '$$icon-shapes: ' >$@
+  cat $(filter %/icon-shapes.txt,$^) >>$@
+  echo ';' >>$@
+  echo '$$icon-colors: ' >>$@
+  cat $(filter %/icon-colors.txt,$^) >>$@
+  echo ';' >>$@
+endef
 
 
 out/tmp/dev/_iconsheet.scss: icon-shapes.txt icon-colors.txt | out/tmp/dev
@@ -354,7 +372,7 @@ common-helper-files := $(call find-files,$(common-helper-roots),_*.sass _*.scss)
 helper-roots = out/tmp/$(1) $(common-helper-roots)
 helper-files = out/tmp/$(1)/_iconsheet.scss $(common-helper-files)
 
-compile-sass = \
+define compile-sass
   sass \
     --line-numbers \
     --sourcemap=none \
@@ -363,6 +381,7 @@ compile-sass = \
     $(addprefix --load-path ,$(helper-roots)) \
     $< \
     $@
+endef
 
 
 .PHONY: dev-stylesheets
@@ -426,13 +445,15 @@ image-names = favicon-16.png favicon-32.png favicon-48.png $(filter-out iconshee
 dev-images  = out/dev/favicon.ico $(addprefix out/dev/_images/,$(image-names))
 pub-images  = out/pub/favicon.ico $(addprefix out/pub/_images/,$(image-names) $(addsuffix .gz,$(filter %.svg,$(image-names))))
 
-write-image-target = \
+define write-image-target
   echo '$(1)-images: $$($(1)-images)' >>$@
+endef
 
-write-image-targets = \
-  echo >$@ \
-  && $(call write-image-target,dev) \
-  && $(call write-image-target,pub)
+define write-image-targets
+  echo >$@
+  $(call write-image-target,dev)
+  $(call write-image-target,pub)
+endef
 
 
 .PHONY: dev-images
@@ -479,22 +500,26 @@ icon-colors = $(shell cat out/tmp/$(1)/icon-colors.txt)
 icon-cell-files   = $(patsubst %,icon-$${shape}-%$(2).png,$(icon-colors))
 icon-column-files = $(foreach shape,$(icon-shapes),out/tmp/$(1)/icon-column-$(shape)$(2).png)
 
-compile-icon-column = \
+define compile-icon-column
   convert $^ -append $@
+endef
 
-compile-iconsheet = \
-  convert $^ +append $@ && $(optimize-png)
+define compile-iconsheet
+  convert $^ +append $@
+  $(optimize-png)
+endef
 
-write-icon-column-target = \
-  echo "out/tmp/$(1)/icon-column-$${shape}$(2).png: $(call icon-cell-files,$(1),$(2)) | out/tmp/$(1)" >>$@ \
-  && echo '	$$(call compile-icon-column,$(1),$(2))' >>$@
+define write-icon-column-targets
+  for shape in $(icon-shapes); do \
+    echo "out/tmp/$(1)/icon-column-$${shape}$(2).png: $(call icon-cell-files,$(1),$(2)) | out/tmp/$(1)" >>$@; \
+    echo '	$$(call compile-icon-column,$(1),$(2))' >>$@; \
+  done
+endef
 
-write-icon-column-targets = \
-  for shape in $(icon-shapes); do $(write-icon-column-target); done
-
-write-iconsheet-target = \
-  echo 'out/$(1)/_images/iconsheet$(2).png: $(call icon-column-files,$(1),$(2)) | out/$(1)/_images' >>$@ \
-  && echo '	$$(call compile-iconsheet,$(1),$(2))' >>$@
+define write-iconsheet-target
+  echo 'out/$(1)/_images/iconsheet$(2).png: $(call icon-column-files,$(1),$(2)) | out/$(1)/_images' >>$@
+  echo '	$$(call compile-iconsheet,$(1),$(2))' >>$@
+endef
 
 
 .PHONY: dev-iconsheet
@@ -543,13 +568,15 @@ font-names = $(shell cat out/tmp/font-names.txt)
 dev-fonts  = $(addprefix out/dev/_fonts/,$(font-names))
 pub-fonts  = $(addprefix out/pub/_fonts/,$(font-names))
 
-write-font-target = \
+define write-font-target
   echo '$(1)-fonts: $$($(1)-fonts)' >>$@
+endef
 
-write-font-targets = \
-  echo >$@ \
-  && $(call write-font-target,dev) \
-  && $(call write-font-target,pub)
+define write-font-targets
+  echo >$@
+  $(call write-font-target,dev)
+  $(call write-font-target,pub)
+endef
 
 
 .PHONY: dev-fonts
