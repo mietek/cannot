@@ -4,9 +4,8 @@
 <meta charset="utf-8">
 <title>$if(project-title)$$project-title$$endif$$if(title)$ — $title$$endif$</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes$if(pub)$,minimal-ui$endif$">
-$if(base-url)$<base href="$if(pub)$$base-url$$else$/$endif$">
-<link rel="canonical" href="$base-url$$path$">
-$else$<base href="/">$endif$
+<base href="/$if(pub)$$if(base-path-prefix)$$base-path-prefix$$endif$$endif$">
+$if(canonical-url)$<link rel="canonical" href="$canonical-url$$path$">$endif$
 <link rel="icon" type="image/png" href="_images/favicon-48.png" sizes="48x48">
 <link rel="icon" type="image/png" href="_images/favicon-16.png" sizes="16x16">
 <link rel="icon" type="image/png" href="_images/favicon-32.png" sizes="32x32">

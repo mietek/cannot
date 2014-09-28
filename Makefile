@@ -153,7 +153,7 @@ pub-push: pub-build
 
 .PHONY: pub-open
 pub-open:
-	open `cat page-metadata/base-url.txt`
+	open `cat page-metadata/canonical-url.txt`
 
 
 # ---------------------------------------------------------------------------
@@ -258,10 +258,7 @@ compile-md = \
     --output $@ \
     $<
 
-local-page-metadata  = $(wildcard page-metadata/*.txt)
-global-page-metadata = $(filter-out $(addprefix %/,$(local-page-metadata)),$(wildcard bower_components/cannot/page-metadata/*.txt))
-
-page-metadata = $(local-page-metadata) $(global-page-metadata)
+page-metadata := $(wildcard page-metadata/*.txt)
 
 page-files := $(call find-files,pages,*.md)
 page-paths := index.md error.md license/index.md $(subst pages/,,$(page-files))
@@ -271,24 +268,22 @@ pages = $(patsubst %.md,out/$(1)/%.html,$(page-paths))
 page-structure := main.html menu-items.html head-extra.html header-extra.html footer-extra.html
 
 
-dev-page-metadata := $(call page-metadata,dev)
 dev-pages         := $(call pages,dev)
 
 .PHONY: dev-pages
 dev-pages: $(dev-pages)
 
-out/dev/%.html: %.md $(page-structure) $(dev-page-metadata) | out/dev
+out/dev/%.html: %.md $(page-structure) $(page-metadata) | out/dev
 	[ -d $(@D) ] || mkdir -p $(@D)
 	$(call compile-md,dev)
 
 
-pub-page-metadata := $(call page-metadata,pub)
 pub-pages         := $(call pages,pub)
 
 .PHONY: pub-pages
 pub-pages: $(pub-pages)
 
-out/pub/%.html: %.md $(page-structure) $(pub-page-metadata) | out/pub
+out/pub/%.html: %.md $(page-structure) $(page-metadata) | out/pub
 	[ -d $(@D) ] || mkdir -p $(@D)
 	$(call compile-md,pub)
 
