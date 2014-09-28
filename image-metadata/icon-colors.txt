@@ -1,12 +1,8 @@
 blue
-blue9
-blueC
 gray3
 gray6
 gray9
 grayC
 orange
 violet
-violet9
-violetC
 white
