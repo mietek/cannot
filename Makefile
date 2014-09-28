@@ -310,34 +310,21 @@ out/pub/%.html: %.md $(page-structure) $(page-metadata) | out/pub
 
 vpath %.js scripts bower_components/cannot/scripts
 
+script-files := main.js $(wildcard bower_components/*/index.js)
+
 dev-webpack-flags := --debug --output-pathinfo
 pub-webpack-flags := --optimize-minimize --optimize-occurence-order
 
-define compile-js
-  webpack \
-    --define $(1)=$(1) \
-    $($(1)-webpack-flags) \
-    --bail \
-    --config=$(filter %/webpack.js,$^) \
-    $< \
-    $@
+define scripts
+  $(mode)-compile-js = webpack --bail --define $(mode)=$(mode) $$($(mode)-webpack-flags) --config=$$(filter %/webpack.js,$$^)
+
+  .PHONY: $(mode)-scripts
+  $(mode)-scripts: out/$(mode)/_scripts.js
+
+  out/$(mode)/_scripts.js: main.js $$(script-files) webpack.js | out/$(mode); $$($(mode)-compile-js) $$< $$@
 endef
 
-script-files := main.js $(wildcard bower_components/*/index.js)
-
-
-.PHONY: dev-scripts
-dev-scripts: out/dev/_scripts.js
-
-out/dev/_scripts.js: main.js $(script-files) webpack.js | out/dev
-	$(call compile-js,dev)
-
-
-.PHONY: pub-scripts
-pub-scripts: out/pub/_scripts.js.gz
-
-out/pub/_scripts.js: main.js $(script-files) webpack.js | out/pub
-	$(call compile-js,pub)
+$(foreach mode,dev pub,$(eval $(scripts)))
 
 
 # ---------------------------------------------------------------------------
@@ -444,15 +431,6 @@ out/tmp/image-names.txt: out/tmp/dev/stylesheets.css | out/tmp
 image-names = favicon-16.png favicon-32.png favicon-48.png $(filter-out iconsheet%,$(shell cat out/tmp/image-names.txt))
 
 
-out/pub/_images/%.jpg: %.jpg | out/pub/_images
-	cp $< $@
-	$(optimize-jpg)
-
-out/pub/_images/%.png: %.png | out/pub/_images
-	cp $< $@
-	$(call optimize-png,pub)
-
-
 define images
   $(mode)-images = out/$(mode)/favicon.ico $$(addprefix out/$(mode)/_images/,$(image-names))
 
@@ -467,6 +445,15 @@ define images
 endef
 
 $(foreach mode,dev pub,$(eval $(images)))
+
+
+out/pub/_images/%.jpg: %.jpg | out/pub/_images
+	cp $< $@
+	$(optimize-jpg)
+
+out/pub/_images/%.png: %.png | out/pub/_images
+	cp $< $@
+	$(call optimize-png,pub)
 
 
 # ---------------------------------------------------------------------------
