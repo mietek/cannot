@@ -145,7 +145,7 @@ pub-init:
 	$(init-pub-branch)
 
 out/pub:
-	$(clone-pub-branch)
+	$(clone-pub-branch) || mkdir -p out/pub
 
 .PHONY: pub-push
 pub-push: pub-build
