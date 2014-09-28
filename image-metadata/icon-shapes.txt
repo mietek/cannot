@@ -1,7 +1,9 @@
 backslash
 block
-caret
 closed
 dash
+down
 open
+right
 slash
+up
