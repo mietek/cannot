@@ -11,8 +11,17 @@ build: dev-build pub-build
 .PHONY: dev
 dev: dev-watch
 
+.PHONY: watch
+watch: dev-watch
+
 .PHONY: pub
 pub: pub-push
+
+.PHONY: push
+push: pub-push
+
+.PHONY: open
+open: pub-open
 
 .PHONY: clean
 clean:
@@ -141,6 +150,10 @@ out/pub:
 .PHONY: pub-push
 pub-push: pub-build
 	$(push-to-pub-branch)
+
+.PHONY: pub-open
+pub-open:
+	open `cat page-metadata/base-url.txt`
 
 
 # ---------------------------------------------------------------------------
