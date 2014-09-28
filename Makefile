@@ -5,148 +5,85 @@
 .DELETE_ON_ERROR :
 
 .PHONY : all build clean dev watch
+all    : dev-watch
+build  : dev-build pub-build
+clean  : ; rm -rf out
+dev    : dev-watch
+watch  : dev-watch
 
-all   : dev-watch
-build : dev-build pub-build
-clean : ; rm -rf out
-dev   : dev-watch
-watch : dev-watch
+out out/tmp : ; mkdir -p $@
 
-define goal-template
-  .PHONY : $(addprefix $(mode)-,build clean)
-
-  $(mode)-build : $(addprefix $(mode)-,pages scripts stylesheets images iconsheet fonts)
+define cannot-macro
+  .PHONY        : $(mode)-build $(mode)-clean
+  $(mode)-build : $(mode)-pages $(mode)-scripts $(mode)-stylesheets $(mode)-iconsheet $(mode)-images $(mode)-fonts
   $(mode)-clean : ; rm -rf out/$(mode)
-endef
 
-$(foreach mode,dev pub,$(eval $(goal-template)))
+  out/$(mode) out/$(mode)/_images out/$(mode)/_fonts) out/tmp/$(mode) : ; mkdir -p $$@
+endef
+$(foreach mode,dev pub,$(eval $(cannot-macro)))
+
+
+# ---------------------------------------------------------------------------
+# Utility
+# ---------------------------------------------------------------------------
+
+find-files = $(shell find -L $(1) -type f -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
+find-dirs  = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
 
 
 # ---------------------------------------------------------------------------
 # Watching
 # ---------------------------------------------------------------------------
 
-fswatch-args     := --exclude='$(CURDIR)/out' --one-per-batch --recursive
-fswatch-roots    := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
-fswatch          := fswatch $(fswatch-args) $(fswatch-roots)
+fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
 
-browsersync-args := --no-online
-browsersync      := browser-sync start $(browsersync-args)
-
-define watch-template
+define watch-macro
   # NOTE: This will not pick up new symlinks without restarting
-  $(mode)-start-watch := \
-    $(fswatch) | xargs -n1 -I{} '$(MAKE)' $(mode)-build & echo $$$$! >out/tmp/$(mode)/fswatch.pid
+  $(mode)-start-watch      := fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) | xargs -n1 -I{} '$(MAKE)' $(mode)-build & echo $$$$! >out/tmp/$(mode)/fswatch.pid
+  $(mode)-stop-watch       := [ -f out/tmp/$(mode)/fswatch.pid ] && kill `cat out/tmp/$(mode)/fswatch.pid` 2>/dev/null; rm -f out/tmp/$(mode)/fswatch.pid
+  $(mode)-delay-stop-watch := ( while ps -p $$$${PPID} >/dev/null; do sleep 1; done; $$($(mode)-stop-watch) ) &
+  $(mode)-start-sync       := browser-sync start --no-online --files 'out/$(mode)/**/*' --server out/$(mode)
 
-  $(mode)-stop-watch := \
-    kill `cat out/tmp/$(mode)/fswatch.pid 2>/dev/null` 2>/dev/null
-
-  $(mode)-delay-stop-watch := \
-    ( while ps -p $$$${PPID} >/dev/null; do sleep 1; done; $$($(mode)-stop-watch) ) &
-
-  $(mode)-start-sync := \
-    $(browsersync) --files 'out/$(mode)/**/*' --server out/$(mode)
-
-  define do-$(mode)-watch
-    -$$($(mode)-stop-watch)
+  define $(mode)-watch
+    $$($(mode)-stop-watch)
     $$($(mode)-start-watch)
     $$($(mode)-delay-stop-watch)
     $$($(mode)-start-sync)
   endef
 
-  .PHONY: $(mode)-watch
-  $(mode)-watch: $(mode)-build; $$(do-$(mode)-watch)
+  .PHONY        : $(mode)-watch
+  $(mode)-watch : $(mode)-build ; $$($(mode)-watch)
 endef
-
-$(foreach mode,dev pub,$(eval $(watch-template)))
-
-
+$(foreach mode,dev pub,$(eval $(watch-macro)))
 
 
 # ---------------------------------------------------------------------------
-# Utilities
+# Optimization
 # ---------------------------------------------------------------------------
 
 dev-advdef-flags := --iter=1
 pub-advdef-flags := --iter=100
 
-define optimize-zip
-  advdef \
-    $($(1)-advdef-flags) \
-    --shrink-insane \
-    --quiet \
-    -z \
-    $@
+define optimize-macro
+  $(mode)-optimize-zip = advdef $($(mode)-advdef-flags) --shrink-insane --quiet -z $$@
+
+  define $(mode)-create-zip
+    gzip --fast --force --keep --no-name --to-stdout $$< >$$@
+    $$($(mode)-optimize-zip)
+  endef
+
+  define $(mode)-optimize-png
+    optipng -clobber -o6 -strip all -quiet $$@
+    $$($(mode)-optimize-zip)
+  endef
+
+  out/$(mode)/%.gz : out/$(mode)/% | out/$(mode) ; $$($(mode)-create-zip)
 endef
+$(foreach mode,dev pub,$(eval $(optimize-macro)))
 
-define create-zip
-  gzip \
-    --fast \
-    --force \
-    --keep \
-    --no-name \
-    --to-stdout \
-    $< \
-    >$@
-  $(optimize-zip)
-endef
-
-define optimize-png
-  optipng \
-    -clobber \
-    -o6 \
-    -strip all \
-    -quiet \
-    $@
-  $(optimize-zip)
-endef
-
-define optimize-jpg
-  jpegoptim \
-    -m90 \
-    --strip-all \
-    --quiet \
-    $@
-endef
-
-define optimize-css
-  cleancss \
-    --s0 \
-    --skip-rebase \
-    --output $@ \
-    $<
-endef
-
-define prefix-css
-  autoprefixer \
-    --browsers '> 1%, last 2 versions, Firefox ESR' \
-    --output $@ \
-    $<
-endef
-
-define extract-comments
-  grep -Eo '/\* $(1): .* \*/' $< \
-  | sed -E 's/^.*: (.*) .*$$/\1/' \
-  | sort -u >$@
-endef
-
-define extract-resources
-  grep -Eo 'url\($(1)/[^)]+\)' $< \
-  | sed -E 's,^.*/(.*)\).*$$,\1,' \
-  | sort -u >$@ \
-  || touch $@
-endef
-
-
-find-files = $(shell find -L $(1) -type f -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
-find-dirs  = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
-
-
-out/pub/%.gz: out/pub/%
-	$(call create-zip,pub)
-
-out/dev out/dev/_fonts out/dev/_images out/pub out/pub/_fonts out/pub/_images out/tmp out/tmp/dev out/tmp/pub:
-	mkdir -p $@
+optimize-jpg = jpegoptim -m90 --strip-all --quiet $@
+optimize-css = cleancss --s0 --skip-rebase --output $@ $<
+prefix-css   = autoprefixer --browsers '> 1%, last 2 versions, Firefox ESR' --output $@ $<
 
 
 # ---------------------------------------------------------------------------
@@ -158,41 +95,32 @@ vpath %.txt  page-metadata  bower_components/cannot/page-metadata
 vpath %.html page-includes  bower_components/cannot/page-includes
 vpath %.html page-templates bower_components/cannot/page-templates
 
+page-template := main.html
+page-includes := menu-items.html head-extra.html header-extra.html footer-extra.html
+page-metadata := $(wildcard page-metadata/*.txt)
+pages         := $(sort index.md error.md license/index.md $(subst pages/,,$(call find-files,pages,*.md)))
 
-page-metadata  := $(wildcard page-metadata/*.txt)
+define pages-macro
+  $(mode)-pages := $(patsubst %.md,out/$(mode)/%.html,$(pages))
 
-page-files     := $(call find-files,pages,*.md)
-page-paths     := index.md error.md license/index.md $(subst pages/,,$(page-files))
-
-page-structure := main.html menu-items.html head-extra.html header-extra.html footer-extra.html
-
-
-define pages-template
   define $(mode)-compile-md
     [ -d $$(@D) ] || mkdir -p $$(@D)
     pandoc \
+      --from=markdown+auto_identifiers+header_attributes --to=html5 --section-divs --standalone \
       --metadata=$(mode):$(mode) \
       --metadata=project-name:$(notdir $(CURDIR)) \
       --metadata=path:$(subst index.html,,$(patsubst out/$(mode)/%,%,$$@)) \
-      --from=markdown+auto_identifiers+header_attributes \
-      --to=html5 \
-      --section-divs \
-      --standalone \
       $$(foreach metadatum,$$(filter %.txt,$$^),--metadata=$$(patsubst %.txt,%,$$(notdir $$(metadatum))):"`cat $$(metadatum)`") \
-      $$(foreach include,$$(filter %.html,$$(filter-out %/main.html,$$^)),--metadata=$$(patsubst %.html,%,$$(notdir $$(include))):"`cat $$(include)`") \
-      --template=$$(filter %/main.html,$$^) \
+      $$(foreach include,$$(filter %.html,$$(filter-out %/$(page-template),$$^)),--metadata=$$(patsubst %.html,%,$$(notdir $$(include))):"`cat $$(include)`") \
+      --template=$$(filter %/$(page-template),$$^) \
       -o $$@ $$<
   endef
 
-  $(mode)-pages := $(patsubst %.md,out/$(mode)/%.html,$(page-paths))
-
-  .PHONY: $(mode)-pages
-  $(mode)-pages: $$($(mode)-pages)
-
-  out/$(mode)/%.html: %.md $(page-structure) $(page-metadata) | out/$(mode); $$($(mode)-compile-md)
+  .PHONY            : $(mode)-pages
+  $(mode)-pages     : $$($(mode)-pages)
+  $$($(mode)-pages) : out/$(mode)/%.html : %.md $(page-metadata) $(page-includes) $(page-template) | out/$(mode) ; $$($(mode)-compile-md)
 endef
-
-$(foreach mode,dev pub,$(eval $(pages-template)))
+$(foreach mode,dev pub,$(eval $(pages-macro)))
 
 
 # ---------------------------------------------------------------------------
@@ -201,30 +129,24 @@ $(foreach mode,dev pub,$(eval $(pages-template)))
 
 vpath %.js scripts bower_components/cannot/scripts
 
-script-files := main.js $(wildcard bower_components/*/index.js)
+scripts := main.js $(wildcard bower_components/*/index.js)
 
 dev-webpack-flags := --debug --output-pathinfo
 pub-webpack-flags := --optimize-minimize --optimize-occurence-order
+webpack-config    := webpack.js
 
-define scripts
-  define $(mode)-compile-js
-    webpack \
-      --bail \
-      --define $(mode)=$(mode) \
-      $$($(mode)-webpack-flags) \
-      --config=$$(filter %/webpack.js,$$^) \
-      $$< $$@
-  endef
-
+define scripts-macro
   $(mode)-scripts := out/$(mode)/_scripts.js
 
-  .PHONY: $(mode)-scripts
-  $(mode)-scripts: $$($(mode)-scripts)
+  define $(mode)-compile-js
+    webpack --bail --define $(mode)=$(mode) $$($(mode)-webpack-flags) --config=$$(filter %/$(webpack-config),$$^) $$< $$@
+  endef
 
-  out/$(mode)/_scripts.js: main.js $$(script-files) webpack.js | out/$(mode); $$($(mode)-compile-js)
+  .PHONY              : $(mode)-scripts
+  $(mode)-scripts     : $$($(mode)-scripts)
+  $$($(mode)-scripts) : $$(scripts) $(webpack-config) | out/$(mode) ; $$($(mode)-compile-js)
 endef
-
-$(foreach mode,dev pub,$(eval $(scripts)))
+$(foreach mode,dev pub,$(eval $(scripts-macro)))
 
 
 # ---------------------------------------------------------------------------
@@ -284,6 +206,9 @@ out/dev/_stylesheets.css: out/tmp/dev/stylesheets.css | out/dev
 # ---------------------------------------------------------------------------
 # Iconsheet helper (pub)
 # ---------------------------------------------------------------------------
+
+extract-comments  = grep -Eo '/\* $(1): .* \*/' $< | sed -E 's/^.*: (.*) .*$$/\1/' | sort -u >$@ || touch $@
+extract-resources = grep -Eo 'url\($(1)/[^)]+\)' $< | sed -E 's,^.*/(.*)\).*$$,\1,' | sort -u >$@ || touch $@
 
 out/tmp/pub/icon-shapes.txt: out/tmp/dev/stylesheets.css | out/tmp/pub
 	$(call extract-comments,icon-shape)
@@ -351,7 +276,7 @@ out/pub/_images/%.jpg: %.jpg | out/pub/_images
 
 out/pub/_images/%.png: %.png | out/pub/_images
 	cp $< $@
-	$(call optimize-png,pub)
+	$(pub-optimize-png)
 
 
 # ---------------------------------------------------------------------------
@@ -370,7 +295,7 @@ endef
 
 define compile-iconsheet
   convert $^ +append $@
-  $(optimize-png)
+  $($(1)-optimize-png)
 endef
 
 define write-icon-column-targets
