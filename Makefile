@@ -104,19 +104,19 @@ pub-remote-url  = $(shell git config --get remote.$(pub-remote-name).url)
 pub-branch      = $(shell git config --get cannot.pub.branch)
 
 init-pub-branch = \
-  git checkout --orphan -b gh-pages \
+  git checkout --orphan gh-pages \
   && git config --add cannot.pub.remote origin \
   && git config --add cannot.pub.branch gh-pages \
   && git rm -rf . \
   && touch .nojekyll \
-  && git add . \
+  && git add .nojekyll \
   && git commit -m "Initial commit" \
   && git push -u origin gh-pages \
   && git checkout master \
   && git branch -d gh-pages
 
 clone-pub-branch = \
-  git clone $(pub-git-remote-url) --branch $(pub-git-branch) out/pub \
+  git clone $(pub-remote-url) --branch $(pub-branch) out/pub \
   && find out/pub \
     | xargs touch -t 0101010101 -am
 
@@ -127,7 +127,7 @@ push-to-pub-branch = \
     git -C out/pub add -A . \
     && git -C out/pub commit -m "Make" \
     && git -C out/pub push \
-    && git fetch $(pub-git-remote-name) $(pub-git-branch) \
+    && git fetch $(pub-remote-name) $(pub-branch) \
   )
 
 
