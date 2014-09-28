@@ -25,27 +25,6 @@ header
   right: 0
 
 
-header .wrapper > *
-  padding-left: ln(1)
-  padding-right: ln(1)
-
-header .wrapper nav
-  padding-left: 0
-  padding-right: 0
-
-main
-  padding-left: ln(1)
-  padding-right: ln(1)
-
-footer .wrapper > *
-  padding-left: ln(1)
-  padding-right: ln(1)
-
-footer .wrapper nav
-  padding-left: 0
-  padding-right: 0
-
-
 nav h1 a
   background-position: ln(1) center
   padding-left: ln(1)
@@ -56,6 +35,33 @@ nav h1 a
 
 footer nav h1 a
   @include rule-after
+
+
+header aside
+  margin-left: ln(1)
+
+main section.level1 > *
+  padding-left: ln(1)
+  padding-right: ln(1)
+
+main section.level2
+  padding-left: 0
+  padding-right: 0
+
+main section.level2 > *
+  padding-left: ln(1)
+  padding-right: ln(1)
+
+main section.footnotes > *
+  padding-left: ln(1)
+  padding-right: ln(1)
+
+main nav
+  padding-left: 0 !important
+  padding-right: 0 !important
+
+footer aside
+  margin-left: ln(1)
 
 
 @import "layout/small"

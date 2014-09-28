@@ -129,7 +129,15 @@ main h3
   margin-bottom: ln(1/2)
 
 section.level3
-  margin-top: ln(2)
+  margin-top: ln(3)
+  position: relative
+  &:before
+    border-top: 1px $rule-color solid
+    position: absolute
+    top: ln(-1/2) - 1
+    left: 0
+    right: 0
+    content: ""
 
 main h4
   color: $accent-color
