@@ -15,8 +15,8 @@ Do you need a website?  Say hello@mietek.io
 
 Examples:
 
+- [mietek.github.io](https://github.com/mietek/mietek.github.io)
 - [least-fixed-website](https://github.com/mietek/least-fixed-website)
-- [mietek-website](https://github.com/mietek/mietek-website)
 - [motoworks-website](https://github.com/mietek/motoworks-website)
 
 
