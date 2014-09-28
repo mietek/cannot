@@ -565,30 +565,17 @@ out/tmp/font-names.txt: out/tmp/dev/stylesheets.css
 	$(call extract-resources,_fonts)
 
 font-names = $(shell cat out/tmp/font-names.txt)
-dev-fonts  = $(addprefix out/dev/_fonts/,$(font-names))
-pub-fonts  = $(addprefix out/pub/_fonts/,$(font-names))
 
-define write-font-target
-  echo '$(1)-fonts: $$($(1)-fonts)' >>$@
+
+define fonts
+  $(mode)-fonts = $$(addprefix out/$(mode)/_fonts/,$$(font-names))
+
+  out/tmp/$(mode)/fonts.mk: out/tmp/font-names.txt; echo '$(mode)-fonts: $$($(mode)-fonts)' >$$@
+
+  .PHONY: $(mode)-fonts
+  -include out/tmp/$(mode)/fonts.mk
+
+  out/$(mode)/_fonts/%.woff: %.woff | out/$(mode)/_fonts; cp $$< $$@
 endef
 
-define write-font-targets
-  echo >$@
-  $(call write-font-target,dev)
-  $(call write-font-target,pub)
-endef
-
-
-.PHONY: dev-fonts
-.PHONY: pub-fonts
-out/tmp/fonts.mk: out/tmp/font-names.txt
-	$(write-font-targets)
-
--include out/tmp/fonts.mk
-
-
-out/dev/_fonts/%.woff: %.woff | out/dev/_fonts
-	cp $< $@
-
-out/pub/_fonts/%.woff: %.woff | out/pub/_fonts
-	cp $< $@
+$(foreach mode,dev pub,$(eval $(fonts)))
