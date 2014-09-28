@@ -1,0 +1,59 @@
+@import "cannot/icon"
+@import "cannot/images"
+@import "cannot/animation"
+@import "cannot/glow"
+@import "cannot/link"
+@import "cannot/link-animation"
+
+
+$debug: false !default
+
+$font-size-small: 18 !default
+$font-size-large: 24 !default
+
+$line-height-small: 24 !default
+$line-height-large: 32 !default
+
+$layout-width-small:   600px !default
+$layout-width-medium:  800px !default
+$layout-width-large:  1000px !default
+
+
+@media (max-width: $layout-width-small)
+  @import "cannot/layout/small"
+
+@media (min-width: $layout-width-small + 1) and (max-width: $layout-width-medium)
+  @import "cannot/layout/medium"
+
+@media (min-width: $layout-width-medium + 1)
+  @import "cannot/layout/large"
+
+
+*, *:before, *:after
+  box-sizing: border-box
+
+
+html
+  background-color: $background-color
+  color: $body-color
+  height: 100%
+
+body
+  height: 100%
+  text-rendering: optimizeLegibility
+  text-size-adjust: 100%
+
+header.hero
+  min-height: 100%
+
+main
+  min-height: 100%
+
+main.hero
+  min-height: 0
+
+
+.wrapper
+  margin-left: auto
+  margin-right: auto
+  max-width: $layout-width-large
