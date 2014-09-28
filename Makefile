@@ -2,89 +2,52 @@
 # Cannot
 # ---------------------------------------------------------------------------
 
-.PHONY: all
-all: dev-watch
+.DELETE_ON_ERROR :
 
-.PHONY: build
-build: dev-build pub-build
+.PHONY : all build clean dev watch
 
-.PHONY: dev
-dev: dev-watch
+all   : dev-watch
+build : dev-build pub-build
+clean : ; rm -rf out
+dev   : dev-watch
+watch : dev-watch
 
-.PHONY: watch
-watch: dev-watch
+define goal-template
+  .PHONY : $(addprefix $(mode)-,build clean)
 
-.PHONY: pub
-pub: pub-push
+  $(mode)-build : $(addprefix $(mode)-,pages scripts stylesheets images iconsheet fonts)
+  $(mode)-clean : ; rm -rf out/$(mode)
+endef
 
-.PHONY: push
-push: pub-push
-
-.PHONY: open
-open: pub-open
-
-.PHONY: clean
-clean:
-	rm -rf out
-
-
-.PHONY: dev-build
-dev-build: dev-pages dev-scripts dev-stylesheets dev-images dev-iconsheet dev-fonts
-
-.PHONY: dev-clean
-dev-clean:
-	rm -rf out/dev
-
-
-.PHONY: pub-build
-pub-build:
-	$(MAKE) pub-build-1
-	$(MAKE) pub-build-2
-
-.PHONY: pub-build-1
-pub-build-1: out/pub
-
-.PHONY: pub-build-2
-pub-build-2: pub-pages pub-scripts pub-stylesheets pub-images pub-iconsheet pub-fonts
-
-.PHONY: pub-clean
-pub-clean:
-	rm -rf out/pub
-
-
-.DELETE_ON_ERROR:
+$(foreach mode,dev pub,$(eval $(goal-template)))
 
 
 # ---------------------------------------------------------------------------
 # Watching
 # ---------------------------------------------------------------------------
 
-fswatch-args := --exclude='$(CURDIR)/out' --one-per-batch --recursive
-fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
-fswatch := fswatch $(fswatch-args) $(fswatch-roots)
+fswatch-args     := --exclude='$(CURDIR)/out' --one-per-batch --recursive
+fswatch-roots    := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
+fswatch          := fswatch $(fswatch-args) $(fswatch-roots)
 
 browsersync-args := --no-online
-browsersync := browser-sync start $(browsersync-args)
+browsersync      := browser-sync start $(browsersync-args)
 
 define watch-template
   # NOTE: This will not pick up new symlinks without restarting
-  define $(mode)-start-watch
+  $(mode)-start-watch := \
     $(fswatch) | xargs -n1 -I{} '$(MAKE)' $(mode)-build & echo $$$$! >out/tmp/$(mode)/fswatch.pid
-  endef
 
-  define $(mode)-stop-watch
+  $(mode)-stop-watch := \
     kill `cat out/tmp/$(mode)/fswatch.pid 2>/dev/null` 2>/dev/null
-  endef
 
-  define $(mode)-delay-stop-watch
+  $(mode)-delay-stop-watch := \
     ( while ps -p $$$${PPID} >/dev/null; do sleep 1; done; $$($(mode)-stop-watch) ) &
-  endef
 
-  define $(mode)-start-sync
+  $(mode)-start-sync := \
     $(browsersync) --files 'out/$(mode)/**/*' --server out/$(mode)
-  endef
 
-  define $(mode)-watch
+  define do-$(mode)-watch
     -$$($(mode)-stop-watch)
     $$($(mode)-start-watch)
     $$($(mode)-delay-stop-watch)
@@ -92,65 +55,12 @@ define watch-template
   endef
 
   .PHONY: $(mode)-watch
-  $(mode)-watch: $(mode)-build; $$($(mode)-watch)
+  $(mode)-watch: $(mode)-build; $$(do-$(mode)-watch)
 endef
 
 $(foreach mode,dev pub,$(eval $(watch-template)))
 
 
-# ---------------------------------------------------------------------------
-# Publishing
-# ---------------------------------------------------------------------------
-
-pub-remote-name = $(shell git config --get cannot.pub.remote)
-pub-remote-url  = $(shell git config --get remote.$(pub-remote-name).url)
-pub-branch      = $(shell git config --get cannot.pub.branch)
-
-define init-pub-branch
-  git checkout --orphan gh-pages
-  git config --add cannot.pub.remote origin
-  git config --add cannot.pub.branch gh-pages
-  git rm -rf .
-  touch .nojekyll
-  git add .nojekyll
-  git commit -m "Initial commit"
-  git push -u origin gh-pages
-  git checkout master
-  git branch -d gh-pages
-endef
-
-define clone-pub-branch
-  git clone $(pub-remote-url) -b $(pub-branch) --single-branch out/pub
-  find out/pub \
-    | xargs touch -t 0101010101 -am
-endef
-
-define push-to-pub-branch
-  [ -z "`git -C out/pub status --porcelain`" ] \
-  || \
-  ( \
-    git -C out/pub add -A . \
-    && git -C out/pub commit -m "Make" \
-    && git -C out/pub push \
-    && git fetch $(pub-remote-name) $(pub-branch) \
-  )
-endef
-
-
-.PHONY: pub-init
-pub-init:
-	$(init-pub-branch)
-
-out/pub:
-	$(clone-pub-branch) || mkdir -p out/pub
-
-.PHONY: pub-push
-pub-push: pub-build
-	$(push-to-pub-branch)
-
-.PHONY: pub-open
-pub-open:
-	open `cat page-metadata/canonical-url.txt`
 
 
 # ---------------------------------------------------------------------------
@@ -235,7 +145,7 @@ find-dirs  = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -nam
 out/pub/%.gz: out/pub/%
 	$(call create-zip,pub)
 
-out/dev out/dev/_fonts out/dev/_images out/pub/_fonts out/pub/_images out/tmp out/tmp/dev out/tmp/pub:
+out/dev out/dev/_fonts out/dev/_images out/pub out/pub/_fonts out/pub/_images out/tmp out/tmp/dev out/tmp/pub:
 	mkdir -p $@
 
 
