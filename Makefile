@@ -163,7 +163,7 @@ define pages-macro
       --from=markdown+auto_identifiers+header_attributes --to=html5 --section-divs --standalone \
       --metadata=$(mode):$(mode) \
       --metadata=project-name:$(notdir $(CURDIR)) \
-      --metadata=path:$(subst index.html,,$(patsubst out/$(mode)/%,%,$$@)) \
+      --metadata=path:$$(subst index.html,,$$(patsubst out/$(mode)/%,%,$$@)) \
       $$(foreach metadatum,$$(filter %.txt,$$^),--metadata=$$(patsubst %.txt,%,$$(notdir $$(metadatum))):"`cat $$(metadatum)`") \
       $$(foreach include,$$(filter %.html,$$(filter-out %/$(page-template),$$^)),--metadata=$$(patsubst %.html,%,$$(notdir $$(include))):"`cat $$(include)`") \
       --template=$$(filter %/$(page-template),$$^) \
