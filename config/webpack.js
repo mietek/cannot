@@ -1,1 +1,1 @@
-module.exports = { resolve: { modulesDirectories: ['bower_components'] } };
+module.exports = { resolve: { modulesDirectories: ['scripts', 'bower_components' ] } };

@@ -3,17 +3,17 @@
 var easeScroll = require('ease-scroll');
 
 
-exports.ts = function (n) {
-  return n * 1000 / 6;
-};
-
-
 exports.rot13 = function (string) {
   return string
     .replace(/&lt;/g, '<')
     .replace(/[a-zA-Z]/g, function (c) {
       return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
     });
+};
+
+
+exports.ts = function (n) {
+  return n * 1000 / 6;
 };
 
 
@@ -66,5 +66,26 @@ exports.restartAnimation = function (target) {
         easeScroll.scrollToElementById('main', exports.ts(3));
       });
     });
+  });
+})();
+
+
+(function () {
+  if ('ontouchstart' in window) {
+    document.documentElement.classList.add('touch');
+  } else {
+    document.documentElement.classList.add('no-touch');
+  }
+
+  addEventListener('load', function () {
+    var headerMenuButton = document.getElementById('header-menu-button');
+    var headerMenu = document.getElementById('header-menu');
+    if (headerMenuButton && headerMenu) {
+      headerMenuButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        headerMenu.classList.toggle('open');
+        headerMenuButton.classList.toggle('open');
+      });
+    }
   });
 })();
