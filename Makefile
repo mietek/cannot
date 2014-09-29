@@ -54,7 +54,7 @@ pub-init :
 	git branch -d gh-pages
 
 pub-clone : out/pub
-out/pub :
+out/pub   :
 	git clone $(pub-remote-url) -b $(pub-branch) --single-branch out/pub
 	find out/pub | xargs touch -t 0101010101 -am
 
