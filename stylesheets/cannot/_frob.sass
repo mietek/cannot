@@ -1,0 +1,26 @@
+@mixin always
+  &
+    @content
+  .touch &:active
+    @content
+  .no-touch &:hover
+    @content
+  .no-touch &:active
+    @content
+  .no-touch &:hover:active
+    @content
+
+@mixin when-frobbed
+  .touch &:active
+    @content
+  .no-touch &:hover
+    @content
+  .no-touch &:active
+    @content
+  .no-touch &:hover:active
+    @content
+
+
+@mixin no-underline
+  @include always
+    border-bottom: none

@@ -6,7 +6,7 @@
 }
 
 .menu li a {
-  @include frob {
+  @include always {
     border-bottom: 0px rgba($accent-color, $active-border-opacity) solid;
   }
 }
@@ -28,7 +28,7 @@
 }
 
 .menu.open li a {
-  @include frob {
+  @include always {
     border-bottom: 1px rgba($object-color, $border-opacity) solid;
   }
 }

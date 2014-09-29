@@ -10,49 +10,13 @@
   white-space: nowrap
 
 
-@mixin frob
-  &
-    @content
-  .touch &:active
-    @content
-  .no-touch &:hover
-    @content
-  .no-touch &:active
-    @content
-  .no-touch &:hover:active
-    @content
-
-@mixin no-underline
-  @include frob
-    border-bottom: none
-
-
-a, a:active, a:hover, a:hover:active
-  @include text-button
-  text-decoration: none
-
-
 a
+  @include always
+    @include text-button
+    text-decoration: none
   color: $object-color
   border-bottom: 1px rgba($object-color, $underline-opacity) solid
-  @include text-glow(none)
-
-.touch a:active
-  color: $accent-color
-  border-bottom: 1px rgba($accent-color, $active-underline-opacity) solid
-  @include active-text-glow($accent-color)
-
-.no-touch a:active
-  color: $accent-color
-  border-bottom: 1px rgba($accent-color, $active-underline-opacity) solid
-  @include text-glow(none)
-
-.no-touch a:hover
-  color: $accent-color
-  border-bottom: 1px rgba($accent-color, $active-underline-opacity) solid
-  @include text-glow($accent-color)
-
-.no-touch a:hover:active
-  color: $accent-color
-  border-bottom: 1px rgba($accent-color, $active-underline-opacity) solid
-  @include active-text-glow($accent-color)
+  @include when-frobbed
+    color: $accent-color
+    border-bottom: 1px rgba($accent-color, $active-underline-opacity) solid
+  @include smart-text-glow($accent-color)

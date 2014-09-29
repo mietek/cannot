@@ -1,5 +1,5 @@
 a {
-	@include frob {
+	@include always {
 	  transition:
 	    ease(color, 1, 0),
 	    ease(border-bottom-color, 1, 0),
