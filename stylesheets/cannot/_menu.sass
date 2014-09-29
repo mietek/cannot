@@ -45,15 +45,15 @@
   @include icon("right", $accent-color-name)
   @include active-image-glow($accent-color)
 
-.no-touch .menu li:active:after
-  opacity: $icon-opacity
-  @include icon("right", $accent-color-name)
-  @include image-glow(none)
-
 .no-touch .menu li:hover:after
   opacity: $active-icon-opacity
   @include icon("right", $accent-color-name)
   @include image-glow($accent-color)
+
+.no-touch .menu li:active:after
+  opacity: $icon-opacity
+  @include icon("right", $accent-color-name)
+  @include image-glow(none)
 
 .no-touch .menu li:hover:active:after
   opacity: $active-icon-opacity
