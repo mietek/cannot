@@ -15,10 +15,10 @@ Do you need a website?  Say hello@mietek.io
 
 Examples:
 
-- [mietek.github.io](https://github.com/mietek/mietek.github.io)
-- [least-fixed-website](https://github.com/mietek/least-fixed-website)
-- [halcyon-website](https://github.com/mietek/halcyon-website)
-- [motoworks-website](https://github.com/mietek/motoworks-website)
+- [My website](https://github.com/mietek/mietek-website)
+- [Website for Least Fixed](https://github.com/mietek/least-fixed-website)
+- [Website for Halcyon](https://github.com/mietek/halcyon-website)
+- [Website for Motoworks Cambridge](https://github.com/mietek/motoworks-website)
 
 
 ### Installation
