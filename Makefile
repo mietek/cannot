@@ -7,7 +7,7 @@
 #
 # Dependencies are expected to be available as Bower components.  You need to run `bower install` yourself, as you may prefer to use `bower link`.
 #
-# The file system watching facility will not pick up new symlinks without being turned off and on again.
+# The file system watching facility will not pick up the contents of newly symlinked directories without being turned off and on again, as `fswatch` does not automatically follow symlinks.
 
 
 .DELETE_ON_ERROR :
