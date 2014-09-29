@@ -38,24 +38,27 @@
   opacity: $active-icon-opacity
 
 
+.menu-button
+  &:before
+    @include icon("closed", $object-color-name)
+  @include frob-when-frobbed
+    &:before
+      @include icon("closed", $accent-color-name)
+
+
 .menu-button:before
-  @include icon("closed", $object-color-name)
   @include image-glow(none)
 
 .touch .menu-button:active:before
-  @include icon("closed", $accent-color-name)
   @include active-image-glow($accent-color)
 
 .no-touch .menu-button:hover:before
-  @include icon("closed", $accent-color-name)
   @include image-glow($accent-color)
 
 .no-touch .menu-button:active:before
-  @include icon("closed", $accent-color-name)
   @include image-glow(none)
 
 .no-touch .menu-button:hover:active:before
-  @include icon("closed", $accent-color-name)
   @include active-image-glow($accent-color)
 
 
