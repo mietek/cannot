@@ -4,10 +4,13 @@
 
 .DELETE_ON_ERROR :
 
-.PHONY : all build clean
+.PHONY : all build clean watch push open
 all    : dev-watch
 build  : dev-build pub-build
 clean  : ; rm -rf out
+watch  : dev-watch
+push   : pub-push
+open   : pub-open
 
 
 # ---------------------------------------------------------------------------
@@ -23,60 +26,8 @@ out/dev out/dev/_fonts out/dev/_images out/tmp/dev : ; [ -d $@ ] || mkdir -p $@
 
 
 # ---------------------------------------------------------------------------
-# Publication
-# ---------------------------------------------------------------------------
-
-.PHONY           : pub pub-really-build pub-clean pub-clone pub-init pub-build pub-push pub-open open
-pub              : pub-push
-pub-really-build : pub-pages pub-scripts pub-stylesheets pub-fonts pub-images pub-iconsheet
-pub-clean        : ; rm -rf out/dev
-pub-clone        : out/pub
-open             : pub-open
-
-out/pub/_fonts out/pub/_images out/tmp/pub : ; [ -d $@ ] || mkdir -p $@
-
-pub-remote-name := $(shell git config --get cannot.pub.remote)
-pub-remote-url  := $(shell git config --get remote.$(pub-remote-name).url)
-pub-branch      := $(shell git config --get cannot.pub.branch)
-
-pub-init :
-	git checkout --orphan gh-pages
-	git config --add cannot.pub.remote origin
-	git config --add cannot.pub.branch gh-pages
-	git rm -rf .
-	touch .nojekyll
-	git add .nojekyll
-	git commit -m "Initial commit"
-	git push -u origin gh-pages
-	git checkout master
-	git branch -d gh-pages
-
-out/pub :
-	git clone $(pub-remote-url) -b $(pub-branch) --single-branch out/pub
-	find out/pub | xargs touch -t 0101010101 -am
-
-pub-build :
-	$(MAKE) pub-clone
-	$(MAKE) pub-really-build
-
-pub-push : pub-build
-	git push origin master
-	[ -n "`git -C out/pub status --porcelain`" ]
-	git -C out/pub add -A .
-	git -C out/pub commit -m "Automatic commit"
-	git -C out/pub push
-	git fetch $(pub-remote-name) $(pub-branch)
-
-pub-open : page-metadata/canonical-url.txt
-	open `cat page-metadata/canonical-url.txt`
-
-
-# ---------------------------------------------------------------------------
 # Watching
 # ---------------------------------------------------------------------------
-
-.PHONY : watch
-watch : dev-watch
 
 fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
 
@@ -98,6 +49,57 @@ define watch-macro
   $(mode)-watch : $(mode)-build ; $$($(mode)-watch)
 endef
 $(foreach mode,dev pub,$(eval $(watch-macro)))
+
+
+# ---------------------------------------------------------------------------
+# Publication
+# ---------------------------------------------------------------------------
+
+.PHONY    : pub pub-clean open
+pub       : pub-push
+pub-clean : ; rm -rf out/pub
+
+out/pub/_fonts out/pub/_images out/tmp/pub : ; [ -d $@ ] || mkdir -p $@
+
+pub-remote-name := $(shell git config --get cannot.pub.remote)
+pub-remote-url  := $(shell git config --get remote.$(pub-remote-name).url)
+pub-branch      := $(shell git config --get cannot.pub.branch)
+
+.PHONY : pub-init pub-clone pub-build pub-really-build pub-push pub-open
+
+pub-init :
+	git checkout --orphan gh-pages
+	git config --add cannot.pub.remote origin
+	git config --add cannot.pub.branch gh-pages
+	git rm -rf .
+	touch .nojekyll
+	git add .nojekyll
+	git commit -m "Initial commit"
+	git push -u origin gh-pages
+	git checkout master
+	git branch -d gh-pages
+
+pub-clone : out/pub
+out/pub :
+	git clone $(pub-remote-url) -b $(pub-branch) --single-branch out/pub
+	find out/pub | xargs touch -t 0101010101 -am
+
+pub-build :
+	$(MAKE) pub-clone
+	$(MAKE) pub-really-build
+
+pub-really-build : pub-pages pub-scripts pub-stylesheets pub-fonts pub-images pub-iconsheet
+
+pub-push : pub-build
+	git push origin master
+	[ -n "`git -C out/pub status --porcelain`" ]
+	git -C out/pub add -A .
+	git -C out/pub commit -m "Automatic commit"
+	git -C out/pub push
+	git fetch $(pub-remote-name) $(pub-branch)
+
+pub-open : page-metadata/canonical-url.txt
+	open `cat page-metadata/canonical-url.txt`
 
 
 # ---------------------------------------------------------------------------
