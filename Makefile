@@ -323,9 +323,6 @@ define iconsheet-helper-macro
 endef
 $(foreach mode,dev pub,$(eval $(iconsheet-helper-macro)))
 
-scale@1x :=
-scale@2x := @2x
-
 define iconsheet-macro
   $(mode)-icon-cells$($(scale))   = $$(patsubst %,icon-$$$${shape}-%$($(scale)).png,$$($(mode)-icon-colors))
   $(mode)-icon-columns$($(scale)) = $$(foreach shape,$$($(mode)-icon-shapes),out/tmp/$(mode)/icon-column-$$(shape)$$($(scale)).png)
@@ -345,4 +342,6 @@ define iconsheet-macro
   out/tmp/$(mode)/iconsheet$$($(scale)).mk : out/tmp/$(mode)/icons.ready ; $$($(mode)-write-iconsheet$$($(scale)))
   -include out/tmp/$(mode)/iconsheet$$($(scale)).mk
 endef
+scale@1x :=
+scale@2x := @2x
 $(foreach mode,dev pub,$(foreach scale,scale@1x scale@2x,$(eval $(iconsheet-macro))))
