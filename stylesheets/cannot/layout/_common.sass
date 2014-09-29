@@ -90,20 +90,6 @@ main h1:first-of-type
   margin-top: 0
   padding-top: ln(4)
 
-// TODO: Seriously now, enough with the dark.  Also, this breaks when the header is more than 1 line high.
-.dark main h1, main.dark h1, h1.dark
-  color: $dark-body-color
-  font-size: em(2)
-  margin-bottom: ln(2)
-  &:before
-    background-color: $dark-background-color
-    position: absolute
-    left: 0
-    right: 0
-    margin: ln(-18) 0 0 0 // TODO?!
-    padding: ln(20) 0 ln(1) 0 // TODO?!
-    z-index: -1
-    content: ""
 
 main h2
   color: $accent-color
