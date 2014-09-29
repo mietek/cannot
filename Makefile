@@ -5,7 +5,7 @@
 #
 #     export MAKEFLAGS=--no-builtin-rules --no-builtin-variables --warn-undefined-variables -j
 #
-# Note the file system watching facility will not pick up new symlinks without stopping and starting again.
+# Note the file system watching facility will not pick up new symlinks without being turned off and on again.
 
 
 .DELETE_ON_ERROR :
