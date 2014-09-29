@@ -60,6 +60,7 @@ pub-build :
 	$(MAKE) pub-really-build
 
 pub-push : pub-build
+	git push origin master
 	[ -n "`git -C out/pub status --porcelain`" ]
 	git -C out/pub add -A .
 	git -C out/pub commit -m "Automatic commit"
