@@ -5,7 +5,9 @@
 #
 #     export MAKEFLAGS=--no-builtin-rules --no-builtin-variables --warn-undefined-variables -j
 #
-# Note the file system watching facility will not pick up new symlinks without being turned off and on again.
+# Dependencies are expected to be available as Bower components.  You need to run `bower install` yourself, as you may prefer to use `bower link`.
+#
+# The file system watching facility will not pick up new symlinks without being turned off and on again.
 
 
 .DELETE_ON_ERROR :
