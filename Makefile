@@ -1,6 +1,5 @@
-# ---------------------------------------------------------------------------
-# Cannot
-# ---------------------------------------------------------------------------
+# NOTE: Execute in parallel using the following flags:
+# export MAKEFLAGS=--no-builtin-rules --no-builtin-variables --warn-undefined-variables -j
 
 .DELETE_ON_ERROR :
 
@@ -336,8 +335,8 @@ define iconsheet-macro
   define $(mode)-write-iconsheet$$($(scale))
     echo >$$@
     for shape in $$($(mode)-icon-shapes) ; do \
-    echo "out/tmp/$(mode)/icon-column-$$$${shape}$$($(scale)).png : $$($(mode)-icon-cells$$($(scale))) | out/tmp/$(mode)" >>$$@ ; \
-    echo '	convert $$$$^ -append $$$$@' >>$$@ ; \
+      echo "out/tmp/$(mode)/icon-column-$$$${shape}$$($(scale)).png : $$($(mode)-icon-cells$$($(scale))) | out/tmp/$(mode)" >>$$@ ; \
+      echo '	convert $$$$^ -append $$$$@' >>$$@ ; \
     done
     echo 'out/$(mode)/_images/iconsheet$$($(scale)).png : $$($(mode)-icon-columns$$($(scale))) | out/$(mode)/_images' >>$$@ ; \
     echo '	convert $$$$^ +append $$$$@' >>$$@
