@@ -26,16 +26,18 @@ out/dev out/dev/_fonts out/dev/_images out/tmp/dev : ; [ -d $@ ] || mkdir -p $@
 # Publication
 # ---------------------------------------------------------------------------
 
-.PHONY           : pub pub-really-build pub-clean
+.PHONY           : pub pub-really-build pub-clean pub-clone pub-init pub-build pub-push pub-open open
 pub              : pub-push
 pub-really-build : pub-pages pub-scripts pub-stylesheets pub-fonts pub-images pub-iconsheet
 pub-clean        : ; rm -rf out/dev
+pub-clone        : out/pub
+open             : pub-open
+
+out/pub/_fonts out/pub/_images out/tmp/pub : ; [ -d $@ ] || mkdir -p $@
 
 pub-remote-name := $(shell git config --get cannot.pub.remote)
 pub-remote-url  := $(shell git config --get remote.$(pub-remote-name).url)
 pub-branch      := $(shell git config --get cannot.pub.branch)
-
-.PHONY : pub-init pub-clone pub-build pub-push pub-open
 
 pub-init :
 	git checkout --orphan gh-pages
@@ -53,8 +55,6 @@ out/pub :
 	git clone $(pub-remote-url) -b $(pub-branch) --single-branch out/pub
 	find out/pub | xargs touch -t 0101010101 -am
 
-pub-clone : out/pub
-
 pub-build :
 	$(MAKE) pub-clone
 	$(MAKE) pub-really-build
@@ -68,8 +68,6 @@ pub-push : pub-build
 
 pub-open : page-metadata/canonical-url.txt
 	open `cat page-metadata/canonical-url.txt`
-
-out/pub/_fonts out/pub/_images out/tmp/pub : ; [ -d $@ ] || mkdir -p $@
 
 
 # ---------------------------------------------------------------------------
