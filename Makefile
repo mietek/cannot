@@ -85,23 +85,26 @@ pub-open : page-metadata/canonical-url.txt
 # Watching
 # --------
 
+vpath %.js config bower_components/cannot/config
+
 fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
 
 define watch-macro
-  $(mode)-start-watch      := fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) | xargs -n1 -I{} '$(MAKE)' $(mode)-build & echo $$$$! >out/tmp/$(mode)/fswatch.pid
-  $(mode)-stop-watch       := kill `cat out/tmp/$(mode)/fswatch.pid 2>/dev/null` 2>/dev/null
-  $(mode)-delay-stop-watch := ( while ps -p $$$${PPID} >/dev/null ; do sleep 1 ; done ; $$($(mode)-stop-watch) ) &
-  $(mode)-start-sync       := browser-sync start --no-online --files 'out/$(mode)/**/*' --server out/$(mode)
-
   define $(mode)-watch
-    -$$($(mode)-stop-watch)
-    $$($(mode)-start-watch)
-    $$($(mode)-delay-stop-watch)
-    $$($(mode)-start-sync)
+    [ -f out/tmp/$(mode)/fswatch.pid ] && kill `cat out/tmp/$(mode)/fswatch.pid` 2>/dev/null || true
+    fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) \
+      | xargs -n1 -I{} '$(MAKE)' $(mode)-build \
+      & echo $$$$! >out/tmp/$(mode)/fswatch.pid
+    ( while ps -p $$$${PPID} >/dev/null ; do \
+        sleep 1 ; \
+      done ; \
+      [ -f out/tmp/$(mode)/fswatch.pid ] && kill `cat out/tmp/$(mode)/fswatch.pid` 2>/dev/null || true \
+    ) &
+    browser-sync start --no-online --files 'out/$(mode)/**/*' --server out/$(mode) --config=$$(filter %/browsersync.js,$$^)
   endef
 
   .PHONY        : $(mode)-watch
-  $(mode)-watch : $(mode)-build ; $$($(mode)-watch)
+  $(mode)-watch : $(mode)-build browsersync.js ; $$($(mode)-watch)
 endef
 $(foreach mode,dev pub,$(eval $(watch-macro)))
 
@@ -109,25 +112,24 @@ $(foreach mode,dev pub,$(eval $(watch-macro)))
 # Optimization
 # ------------
 
-dev-advdef-flags := --iter 1
-pub-advdef-flags := --iter 100
-
-dev-copy-optimized-jpg = cp $< $@
-pub-copy-optimized-jpg = jpegoptim --force -m90 --strip-all --quiet --stdout $< >$@
+dev-optimize-zip :=
+pub-optimize-zip = advdef --iter 100 --shrink-insane --quiet -z $@
 
 dev-copy-optimized-css = cp $< $@
 pub-copy-optimized-css = cleancss --s0 --skip-rebase $< >$@
 
-define optimize-macro
-  $(mode)-optimize-zip = advdef $($(mode)-advdef-flags) --shrink-insane --quiet -z $$@
+dev-copy-optimized-jpg = cp $< $@
+pub-copy-optimized-jpg = jpegoptim --force -m90 --strip-all --quiet --stdout $< >$@
 
+dev-optimize-png :=
+define pub-optimize-png
+  optipng -clobber -o6 -strip all -quiet $@
+  $(pub-optimize-zip)
+endef
+
+define optimize-macro
   define $(mode)-create-zip
     gzip --fast --force --keep --no-name --to-stdout $$< >$$@
-    $$($(mode)-optimize-zip)
-  endef
-
-  define $(mode)-optimize-png
-    optipng -clobber -o6 -strip all -quiet $$@
     $$($(mode)-optimize-zip)
   endef
 
