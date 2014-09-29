@@ -1,4 +1,4 @@
-@mixin always
+@mixin frob-always
   &
     @content
   .touch &:active
@@ -10,7 +10,7 @@
   .no-touch &:hover:active
     @content
 
-@mixin when-frobbed
+@mixin frob-when-frobbed
   .touch &:active
     @content
   .no-touch &:hover
@@ -22,5 +22,5 @@
 
 
 @mixin no-underline
-  @include always
+  @include frob-always
     border-bottom: none

@@ -11,12 +11,12 @@
 
 
 a
-  @include always
+  @include frob-always
     @include text-button
     text-decoration: none
   color: $object-color
   border-bottom: 1px rgba($object-color, $underline-opacity) solid
-  @include when-frobbed
+  @include frob-when-frobbed
     color: $accent-color
     border-bottom: 1px rgba($accent-color, $active-underline-opacity) solid
   @include smart-text-glow($accent-color)
