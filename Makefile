@@ -11,14 +11,12 @@ clean  : ; rm -rf out
 dev    : dev-watch
 watch  : dev-watch
 
-out out/tmp : ; mkdir -p $@
-
 define cannot-macro
   .PHONY        : $(mode)-build $(mode)-clean
   $(mode)-build : $(mode)-pages $(mode)-scripts $(mode)-stylesheets $(mode)-fonts $(mode)-images $(mode)-iconsheet
   $(mode)-clean : ; rm -rf out/$(mode)
 
-  out/$(mode) out/$(mode)/_fonts out/$(mode)/_images out/tmp/$(mode) : ; mkdir -p $$@
+  out/$(mode) out/$(mode)/_fonts out/$(mode)/_images out/tmp/$(mode) : ; [ -d $$@ ] || mkdir -p $$@
 endef
 $(foreach mode,dev pub,$(eval $(cannot-macro)))
 
@@ -193,15 +191,15 @@ font-dirs  := $(call find-dirs,$(font-roots),*)
 
 vpath %.woff $(font-dirs)
 
-out/tmp/fonts.txt: out/tmp/dev/stylesheets.css | out/tmp ; $(call extract-resources,_fonts)
+out/tmp/dev/fonts.txt: out/tmp/dev/stylesheets.css | out/tmp/dev ; $(call extract-resources,_fonts)
 
-fonts = $(shell cat out/tmp/fonts.txt)
+fonts = $(shell cat out/tmp/dev/fonts.txt)
 
 define fonts-macro
   $(mode)-fonts = $$(addprefix out/$(mode)/_fonts/,$$(fonts))
 
   .PHONY                   : $(mode)-fonts
-  out/tmp/$(mode)/fonts.mk : out/tmp/fonts.txt ; echo '$(mode)-fonts: $$($(mode)-fonts)' >$$@
+  out/tmp/$(mode)/fonts.mk : out/tmp/dev/fonts.txt | out/tmp/$(mode) ; echo '$(mode)-fonts: $$($(mode)-fonts)' >$$@
   -include out/tmp/$(mode)/fonts.mk
 
   out/$(mode)/_fonts/% : % | out/$(mode)/_fonts ; cp $$< $$@
@@ -222,15 +220,15 @@ vpath %.jpg $(image-dirs)
 vpath %.png $(image-dirs)
 vpath %.svg $(image-dirs)
 
-out/tmp/images.txt: out/tmp/dev/stylesheets.css | out/tmp ; $(call extract-resources,_images)
+out/tmp/dev/images.txt: out/tmp/dev/stylesheets.css | out/tmp/dev ; $(call extract-resources,_images)
 
-images = $(std-images) $(filter-out iconsheet%,$(shell cat out/tmp/images.txt))
+images = $(std-images) $(filter-out iconsheet%,$(shell cat out/tmp/dev/images.txt))
 
 define images-macro
   $(mode)-images = out/$(mode)/favicon.ico $$(addprefix out/$(mode)/_images/,$$(images) $$(addsuffix .gz,$$(filter %.svg,$$(images))))
 
   .PHONY                    : $(mode)-images
-  out/tmp/$(mode)/images.mk : out/tmp/images.txt ; echo '$(mode)-images: $$($(mode)-images)' >$$@
+  out/tmp/$(mode)/images.mk : out/tmp/dev/images.txt | out/tmp/$(mode) ; echo '$(mode)-images: $$($(mode)-images)' >$$@
   -include out/tmp/$(mode)/images.mk
 
   out/$(mode)/%.ico         : %.ico | out/$(mode)         ; cp $$< $$@
@@ -255,7 +253,7 @@ out/tmp/dev/icon-colors.txt : icon-colors.txt | out/tmp/dev ; cp $< $@
 out/tmp/pub/icon-shapes.txt : out/tmp/dev/stylesheets.css | out/tmp/pub ; $(call extract-comments,icon-shape)
 out/tmp/pub/icon-colors.txt : out/tmp/dev/stylesheets.css | out/tmp/pub ; $(call extract-comments,icon-color)
 
-define iconsheet-macro
+define iconsheet-helper-macro
   $(mode)-icon-shapes = $$(shell cat out/tmp/$(mode)/icon-shapes.txt)
   $(mode)-icon-colors = $$(shell cat out/tmp/$(mode)/icon-colors.txt)
 
@@ -267,30 +265,32 @@ define iconsheet-macro
     echo ';' >>$$@
   endef
 
+  .PHONY                          : $(mode)-iconsheet
   out/tmp/$(mode)/icons.ready     : out/tmp/$(mode)/icon-shapes.txt out/tmp/$(mode)/icon-colors.txt ; touch $$@
   out/tmp/$(mode)/_iconsheet.scss : out/tmp/$(mode)/icons.ready                                     ; $$($(mode)-write-iconsheet-helper)
+endef
+$(foreach mode,dev pub,$(eval $(iconsheet-helper-macro)))
 
-  $(mode)-icon-cells   = $$(patsubst %,icon-$$$${shape}-%.png,$$($(mode)-icon-colors))
-  $(mode)-icon-columns = $$(foreach shape,$$($(mode)-icon-shapes),out/tmp/$(mode)/icon-column-$$(shape).png)
+scale@1x :=
+scale@2x := @2x
 
-  define $(mode)-write-icon-column-target
-    for shape in $$($(mode)-icon-shapes) ; do \
-      echo "out/tmp/$(mode)/icon-column-$$$${shape}.png : $$($(mode)-icon-cells) | out/tmp/$(mode)" >>$$@ ; \
-      echo '	convert $$$$^ -append $$$$@' >>$$@ ; \
-    done
-  endef
+define iconsheet-macro
+  $(mode)-icon-cells$($(scale))   = $$(patsubst %,icon-$$$${shape}-%$($(scale)).png,$$($(mode)-icon-colors))
+  $(mode)-icon-columns$($(scale)) = $$(foreach shape,$$($(mode)-icon-shapes),out/tmp/$(mode)/icon-column-$$(shape)$$($(scale)).png)
 
-  define $(mode)-write-iconsheet-target
+  define $(mode)-write-iconsheet$$($(scale))
     echo >$$@
-    $$($(mode)-write-icon-column-target)
-    echo 'out/$(mode)/_images/iconsheet.png : $$($(mode)-icon-columns) | out/$(mode)/_images' >>$$@ ; \
+    for shape in $$($(mode)-icon-shapes) ; do \
+    echo "out/tmp/$(mode)/icon-column-$$$${shape}$$($(scale)).png : $$($(mode)-icon-cells$$($(scale))) | out/tmp/$(mode)" >>$$@ ; \
+    echo '	convert $$$$^ -append $$$$@' >>$$@ ; \
+    done
+    echo 'out/$(mode)/_images/iconsheet$$($(scale)).png : $$($(mode)-icon-columns$$($(scale))) | out/$(mode)/_images' >>$$@ ; \
     echo '	convert $$$$^ +append $$$$@' >>$$@
     echo '	$$$$($(mode)-optimize-png)' >>$$@
   endef
 
-  .PHONY                       : $(mode)-iconsheet
-  $(mode)-iconsheet            : out/$(mode)/_images/iconsheet.png # out/$(mode)/_images/iconsheet@2x.png
-  out/tmp/$(mode)/iconsheet.mk : out/tmp/$(mode)/icons.ready ; $$($(mode)-write-iconsheet-target)
-  -include out/tmp/$(mode)/iconsheet.mk
+  $(mode)-iconsheet                        : out/$(mode)/_images/iconsheet$$($(scale)).png
+  out/tmp/$(mode)/iconsheet$$($(scale)).mk : out/tmp/$(mode)/icons.ready ; $$($(mode)-write-iconsheet$$($(scale)))
+  -include out/tmp/$(mode)/iconsheet$$($(scale)).mk
 endef
-$(foreach mode,dev pub,$(eval $(iconsheet-macro)))
+$(foreach mode,dev pub,$(foreach scale,scale@1x scale@2x,$(eval $(iconsheet-macro))))
