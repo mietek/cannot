@@ -26,33 +26,7 @@ out/dev out/dev/_fonts out/dev/_images out/tmp/dev : ; [ -d $@ ] || mkdir -p $@
 
 
 # ---------------------------------------------------------------------------
-# Watching
-# ---------------------------------------------------------------------------
-
-fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
-
-define watch-macro
-  # NOTE: This will not pick up new symlinks without restarting
-  $(mode)-start-watch      := fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) | xargs -n1 -I{} '$(MAKE)' $(mode)-build & echo $$$$! >out/tmp/$(mode)/fswatch.pid
-  $(mode)-stop-watch       := kill `cat out/tmp/$(mode)/fswatch.pid 2>/dev/null` 2>/dev/null
-  $(mode)-delay-stop-watch := ( while ps -p $$$${PPID} >/dev/null ; do sleep 1 ; done ; $$($(mode)-stop-watch) ) &
-  $(mode)-start-sync       := browser-sync start --no-online --files 'out/$(mode)/**/*' --server out/$(mode)
-
-  define $(mode)-watch
-    -$$($(mode)-stop-watch)
-    $$($(mode)-start-watch)
-    $$($(mode)-delay-stop-watch)
-    $$($(mode)-start-sync)
-  endef
-
-  .PHONY        : $(mode)-watch
-  $(mode)-watch : $(mode)-build ; $$($(mode)-watch)
-endef
-$(foreach mode,dev pub,$(eval $(watch-macro)))
-
-
-# ---------------------------------------------------------------------------
-# Publication
+# Publishing
 # ---------------------------------------------------------------------------
 
 .PHONY    : pub pub-clean open
@@ -100,6 +74,32 @@ pub-push : pub-build
 
 pub-open : page-metadata/canonical-url.txt
 	open `cat page-metadata/canonical-url.txt`
+
+
+# ---------------------------------------------------------------------------
+# Watching
+# ---------------------------------------------------------------------------
+
+fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
+
+define watch-macro
+  # NOTE: This will not pick up new symlinks without restarting
+  $(mode)-start-watch      := fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) | xargs -n1 -I{} '$(MAKE)' $(mode)-build & echo $$$$! >out/tmp/$(mode)/fswatch.pid
+  $(mode)-stop-watch       := kill `cat out/tmp/$(mode)/fswatch.pid 2>/dev/null` 2>/dev/null
+  $(mode)-delay-stop-watch := ( while ps -p $$$${PPID} >/dev/null ; do sleep 1 ; done ; $$($(mode)-stop-watch) ) &
+  $(mode)-start-sync       := browser-sync start --no-online --files 'out/$(mode)/**/*' --server out/$(mode)
+
+  define $(mode)-watch
+    -$$($(mode)-stop-watch)
+    $$($(mode)-start-watch)
+    $$($(mode)-delay-stop-watch)
+    $$($(mode)-start-sync)
+  endef
+
+  .PHONY        : $(mode)-watch
+  $(mode)-watch : $(mode)-build ; $$($(mode)-watch)
+endef
+$(foreach mode,dev pub,$(eval $(watch-macro)))
 
 
 # ---------------------------------------------------------------------------
