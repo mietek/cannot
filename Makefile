@@ -1,5 +1,12 @@
-# NOTE: Execute in parallel using the following flags:
-# export MAKEFLAGS=--no-builtin-rules --no-builtin-variables --warn-undefined-variables -j
+# cannot
+# ======
+#
+# Execute in parallel using the following flags:
+#
+#     export MAKEFLAGS=--no-builtin-rules --no-builtin-variables --warn-undefined-variables -j
+#
+# Note the file system watching facility will not pick up new symlinks without stopping and starting again.
+
 
 .DELETE_ON_ERROR :
 
@@ -12,9 +19,8 @@ push   : pub-push
 open   : pub-open
 
 
-# ---------------------------------------------------------------------------
 # Development
-# ---------------------------------------------------------------------------
+# -----------
 
 .PHONY    : dev dev-build dev-clean
 dev       : dev-watch
@@ -24,9 +30,8 @@ dev-clean : ; rm -rf out/dev
 out/dev out/dev/_fonts out/dev/_images out/tmp/dev : ; [ -d $@ ] || mkdir -p $@
 
 
-# ---------------------------------------------------------------------------
 # Publishing
-# ---------------------------------------------------------------------------
+# ----------
 
 .PHONY    : pub pub-clean open
 pub       : pub-push
@@ -75,14 +80,12 @@ pub-open : page-metadata/canonical-url.txt
 	open `cat page-metadata/canonical-url.txt`
 
 
-# ---------------------------------------------------------------------------
 # Watching
-# ---------------------------------------------------------------------------
+# --------
 
 fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
 
 define watch-macro
-  # NOTE: This will not pick up new symlinks without restarting
   $(mode)-start-watch      := fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) | xargs -n1 -I{} '$(MAKE)' $(mode)-build & echo $$$$! >out/tmp/$(mode)/fswatch.pid
   $(mode)-stop-watch       := kill `cat out/tmp/$(mode)/fswatch.pid 2>/dev/null` 2>/dev/null
   $(mode)-delay-stop-watch := ( while ps -p $$$${PPID} >/dev/null ; do sleep 1 ; done ; $$($(mode)-stop-watch) ) &
@@ -101,9 +104,8 @@ endef
 $(foreach mode,dev pub,$(eval $(watch-macro)))
 
 
-# ---------------------------------------------------------------------------
 # Optimization
-# ---------------------------------------------------------------------------
+# ------------
 
 dev-advdef-flags := --iter 1
 pub-advdef-flags := --iter 100
@@ -137,9 +139,8 @@ endef
 $(foreach mode,dev pub,$(eval $(optimize-macro)))
 
 
-# ---------------------------------------------------------------------------
 # Pages
-# ---------------------------------------------------------------------------
+# -----
 
 find-files = $(shell find -L $(1) -type f -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
 
@@ -177,9 +178,8 @@ endef
 $(foreach mode,dev pub,$(eval $(pages-macro)))
 
 
-# ---------------------------------------------------------------------------
 # Scripts
-# ---------------------------------------------------------------------------
+# -------
 
 vpath %.js scripts bower_components/cannot/scripts
 
@@ -203,9 +203,8 @@ endef
 $(foreach mode,dev pub,$(eval $(scripts-macro)))
 
 
-# ---------------------------------------------------------------------------
 # Stylesheets
-# ---------------------------------------------------------------------------
+# -----------
 
 vpath %.sass stylesheets bower_components/cannot/stylesheets
 
@@ -233,9 +232,8 @@ endef
 $(foreach mode,dev pub,$(eval $(stylesheets-macro)))
 
 
-# ---------------------------------------------------------------------------
 # Fonts
-# ---------------------------------------------------------------------------
+# -----
 
 find-dirs         = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
 extract-resources = grep -Eo 'url\($(1)/[^)]+\)' $< | sed -E 's,^.*/(.*)\).*$$,\1,' | sort -u >$@ || touch $@
@@ -261,9 +259,8 @@ endef
 $(foreach mode,dev pub,$(eval $(fonts-macro)))
 
 
-# ---------------------------------------------------------------------------
 # Images
-# ---------------------------------------------------------------------------
+# ------
 
 image-roots := images bower_components/cannot/images
 image-dirs  := $(call find-dirs,$(image-roots),*)
@@ -293,9 +290,8 @@ endef
 $(foreach mode,dev pub,$(eval $(images-macro)))
 
 
-# ---------------------------------------------------------------------------
 # Iconsheets
-# ---------------------------------------------------------------------------
+# ----------
 
 extract-comments = grep -Eo '/\* $(1): .* \*/' $< | sed -E 's/^.*: (.*) .*$$/\1/' | sort -u >$@ || touch $@
 
