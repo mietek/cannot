@@ -4,38 +4,92 @@
 
 .DELETE_ON_ERROR :
 
-.PHONY : all build clean dev watch
+.PHONY : all build clean
 all    : dev-watch
 build  : dev-build pub-build
 clean  : ; rm -rf out
-dev    : dev-watch
-watch  : dev-watch
 
-define cannot-macro
-  .PHONY        : $(mode)-build $(mode)-clean
-  $(mode)-build : $(mode)-pages $(mode)-scripts $(mode)-stylesheets $(mode)-fonts $(mode)-images $(mode)-iconsheet
-  $(mode)-clean : ; rm -rf out/$(mode)
 
-  out/$(mode) out/$(mode)/_fonts out/$(mode)/_images out/tmp/$(mode) : ; [ -d $$@ ] || mkdir -p $$@
-endef
-$(foreach mode,dev pub,$(eval $(cannot-macro)))
+# ---------------------------------------------------------------------------
+# Development
+# ---------------------------------------------------------------------------
+
+.PHONY    : dev dev-build dev-clean
+dev       : dev-watch
+dev-build : dev-pages dev-scripts dev-stylesheets dev-fonts dev-images dev-iconsheet
+dev-clean : ; rm -rf out/dev
+
+out/dev out/dev/_fonts out/dev/_images out/tmp/dev : ; [ -d $@ ] || mkdir -p $@
+
+
+# ---------------------------------------------------------------------------
+# Publication
+# ---------------------------------------------------------------------------
+
+.PHONY           : pub pub-really-build pub-clean
+pub              : pub-push
+pub-really-build : pub-pages pub-scripts pub-stylesheets pub-fonts pub-images pub-iconsheet
+pub-clean        : ; rm -rf out/dev
+
+pub-remote-name := $(shell git config --get cannot.pub.remote)
+pub-remote-url  := $(shell git config --get remote.$(pub-remote-name).url)
+pub-branch      := $(shell git config --get cannot.pub.branch)
+
+.PHONY : pub-init pub-clone pub-build pub-push pub-open
+
+pub-init :
+	git checkout --orphan gh-pages
+	git config --add cannot.pub.remote origin
+	git config --add cannot.pub.branch gh-pages
+	git rm -rf .
+	touch .nojekyll
+	git add .nojekyll
+	git commit -m "Initial commit"
+	git push -u origin gh-pages
+	git checkout master
+	git branch -d gh-pages
+
+out/pub :
+	git clone $(pub-remote-url) -b $(pub-branch) --single-branch out/pub
+	find out/pub | xargs touch -t 0101010101 -am
+
+pub-clone : out/pub
+
+pub-build :
+	$(MAKE) pub-clone
+	$(MAKE) pub-really-build
+
+pub-push : pub-build
+	[ -n "`git -C out/pub status --porcelain`" ]
+	git -C out/pub add -A .
+	git -C out/pub commit -m "Automatic commit"
+	git -C out/pub push
+	git fetch $(pub-remote-name) $(pub-branch)
+
+pub-open : page-metadata/canonical-url.txt
+	open `cat page-metadata/canonical-url.txt`
+
+out/pub/_fonts out/pub/_images out/tmp/pub : ; [ -d $@ ] || mkdir -p $@
 
 
 # ---------------------------------------------------------------------------
 # Watching
 # ---------------------------------------------------------------------------
 
+.PHONY : watch
+watch : dev-watch
+
 fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
 
 define watch-macro
   # NOTE: This will not pick up new symlinks without restarting
   $(mode)-start-watch      := fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) | xargs -n1 -I{} '$(MAKE)' $(mode)-build & echo $$$$! >out/tmp/$(mode)/fswatch.pid
-  $(mode)-stop-watch       := [ -f out/tmp/$(mode)/fswatch.pid ] && kill `cat out/tmp/$(mode)/fswatch.pid` 2>/dev/null ; rm -f out/tmp/$(mode)/fswatch.pid
+  $(mode)-stop-watch       := kill `cat out/tmp/$(mode)/fswatch.pid 2>/dev/null` 2>/dev/null
   $(mode)-delay-stop-watch := ( while ps -p $$$${PPID} >/dev/null ; do sleep 1 ; done ; $$($(mode)-stop-watch) ) &
   $(mode)-start-sync       := browser-sync start --no-online --files 'out/$(mode)/**/*' --server out/$(mode)
 
   define $(mode)-watch
-    $$($(mode)-stop-watch)
+    -$$($(mode)-stop-watch)
     $$($(mode)-start-watch)
     $$($(mode)-delay-stop-watch)
     $$($(mode)-start-sync)
