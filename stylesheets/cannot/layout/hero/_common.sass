@@ -1,8 +1,8 @@
 html.hero
   background: linear-gradient(to bottom, white, white 45%, black 55%, black)
 
-
 header.hero
+  background: black
   color: rgba(white, 0.4)
 
 header.hero a
@@ -10,6 +10,14 @@ header.hero a
   color: rgba(white, 0.4)
   @include frob-when-frobbed
     color: white
+
+main.hero
+  background-color: $background-color
+  margin-top: 0
+  margin-bottom: ln(-2)
+
+footer.hero
+  background-color: $background-color
 
 
 #hero
@@ -60,12 +68,3 @@ header.hero a
   display: block
   width: 100%
   height: 100%
-
-
-main.hero
-  background-color: $background-color
-  margin-top: 0
-  margin-bottom: ln(-2)
-
-footer.hero
-  background-color: $background-color
