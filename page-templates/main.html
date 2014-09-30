@@ -34,6 +34,11 @@ $if(header-extra)$$header-extra$$endif$
 $if(header-bonus)$$header-bonus$$endif$
 </div>
 </header>
+$if(hero)$<div id="hero">
+<div class="hero-wrapper">
+$hero$
+</div>
+</div>$endif$
 <main id="main"$if(main-class)$ class="$main-class$"$endif$>
 <div class="wrapper">
 $body$
