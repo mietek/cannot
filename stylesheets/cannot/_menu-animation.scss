@@ -29,7 +29,7 @@
 
 .menu.open li {
   @include frob-always {
-    border-bottom: 1px $rule-color solid;
+    border-bottom: 1px rgba($object-color, 0.2) solid;
   }
 }
 

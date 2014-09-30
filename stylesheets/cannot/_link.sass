@@ -25,7 +25,7 @@ a
   color: $object-color
   position: relative
   &:after
-    border-bottom: 1px $object-underline-color solid
+    border-bottom: 1px rgba($object-color, 0.4) solid
     position: absolute
     left: 0
     right: 0
@@ -36,4 +36,4 @@ a
   @include frob-when-frobbed
     color: $accent-color
     &:after
-      border-bottom: 1px $accent-underline-color solid
+      border-bottom: 1px rgba($accent-color, 0.4) solid

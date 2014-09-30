@@ -10,10 +10,6 @@ $layout-width-small:   568px !default
 $layout-width-medium: 1024px !default
 $layout-width-large:  1440px !default
 
-$rule-color:             rgba($object-color, 0.2)
-$object-underline-color: rgba($object-color, 0.3)
-$accent-underline-color: rgba($accent-color, 0.8)
-
 
 @import "cannot/icon"
 @import "cannot/images"
@@ -27,7 +23,7 @@ $accent-underline-color: rgba($accent-color, 0.8)
 @mixin rule-before
   position: relative
   &:before
-    border-bottom: 1px $rule-color solid
+    border-bottom: 1px rgba($object-color, 0.2) solid
     position: absolute
     top: -1px
     left: 0
@@ -37,7 +33,7 @@ $accent-underline-color: rgba($accent-color, 0.8)
 @mixin rule-after
   position: relative
   &:after
-    border-top: 1px $rule-color solid
+    border-top: 1px rgba($object-color, 0.2) solid
     position: absolute
     bottom: 0
     left: 0
