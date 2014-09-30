@@ -12,6 +12,7 @@ $if(canonical-url)$<link rel="canonical" href="$canonical-url$$path$">$endif$
 <link rel="stylesheet" href="_stylesheets.css">
 <script src="_scripts.js"></script>
 $if(head-extra)$$head-extra$$endif$
+$if(head-bonus)$$head-bonus$$endif$
 </head>
 <body$if(body-class)$ class="$body-class$"$endif$>
 <header id="header"$if(header-class)$ class="$header-class$"$endif$>
@@ -30,6 +31,7 @@ if (localStorage['header-menu-open']) {
 </script>$endif$
 </nav>
 $if(header-extra)$$header-extra$$endif$
+$if(header-bonus)$$header-bonus$$endif$
 </div>
 </header>
 <main id="main"$if(main-class)$ class="$main-class$"$endif$>
@@ -46,6 +48,7 @@ $menu-items$
 </ul>
 </nav>
 $if(footer-extra)$$footer-extra$$endif$
+$if(footer-bonus)$$footer-bonus$$endif$
 </div>
 </footer>
 <!--[if lte IE 9]>
