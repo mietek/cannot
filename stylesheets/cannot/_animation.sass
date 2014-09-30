@@ -24,7 +24,7 @@ $animation-tick: 1000ms / 6 !default
   @return transition($property, $duration, $delay, ease-in-out)
 
 
-html.resize *
+html.no-transition *, html.no-transition *:before, html.no-transition *:after
   transition: none !important
 
 

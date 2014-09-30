@@ -32,13 +32,13 @@ exports.restartAnimation = function (target) {
 
   addEventListener('resize', function () {
     lastResizeT = Date.now();
-    if (!document.documentElement.classList.contains('resize')) {
-      document.documentElement.classList.add('resize');
+    if (!document.documentElement.classList.contains('no-transition')) {
+      document.documentElement.classList.add('no-transition');
       var onTimeout = function () {
         if (Date.now() - lastResizeT < exports.ts(1)) {
           setTimeout(onTimeout, exports.ts(1));
         } else {
-          document.documentElement.classList.remove('resize');
+          document.documentElement.classList.remove('no-transition');
         }
       };
       setTimeout(onTimeout, exports.ts(1));
@@ -46,6 +46,7 @@ exports.restartAnimation = function (target) {
   });
 
   addEventListener('load', function () {
+    document.documentElement.classList.remove('no-transition');
     [].forEach.call(document.getElementsByClassName('click-to-shake'), function (element) {
       element.addEventListener('click', function (event) {
         event.preventDefault();
