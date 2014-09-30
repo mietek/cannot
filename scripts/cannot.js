@@ -85,6 +85,12 @@ exports.restartAnimation = function (target) {
         event.preventDefault();
         headerMenu.classList.toggle('open');
         headerMenuButton.classList.toggle('open');
+        var open = (localStorage['header-menu-open'] === 'true');
+        if (open) {
+          localStorage.removeItem('header-menu-open');
+        } else {
+          localStorage['header-menu-open'] = 'true';
+        }
       });
     }
   });
