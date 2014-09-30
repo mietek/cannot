@@ -18,6 +18,7 @@ Examples:
 - [My website](https://github.com/mietek/mietek-website)
 - [Website for Least Fixed](https://github.com/mietek/least-fixed-website)
 - [Website for Halcyon](https://github.com/mietek/halcyon-website)
+- [Website for Haskell on Heroku](https://github.com/mietek/haskell-on-heroku-website)
 - [Website for Motoworks Cambridge](https://github.com/mietek/motoworks-website)
 
 
