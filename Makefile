@@ -198,15 +198,13 @@ pub-webpack-flags := --optimize-minimize --optimize-occurence-order
 webpack-config    := webpack.js
 
 define scripts-macro
-  $(mode)-scripts := out/$(mode)/_scripts.js
-
   define $(mode)-compile-js
     webpack --bail --define $(mode)=$(mode) $$($(mode)-webpack-flags) --config=$$(filter %/$(webpack-config),$$^) $$< $$@
   endef
 
-  .PHONY              : $(mode)-scripts
-  $(mode)-scripts     : $$($(mode)-scripts)
-  $$($(mode)-scripts) : $$(scripts) $(webpack-config) | out/$(mode) ; $$($(mode)-compile-js)
+  .PHONY                  : $(mode)-scripts
+  $(mode)-scripts         : out/$(mode)/_scripts.js.gz
+  out/$(mode)/_scripts.js : $$(scripts) $(webpack-config) | out/$(mode) ; $$($(mode)-compile-js)
 endef
 $(foreach mode,dev pub,$(eval $(scripts-macro)))
 
@@ -225,14 +223,13 @@ prefix-css = autoprefixer --browsers '> 1%, last 2 versions, Firefox ESR' --outp
 define stylesheets-macro
   $(mode)-helper-roots := out/tmp/$(mode) $(helper-roots)
   $(mode)-helpers      := out/tmp/$(mode)/_iconsheet.scss $(helpers)
-  $(mode)-stylesheets  := out/$(mode)/_stylesheets.css out/$(mode)/_stylesheets.css.gz
 
   define $(mode)-compile-sass
     sass --line-numbers --sourcemap=none --style expanded --cache-location out/tmp/$(mode)/.sass-cache $$(addprefix --load-path ,$$($(mode)-helper-roots)) $$< $$@
   endef
 
   .PHONY                              : $(mode)-stylesheets
-  $(mode)-stylesheets                 : $$($(mode)-stylesheets)
+  $(mode)-stylesheets                 : out/$(mode)/_stylesheets.css.gz
   out/tmp/$(mode)/stylesheets.css     : $(stylesheet-main) $$($(mode)-helpers)            ; $$($(mode)-compile-sass)
   out/tmp/$(mode)/stylesheets.pre.css : out/tmp/$(mode)/stylesheets.css                   ; $$(prefix-css)
   out/$(mode)/_stylesheets.css        : out/tmp/$(mode)/stylesheets.pre.css | out/$(mode) ; $$($(mode)-copy-optimized-css)
