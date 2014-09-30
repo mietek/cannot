@@ -3,18 +3,19 @@
   user-select: none
   -webkit-tap-highlight-color: transparent
 
+@mixin no-underline
+  @include frob-always
+    &:after
+      border-bottom: none
+
 @mixin no-text
+  @include no-underline
   overflow: hidden
   text-indent: 200%
   white-space: nowrap
   @include frob-always
     color: transparent
     text-shadow: none
-
-@mixin no-underline
-  @include frob-always
-    &:after
-      border-bottom: none
 
 
 a
