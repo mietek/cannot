@@ -53,6 +53,8 @@
 .menu.open li {
   transition:
     ease(height, 1, 0),              // Step 1
+    ease(border-bottom-color, 1, 0), // Step 1
+    ease(border-bottom-width, 0, 0), // Step 1
     ease(background-color, 1, 0);    // Step 1
 }
 
@@ -68,8 +70,6 @@
   transition:
     ease(color, 1, 0),               // General a transition
     ease(text-shadow, 1, 0),         // General a transition
-    ease(border-bottom-color, 1, 0), // Step 1
-    ease(border-bottom-width, 0, 0), // Step 1
     ease(text-indent, 2, 1);         // Step 2
 }
 
@@ -88,9 +88,7 @@
   transition:
     ease(color, 1, 0),               // General a transition
     ease(text-shadow, 1, 0),         // General a transition
-    ease(text-indent, 2, 0),         // Step 1
-    ease(border-bottom-color, 1, 2), // Step 2
-    ease(border-bottom-width, 0, 2); // Step 2
+    ease(text-indent, 2, 0);         // Step 1
 }
 
 .menu {
@@ -102,5 +100,7 @@
 .menu li {
   transition:
     ease(height, 1, 2),              // Step 2
+    ease(border-bottom-color, 1, 2), // Step 2
+    ease(border-bottom-width, 0, 2), // Step 2
     ease(background-color, 1, 2);    // Step 2
 }
