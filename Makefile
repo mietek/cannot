@@ -15,7 +15,7 @@
 .PHONY : all build clean watch push open
 all    : dev-watch
 build  : dev-build pub-build
-clean  : ; rm -rf out
+clean  : unwatch ; rm -rf out
 watch  : dev-watch
 push   : pub-push
 open   : pub-open
@@ -27,7 +27,7 @@ open   : pub-open
 .PHONY    : dev dev-build dev-clean
 dev       : dev-watch
 dev-build : dev-pages dev-scripts dev-stylesheets dev-fonts dev-images dev-iconsheet
-dev-clean : ; rm -rf out/dev
+dev-clean : unwatch ; rm -rf out/dev
 
 out/dev out/dev/_fonts out/dev/_images out/tmp/dev : ; [ -d $@ ] || mkdir -p $@
 
@@ -37,7 +37,7 @@ out/dev out/dev/_fonts out/dev/_images out/tmp/dev : ; [ -d $@ ] || mkdir -p $@
 
 .PHONY    : pub pub-clean open
 pub       : pub-push
-pub-clean : ; rm -rf out/pub
+pub-clean : unwatch ; rm -rf out/pub
 
 out/pub/_fonts out/pub/_images out/tmp/pub : ; [ -d $@ ] || mkdir -p $@
 
@@ -89,18 +89,21 @@ vpath %.js config bower_components/cannot/config
 
 fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
 
+fswatch-off     := pgrep -f 'fswatch.*$(CURDIR)' | xargs kill
+browsersync-off := pgrep -f 'browser-sync.*$(CURDIR)' | xargs kill
+
+.PHONY : unwatch
+unwatch :
+	$(fswatch-off)
+	$(browsersync-off)
+
 define watch-macro
   define $(mode)-watch
-    [ -f out/tmp/$(mode)/fswatch.pid ] && kill `cat out/tmp/$(mode)/fswatch.pid` 2>/dev/null || true
-    fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) \
-      | xargs -n1 -I{} '$(MAKE)' $(mode)-build \
-      & echo $$$$! >out/tmp/$(mode)/fswatch.pid
-    ( while ps -p $$$${PPID} >/dev/null ; do \
-        sleep 1 ; \
-      done ; \
-      [ -f out/tmp/$(mode)/fswatch.pid ] && kill `cat out/tmp/$(mode)/fswatch.pid` 2>/dev/null || true \
-    ) &
-    browser-sync start --no-online --files 'out/$(mode)/**/*' --server out/$(mode) --config=$$(filter %/browsersync.js,$$^)
+    $(fswatch-off)
+    $(browsersync-off)
+    fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) | xargs -n1 -I{} '$(MAKE)' $(mode)-build &
+    ( while ps -p $$$${PPID} >/dev/null ; do sleep 1 ; done ; $(fswatch-off) ; $(browsersync-off) ) &
+    browser-sync start --no-online --files '$(CURDIR)/out/$(mode)/**/*' --server '$(CURDIR)/out/$(mode)' --config=$$(filter %/browsersync.js,$$^)
   endef
 
   .PHONY        : $(mode)-watch
