@@ -4,7 +4,7 @@
 // Start
 
 .menu-button {
-	@include smart-image-glow-after;
+	@include smart-image-glow-after($accent-color);
 	@include frob-always {
 		&:before {
 		  height: $icon-size;

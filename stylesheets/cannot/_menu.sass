@@ -38,9 +38,9 @@
 
 
 .menu li
-  @include smart-icon-after("right")
-  @include smart-icon-opacity-after
-  @include smart-image-glow-after
+  @include smart-icon-after("right", $object-color-name, $accent-color-name)
+  @include smart-opacity-after(0.2, 1)
+  @include smart-image-glow-after($accent-color)
 
 
 @import "cannot/menu-animation"

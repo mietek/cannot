@@ -38,94 +38,94 @@
     @content
 
 
-@mixin smart-text-glow
+@mixin smart-text-glow($color)
   @include frob-when-low
     @include text-glow(none)
   @include frob-when-medium
-    @include text-glow($accent-color)
+    @include text-glow($color)
   @include frob-when-high
-    @include active-text-glow($accent-color)
+    @include active-text-glow($color)
 
 
-@mixin smart-image-glow
+@mixin smart-image-glow($color)
   @include frob-when-low
     @include image-glow(none)
   @include frob-when-medium
-    @include image-glow($accent-color)
+    @include image-glow($color)
   @include frob-when-high
-    @include active-image-glow($accent-color)
+    @include active-image-glow($color)
 
-@mixin smart-image-glow-before
+@mixin smart-image-glow-before($color)
   @include frob-when-low
     &:before
       @include image-glow(none)
   @include frob-when-medium
     &:before
-      @include image-glow($accent-color)
+      @include image-glow($color)
   @include frob-when-high
     &:before
-      @include active-image-glow($accent-color)
+      @include active-image-glow($color)
 
-@mixin smart-image-glow-after
+@mixin smart-image-glow-after($color)
   @include frob-when-low
     &:after
       @include image-glow(none)
   @include frob-when-medium
     &:after
-      @include image-glow($accent-color)
+      @include image-glow($color)
   @include frob-when-high
     &:after
-      @include active-image-glow($accent-color)
+      @include active-image-glow($color)
 
 
-@mixin smart-icon-opacity
+@mixin smart-opacity($low, $medium, $high: $medium)
   @include frob-when-low
-    opacity: 0.2
+    opacity: $low
   @include frob-when-medium
-    opacity: 1
+    opacity: $medium
   @include frob-when-high
-    opacity: 1
+    opacity: $high
 
-@mixin smart-icon-opacity-before
+@mixin smart-opacity-before($low, $medium, $high: $medium)
   @include frob-when-low
     &:before
-      opacity: 0.2
+      opacity: $low
   @include frob-when-medium
     &:before
-      opacity: 1
+      opacity: $medium
   @include frob-when-high
     &:before
-      opacity: 1
+      opacity: $high
 
-@mixin smart-icon-opacity-after
+@mixin smart-opacity-after($low, $medium, $high: $medium)
   @include frob-when-low
     &:after
-      opacity: 0.2
+      opacity: $low
   @include frob-when-medium
     &:after
-      opacity: 1
+      opacity: $medium
   @include frob-when-high
     &:after
-      opacity: 1
+      opacity: $high
 
 
-@mixin smart-icon($name)
+@mixin smart-icon($name, $unfrobbed-color-name, $frobbed-color-name)
   &
-    @include icon($name, $object-color-name)
+    @include icon($name, $unfrobbed-color-name)
   @include frob-when-frobbed
     &
-      @include icon($name, $accent-color-name)
+      @include icon($name, $frobbed-color-name)
 
-@mixin smart-icon-before($name)
+@mixin smart-icon-before($name, $unfrobbed-color-name, $frobbed-color-name)
   &:before
-    @include icon($name, $object-color-name)
+    @include icon($name, $unfrobbed-color-name)
   @include frob-when-frobbed
     &:before
-      @include icon($name, $accent-color-name)
+      @include icon($name, $frobbed-color-name)
 
-@mixin smart-icon-after($name)
+@mixin smart-icon-after($name, $unfrobbed-color-name, $frobbed-color-name)
   &:after
-    @include icon($name, $object-color-name)
+    @include icon($name, $unfrobbed-color-name)
   @include frob-when-frobbed
     &:after
-      @include icon($name, $accent-color-name)
+      @include icon($name, $frobbed-color-name)
