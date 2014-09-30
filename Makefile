@@ -10,6 +10,8 @@
 # The file system watching facility will not pick up the contents of newly symlinked directories without being turned off and on again, as `fswatch` does not automatically follow symlinks.
 
 
+project-name := $(notdir $(CURDIR))
+
 .DELETE_ON_ERROR :
 
 .PHONY : all build clean watch push open
@@ -90,8 +92,8 @@ vpath %.js config bower_components/cannot/config
 
 fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
 
-fswatch-off     := pgrep -f 'fswatch.*$(CURDIR)' | xargs kill
-browsersync-off := pgrep -f 'browser-sync.*$(CURDIR)' | xargs kill
+fswatch-off     := pgrep -f 'fswatch.* --format pgrep/$(project-name)' | xargs kill
+browsersync-off := pgrep -f 'browser-sync.* --files pgrep/$(project-name)' | xargs kill
 
 .PHONY : unwatch
 unwatch :
@@ -102,9 +104,9 @@ define watch-macro
   define $(mode)-watch
     $(fswatch-off)
     $(browsersync-off)
-    fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) | xargs -n1 -I{} '$(MAKE)' $(mode)-build &
+    fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) --format pgrep/$(project-name) | xargs -n1 -I{} '$(MAKE)' $(mode)-build &
     ( while ps -p $$$${PPID} >/dev/null ; do sleep 1 ; done ; $(fswatch-off) ; $(browsersync-off) ) &
-    browser-sync start --no-online --files '$(CURDIR)/out/$(mode)/**/*' --server '$(CURDIR)/out/$(mode)' --config=$$(filter %/browsersync.js,$$^)
+    browser-sync start --no-online --files 'out/$(mode)/**/*' --server 'out/$(mode)' --config=$$(filter %/browsersync.js,$$^) --files pgrep/$(project-name)
   endef
 
   .PHONY        : $(mode)-watch
@@ -171,7 +173,7 @@ define pages-macro
     pandoc \
       --from=markdown+auto_identifiers+header_attributes --to=html5 --section-divs --standalone \
       --metadata=$(mode):$(mode) \
-      --metadata=project-name:$(notdir $(CURDIR)) \
+      --metadata=project-name:$(project-name) \
       --metadata=path:$$(subst index.html,,$$(patsubst out/$(mode)/%,%,$$@)) \
       $$(foreach metadatum,$$(filter %.txt,$$^),--metadata=$$(patsubst %.txt,%,$$(notdir $$(metadatum))):"`cat $$(metadatum)`") \
       $$(foreach include,$$(filter %.html,$$(filter-out %/$(page-template),$$^)),--metadata=$$(patsubst %.html,%,$$(notdir $$(include))):"`cat $$(include)`") \
