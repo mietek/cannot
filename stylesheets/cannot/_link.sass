@@ -3,20 +3,36 @@
   user-select: none
   -webkit-tap-highlight-color: transparent
 
-@mixin text-hidden
-  color: transparent
+@mixin no-text
   overflow: hidden
-  text-indent: 150%
+  text-indent: 200%
   white-space: nowrap
+  @include frob-always
+    color: transparent
+    text-shadow: none
+
+@mixin no-underline
+  @include frob-always
+    &:after
+      border-bottom: none
 
 
 a
+  @include text-button
   @include smart-text-glow
-  @include frob-always
-    @include text-button
-    text-decoration: none
+  text-decoration: none
   color: $object-color
-  border-bottom: 1px $object-underline-color solid
+  position: relative
+  &:after
+    border-bottom: 1px $object-underline-color solid
+    position: absolute
+    left: 0
+    right: 0
+    top: 0
+    bottom: 1px
+    display: block
+    content: ""
   @include frob-when-frobbed
     color: $accent-color
-    border-bottom: 1px $accent-underline-color solid
+    &:after
+      border-bottom: 1px $accent-underline-color solid
