@@ -14,41 +14,35 @@ project-name := $(notdir $(CURDIR))
 
 .DELETE_ON_ERROR :
 
-.PHONY : all build clean watch push open
+.PHONY : all build clean dev watch pub push open
 all    : dev-watch
 build  : dev-build pub-build
 clean  : unwatch ; rm -rf out
+dev    : dev-watch
 watch  : dev-watch
+pub    : pub-push
 push   : pub-push
-open   : pub-open
+open   : page-metadata/canonical-url.txt
+	open `cat page-metadata/canonical-url.txt`
 
+define cannot-macro
+  .PHONY        : $(mode)-build
+  $(mode)-build : $(mode)-pages $(mode)-scripts $(mode)-stylesheets $(mode)-fonts $(mode)-images $(mode)-iconsheet
+  $(mode)-clean : unwatch ; rm -rf out/$(mode)
 
-# Development
-# -----------
-
-.PHONY    : dev dev-build dev-clean
-dev       : dev-watch
-dev-build : dev-pages dev-scripts dev-stylesheets dev-fonts dev-images dev-iconsheet
-dev-clean : unwatch ; rm -rf out/dev
-
-out/dev out/dev/_fonts out/dev/_images out/tmp/dev : ; [ -d $@ ] || mkdir -p $@
+  out/$(mode) out/$(mode)/_fonts out/$(mode)/_images out/tmp/$(mode) : ; [ -d $$@ ] || mkdir -p $$@
+endef
+$(foreach mode,dev pub,$(eval $(cannot-macro)))
 
 
 # Publishing
 # ----------
 
-.PHONY    : pub pub-clean open
-pub       : pub-push
-pub-clean : unwatch ; rm -rf out/pub
-
-out/pub/_fonts out/pub/_images out/tmp/pub : ; [ -d $@ ] || mkdir -p $@
-
 pub-remote-name := $(shell git config --get cannot.pub.remote)
 pub-remote-url  := $(shell git config --get remote.$(pub-remote-name).url)
 pub-branch      := $(shell git config --get cannot.pub.branch)
 
-.PHONY : pub-init pub-clone pub-build pub-really-build pub-push pub-open
-
+.PHONY : pub-init
 pub-init :
 	git checkout --orphan gh-pages
 	git config --add cannot.pub.remote origin
@@ -61,28 +55,18 @@ pub-init :
 	git checkout master
 	git branch -d gh-pages
 
-pub-clone : out/pub
-out/pub   :
+.PHONY : pub-push
+pub-push : unwatch
+	git push origin master
+	rm -rf out/pub
 	git clone $(pub-remote-url) -b $(pub-branch) --single-branch out/pub
 	git -C out/pub rm -rf .
 	touch out/pub/.nojekyll
-
-pub-build :
-	$(MAKE) pub-clone
-	$(MAKE) pub-really-build
-
-pub-really-build : pub-pages pub-scripts pub-stylesheets pub-fonts pub-images pub-iconsheet
-
-pub-push : pub-build
-	git push origin master
-	[ -n "`git -C out/pub status --porcelain`" ]
+	$(MAKE) pub-build
 	git -C out/pub add -A .
-	git -C out/pub commit -m "Automatic commit"
+	-git -C out/pub commit -m "Automatic commit"
 	git -C out/pub push
 	git fetch $(pub-remote-name) $(pub-branch)
-
-pub-open : page-metadata/canonical-url.txt
-	open `cat page-metadata/canonical-url.txt`
 
 
 # Watching
