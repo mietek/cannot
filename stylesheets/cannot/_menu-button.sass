@@ -12,8 +12,9 @@
   height: ln(2)
   position: relative
   @include smart-opacity(0.2, 1)
-  @include smart-icon-before("closed", $object-color-name, $accent-color-name)
   @include smart-image-glow($accent-color)
+  @include smart-icon-before("closed", $object-color-name, $accent-color-name)
+  @include smart-image-glow-after($accent-color)
   &:after
     background-color: $object-color
   @include frob-when-frobbed
