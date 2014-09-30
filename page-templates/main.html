@@ -18,11 +18,11 @@ $if(head-extra)$$head-extra$$endif$
 <div class="wrapper">
 <nav class="menu-bar">
 <h1><a href=".">$project-title$</a></h1>
-$if(menu-items)$<span id="header-menu-button" class="menu-button"><a href="">Menu</a></span>
+$if(menu-items)$<span id="header-menu-button" class="menu-button"><a href="">Menu</a></span>$endif$
 <ul id="header-menu" class="menu">
 $menu-items$
 </ul>
-<script>
+$if(menu-items)$<script>
 if (localStorage['header-menu-open']) {
   document.getElementById('header-menu').classList.add('open');
   document.getElementById('header-menu-button').classList.add('open');
@@ -41,9 +41,9 @@ $body$
 <div class="wrapper">
 <nav class="menu-bar">
 <h1><a href=".">$project-title$</a></h1>
-$if(menu-items)$<ul id="footer-menu" class="menu open">
+<ul id="footer-menu" class="menu open">
 $menu-items$
-</ul>$endif$
+</ul>
 </nav>
 $if(footer-extra)$$footer-extra$$endif$
 </div>
