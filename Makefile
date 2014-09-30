@@ -187,7 +187,8 @@ $(foreach mode,dev pub,$(eval $(pages-macro)))
 
 vpath %.js scripts bower_components/cannot/scripts
 
-scripts := main.js index.js $(wildcard bower_components/*/index.js)
+script-roots := scripts $(wildcard bower_components/*/scripts)
+scripts      := main.js $(wildcard bower_components/*/index.js) $(call find-files,$(script-roots),*.js)
 
 dev-webpack-flags := --debug --output-pathinfo
 pub-webpack-flags := --optimize-minimize --optimize-occurence-order
