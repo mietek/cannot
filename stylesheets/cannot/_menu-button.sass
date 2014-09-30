@@ -1,12 +1,18 @@
 // NOTE: The z-index helps prevent Safari from flickering between antialiased and subpixel-antialised text *in other elements with a dark background* when this element animates. The 'pointer-events: none' counters the 'z-index' and lets pointer events through to the underlying layers.
 
 .menu-button
-  z-index: 2
-
-.menu-button
   @include no-text
   width: ln(2) + $icon-size
   height: ln(2)
+  z-index: 2
+  @include smart-icon-opacity
+  @include smart-icon-before("closed")
+  @include smart-image-glow-after
+  &:after
+    background-color: $object-color
+  @include frob-when-frobbed
+    &:after
+      background-color: $accent-color
 
 .menu-button:before, .menu-button:after
   width: $icon-size
@@ -17,14 +23,3 @@
   z-index: 3
   pointer-events: none
   content: ""
-
-
-.menu-button
-  @include smart-icon-opacity
-  @include smart-icon-before("closed")
-  @include smart-image-glow-after
-  &:after
-    background-color: $object-color
-  @include frob-when-frobbed
-    &:after
-      background-color: $accent-color
