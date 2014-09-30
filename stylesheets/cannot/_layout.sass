@@ -24,6 +24,27 @@ $accent-underline-color: rgba($accent-color, 0.8)
 @import "cannot/link-animation"
 
 
+@mixin rule-before
+  position: relative
+  &:before
+    border-bottom: 1px $rule-color solid
+    position: absolute
+    top: -1px
+    left: 0
+    right: 0
+    content: ""
+
+@mixin rule-after
+  position: relative
+  &:after
+    border-top: 1px $rule-color solid
+    position: absolute
+    bottom: 0
+    left: 0
+    right: 0
+    content: ""
+
+
 @media (max-width: $layout-width-small)
   @import "cannot/layout/small"
 

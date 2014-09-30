@@ -5,6 +5,17 @@ $column-width: ($layout-width - ln($column-count + 1)) / $column-count
   @return $n * $column-width
 
 
+
+header nav h1
+  @include rule-after
+
+footer nav h1
+  @include rule-before
+
+
+
+
+
 #header-menu-button
   display: none
 

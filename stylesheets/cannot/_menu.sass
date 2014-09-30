@@ -1,8 +1,8 @@
 .menu
+  @include rule-before
   background-color: rgba($background-color, 0.8)
   width: 100%
   height: auto
-  overflow: hidden
   position: relative
   z-index: 1
 
@@ -10,6 +10,7 @@
 .menu li
   height: ln(2)
   line-height: ln(2)
+  overflow: hidden
   position: relative
 
 // NOTE: The z-index helps prevent Safari from flickering between antialiased and subpixel-antialised text *in other elements with a dark background* when this element animates. The 'pointer-events: none' counters the 'z-index' and lets pointer events through to the underlying layers.
@@ -26,6 +27,7 @@
 
 .menu li a
   @include text-button
+  @include no-underline
   display: block
   width: 100%
   height: 100%

@@ -5,7 +5,7 @@
   height: 0;
 }
 
-.menu li a {
+.menu li {
   @include frob-always {
     border-bottom: 0px $accent-color solid;
   }
@@ -27,7 +27,7 @@
   height: ln(2);
 }
 
-.menu.open li a {
+.menu.open li {
   @include frob-always {
     border-bottom: 1px $rule-color solid;
   }
