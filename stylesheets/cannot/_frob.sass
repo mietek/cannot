@@ -46,6 +46,7 @@
   @include frob-when-high
     @include active-text-glow($accent-color)
 
+
 @mixin smart-image-glow
   @include frob-when-low
     @include image-glow(none)
@@ -76,6 +77,7 @@
     &:after
       @include active-image-glow($accent-color)
 
+
 @mixin smart-icon-opacity
   @include frob-when-low
     opacity: 0.2
@@ -83,6 +85,17 @@
     opacity: 1
   @include frob-when-high
     opacity: 1
+
+@mixin smart-icon-opacity-before
+  @include frob-when-low
+    &:before
+      opacity: 0.2
+  @include frob-when-medium
+    &:before
+      opacity: 1
+  @include frob-when-high
+    &:before
+      opacity: 1
 
 @mixin smart-icon-opacity-after
   @include frob-when-low
@@ -94,6 +107,15 @@
   @include frob-when-high
     &:after
       opacity: 1
+
+
+@mixin smart-icon($name)
+  @include smart-image-glow
+  &
+    @include icon($name, $object-color-name)
+  @include frob-when-frobbed
+    &
+      @include icon($name, $accent-color-name)
 
 @mixin smart-icon-before($name)
   @include smart-image-glow-before
