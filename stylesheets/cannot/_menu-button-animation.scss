@@ -3,99 +3,105 @@
 
 // Start
 
-.menu-button:before {
-  height: $icon-size;
-  top: (ln(2) - $icon-size) / 2;
-  transform: rotate(0deg);
-}
-
 .menu-button {
+	@include smart-image-glow-after;
 	@include frob-always {
+		&:before {
+		  height: $icon-size;
+		  top: (ln(2) - $icon-size) / 2;
+		  transform: rotate(0deg);
+		}
 		&:after {
 			opacity: 0;
+		  height: $icon-size;
+		  top: (ln(2) - $icon-size) / 2;
+		  transform: rotate(0deg);
 		}
 	}
-}
-
-.menu-button:after {
-  height: $icon-size;
-  top: (ln(2) - $icon-size) / 2;
-  transform: rotate(0deg);
 }
 
 
 // End
 
-.menu-button.open:before {
-  height: $icon-stroke;
-  top: (ln(2) - $icon-stroke) / 2;
-  transform: rotate(-180deg);
-}
-
 .menu-button.open {
 	@include frob-always {
+		&:before {
+		  height: $icon-stroke;
+		  top: (ln(2) - $icon-stroke) / 2;
+		  transform: rotate(-180deg);
+		}
 		&:after {
+			@include image-glow(none);
 			opacity: 1;
+		  height: $icon-stroke;
+		  top: (ln(2) - $icon-stroke) / 2;
+		  transform: rotate(-180deg);
 		}
 	}
-}
-
-.menu-button.open:after {
-  height: $icon-stroke;
-  top: (ln(2) - $icon-stroke) / 2;
-  transform: rotate(-180deg);
 }
 
 
 // Forwards
 
 .menu-button.open {
-  transition:
-    ease(opacity, 1, 0);          // General menu-button transition
-}
-
-.menu-button.open:before {
-  transition:
-    ease(filter, 1, 0),           // General menu-button transition
-    ease(-webkit-filter, 1, 0),   // General menu-button transition
-    ease(height, 1, 0),           // Step 1
-    ease(top, 1, 0),              // Step 1
-    ease(transform, 2, 1);        // Step 2
-}
-
-.menu-button.open:after {
-  transition:
-    ease(filter, 1, 0),           // General menu-button transition
-    ease(-webkit-filter, 1, 0),   // General menu-button transition
-    ease(opacity, 0, 0),          // Step 0
-    ease(height, 1, 0),           // Step 1
-    ease(top, 1, 0),              // Step 1
-    ease(transform, 2, 1);        // Step 2
+	@include frob-always {
+		& {
+		  transition:
+		    ease(filter, 1, 0),           // General menu-button transition
+		    ease(-webkit-filter, 1, 0),   // General menu-button transition
+		    ease(opacity, 1, 0);          // General menu-button transition
+		}
+		&:before {
+		  transition:
+		    ease(filter, 1, 0),           // General menu-button transition
+		    ease(-webkit-filter, 1, 0),   // General menu-button transition
+		    ease(height, 1, 0),           // Step 1
+		    ease(top, 1, 0),              // Step 1
+		    ease(transform, 2, 1);        // Step 2
+		}
+		&:after {
+		  transition:
+//		    ease(filter, 1, 0),           // General menu-button transition
+//		    ease(-webkit-filter, 1, 0),   // General menu-button transition
+		    ease(opacity, 0, 0),          // Step 0
+		    ease(height, 1, 0),           // Step 1
+		    ease(top, 1, 0),              // Step 1
+		    ease(transform, 2, 1),        // Step 2
+		    ease(filter, 1, 3),           // Workaround
+		    ease(-webkit-filter, 1, 3);   // Workaround
+		}
+	}
 }
 
 
 // Backwards
 
 .menu-button {
-  transition:
-    ease(opacity, 1, 0);          // General menu-button transition
-}
-
-.menu-button:before {
-  transition:
-    ease(filter, 1, 0),           // General menu-button transition
-    ease(-webkit-filter, 1, 0),   // General menu-button transition
-    ease(transform, 2, 0),        // Step 1
-    ease(height, 1, 2),           // Step 2
-    ease(top, 1, 2);              // Step 2
-}
-
-.menu-button:after {
-  transition:
-    ease(filter, 1, 0),           // General menu-button transition
-    ease(-webkit-filter, 1, 0),   // General menu-button transition
-    ease(transform, 2, 0),        // Step 1
-    ease(height, 1, 2),           // Step 2
-    ease(top, 1, 2),              // Step 2
-    ease-out(opacity, 1, 3);      // Step 3
+	@include frob-always {
+		& {
+		  transition:
+		    ease(filter, 1, 0),           // General menu-button transition
+		    ease(-webkit-filter, 1, 0),   // General menu-button transition
+		    ease(opacity, 1, 0);          // General menu-button transition
+		}
+		&:before {
+		  transition:
+		    ease(filter, 1, 0),           // General menu-button transition
+		    ease(-webkit-filter, 1, 0),   // General menu-button transition
+		    ease(transform, 2, 0),        // Step 1
+		    ease(height, 1, 2),           // Step 2
+		    ease(top, 1, 2);              // Step 2
+		}
+		&:after {
+		  transition:
+		    ease(filter, 0, 0),           // Workaround
+		    ease(-webkit-filter, 0, 0),   // Workaround
+//		    ease(filter, 1, 0),           // General menu-button transition
+//		    ease(-webkit-filter, 1, 0),   // General menu-button transition
+		    ease(transform, 2, 0),        // Step 1
+		    ease(height, 1, 2),           // Step 2
+		    ease(top, 1, 2),              // Step 2
+		    ease-out(opacity, 1, 3);      // Step 3
+		}
+	}
 }

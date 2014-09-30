@@ -110,7 +110,6 @@
 
 
 @mixin smart-icon($name)
-  @include smart-image-glow
   &
     @include icon($name, $object-color-name)
   @include frob-when-frobbed
@@ -118,7 +117,6 @@
       @include icon($name, $accent-color-name)
 
 @mixin smart-icon-before($name)
-  @include smart-image-glow-before
   &:before
     @include icon($name, $object-color-name)
   @include frob-when-frobbed
@@ -126,7 +124,6 @@
       @include icon($name, $accent-color-name)
 
 @mixin smart-icon-after($name)
-  @include smart-image-glow-after
   &:after
     @include icon($name, $object-color-name)
   @include frob-when-frobbed
