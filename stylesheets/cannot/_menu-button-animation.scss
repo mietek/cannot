@@ -1,32 +1,49 @@
+// NOTE: There is a bug in WebKit where filter does not transition or transitions only within a clipped boundary, until some milliseconds later or until another pointer event. Probably.
+
+
 // Start
 
 .menu-button:before {
-  transform: rotate(0deg);
   height: $icon-size;
-  top: (ln(2) - $icon-size) / 2
+  top: (ln(2) - $icon-size) / 2;
+  transform: rotate(0deg);
+}
+
+.menu-button {
+	@include frob-always {
+		&:after {
+			opacity: 0;
+		}
+	}
 }
 
 .menu-button:after {
-  opacity: 0;
   height: $icon-size;
+  top: (ln(2) - $icon-size) / 2;
   transform: rotate(0deg);
-  top: (ln(2) - $icon-size) / 2
 }
 
 
 // End
 
 .menu-button.open:before {
-  transform: rotate(-180deg);
   height: $icon-stroke;
   top: (ln(2) - $icon-stroke) / 2;
+  transform: rotate(-180deg);
+}
+
+.menu-button.open {
+	@include frob-always {
+		&:after {
+			opacity: 1;
+		}
+	}
 }
 
 .menu-button.open:after {
-  opacity: 1;
   height: $icon-stroke;
-  transform: rotate(-180deg);
   top: (ln(2) - $icon-stroke) / 2;
+  transform: rotate(-180deg);
 }
 
 
