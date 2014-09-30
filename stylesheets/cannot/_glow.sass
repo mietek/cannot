@@ -52,16 +52,3 @@ $active-image-glow-rounds: 4 !default
 
 @mixin active-image-glow($color)
   @include _image-glow($color, $glow-radius, $active-image-glow-rounds)
-
-
-@mixin smart-text-glow($color)
-  &
-    @include text-glow(none)
-  .touch &:active
-    @include active-text-glow($color)
-  .no-touch &:hover
-    @include text-glow($color)
-  .no-touch &:active
-    @include text-glow(none)
-  .no-touch &:hover:active
-    @include active-text-glow($color)

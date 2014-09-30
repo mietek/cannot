@@ -36,32 +36,8 @@
 
 
 .menu li
-  &:after
-    @include icon("right", $object-color-name)
-  @include frob-when-frobbed
-    &:after
-      @include icon("right", $accent-color-name)
-
-
-.menu li:after
-  opacity: $icon-opacity
-  @include image-glow(none)
-
-.touch .menu li:active:after
-  opacity: $active-icon-opacity
-  @include active-image-glow($accent-color)
-
-.no-touch .menu li:hover:after
-  opacity: $active-icon-opacity
-  @include image-glow($accent-color)
-
-.no-touch .menu li:active:after
-  opacity: $icon-opacity
-  @include image-glow(none)
-
-.no-touch .menu li:hover:active:after
-  opacity: $active-icon-opacity
-  @include active-image-glow($accent-color)
+  @include smart-icon-after("right")
+  @include smart-icon-opacity-after
 
 
 @import "cannot/menu-animation"

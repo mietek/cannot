@@ -21,6 +21,97 @@
     @content
 
 
+@mixin frob-when-low
+  &
+    @content
+  .no-touch &:active
+    @content
+
+@mixin frob-when-medium
+  .no-touch &:hover
+    @content
+
+@mixin frob-when-high
+  .touch &:active
+    @content
+  .no-touch &:hover:active
+    @content
+
+
 @mixin no-underline
   @include frob-always
     border-bottom: none
+
+
+@mixin smart-text-glow
+  @include frob-when-low
+    @include text-glow(none)
+  @include frob-when-medium
+    @include text-glow($accent-color)
+  @include frob-when-high
+    @include active-text-glow($accent-color)
+
+@mixin smart-image-glow
+  @include frob-when-low
+    @include image-glow(none)
+  @include frob-when-medium
+    @include image-glow($accent-color)
+  @include frob-when-high
+    @include active-image-glow($accent-color)
+
+@mixin smart-image-glow-before
+  @include frob-when-low
+    &:before
+      @include image-glow(none)
+  @include frob-when-medium
+    &:before
+      @include image-glow($accent-color)
+  @include frob-when-high
+    &:before
+      @include active-image-glow($accent-color)
+
+@mixin smart-image-glow-after
+  @include frob-when-low
+    &:after
+      @include image-glow(none)
+  @include frob-when-medium
+    &:after
+      @include image-glow($accent-color)
+  @include frob-when-high
+    &:after
+      @include active-image-glow($accent-color)
+
+@mixin smart-icon-opacity
+  @include frob-when-low
+    opacity: 0.2
+  @include frob-when-medium
+    opacity: 1
+  @include frob-when-high
+    opacity: 1
+
+@mixin smart-icon-opacity-after
+  @include frob-when-low
+    &:after
+      opacity: 0.2
+  @include frob-when-medium
+    &:after
+      opacity: 1
+  @include frob-when-high
+    &:after
+      opacity: 1
+
+@mixin smart-icon-before($name)
+  @include smart-image-glow-before
+  &:before
+    @include icon($name, $object-color-name)
+  @include frob-when-frobbed
+    &:before
+      @include icon($name, $accent-color-name)
+
+@mixin smart-icon-after($name)
+  @include smart-image-glow-after
+  &:after
+    @include icon($name, $object-color-name)
+  @include frob-when-frobbed
+    &:after
+      @include icon($name, $accent-color-name)

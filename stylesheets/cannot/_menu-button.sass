@@ -23,61 +23,11 @@
 
 
 .menu-button
-  opacity: $icon-opacity
-
-.touch .menu-button:active
-  opacity: $active-icon-opacity
-
-.no-touch .menu-button:hover
-  opacity: $active-icon-opacity
-
-.no-touch .menu-button:active
-  opacity: $icon-opacity
-
-.no-touch .menu-button:hover:active
-  opacity: $active-icon-opacity
-
-
-.menu-button
-  &:before
-    @include icon("closed", $object-color-name)
+  @include smart-icon-opacity
+  @include smart-icon-before("closed")
+  @include smart-image-glow-after
+  &:after
+    background-color: $object-color
   @include frob-when-frobbed
-    &:before
-      @include icon("closed", $accent-color-name)
-
-
-.menu-button:before
-  @include image-glow(none)
-
-.touch .menu-button:active:before
-  @include active-image-glow($accent-color)
-
-.no-touch .menu-button:hover:before
-  @include image-glow($accent-color)
-
-.no-touch .menu-button:active:before
-  @include image-glow(none)
-
-.no-touch .menu-button:hover:active:before
-  @include active-image-glow($accent-color)
-
-
-.menu-button:after
-  background-color: $object-color
-  @include image-glow(none)
-
-.touch .menu-button:active:after
-  background-color: $accent-color
-  @include active-image-glow($accent-color)
-
-.no-touch .menu-button:hover:after
-  background-color: $accent-color
-  @include image-glow($accent-color)
-
-.no-touch .menu-button:active:after
-  background-color: $accent-color
-  @include image-glow(none)
-
-.no-touch .menu-button:hover:active:after
-  background-color: $accent-color
-  @include active-image-glow($accent-color)
+    &:after
+      background-color: $accent-color

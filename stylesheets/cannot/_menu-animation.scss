@@ -7,7 +7,7 @@
 
 .menu li a {
   @include frob-always {
-    border-bottom: 0px rgba($accent-color, $active-border-opacity) solid;
+    border-bottom: 0px $accent-color solid;
   }
 }
 
@@ -29,7 +29,7 @@
 
 .menu.open li a {
   @include frob-always {
-    border-bottom: 1px rgba($object-color, $border-opacity) solid;
+    border-bottom: 1px $rule-color solid;
   }
 }
 
