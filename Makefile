@@ -88,7 +88,7 @@ define watch-macro
   define $(mode)-watch
     $(fswatch-off)
     $(browsersync-off)
-    fswatch --exclude='$(CURDIR)/out' --one-per-batch --recursive $(fswatch-roots) --format pgrep/$(project-name) | xargs -n1 -I{} '$(MAKE)' $(mode)-build &
+    fswatch --exclude='.*/out/.*' --one-per-batch --recursive $(fswatch-roots) --format pgrep/$(project-name) | xargs -n1 -I{} '$(MAKE)' $(mode)-build &
     ( while ps -p $$$${PPID} >/dev/null ; do sleep 1 ; done ; $(fswatch-off) ; $(browsersync-off) ) &
     browser-sync start --no-online --files 'out/$(mode)/**/*' --server 'out/$(mode)' --config=$$(filter %/browsersync.js,$$^) --files pgrep/$(project-name)
   endef
