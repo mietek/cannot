@@ -6,6 +6,6 @@
   ],
   "license": "MIT X11",
   "dependencies": {
-    "ease-scroll": "^1.0.5"
+    "ease-scroll": "*"
   }
 }
