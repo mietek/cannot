@@ -1,3 +1,12 @@
+header.hero:before
+  background-color: $gray0
+  top: 0
+  bottom: ln(2)
+  left: 0
+  right: 0
+  position: absolute
+  content: ""
+
 header.hero .menu
   background: none
   &:before
@@ -12,7 +21,7 @@ header.hero .menu li
     border-bottom: 0px white solid
 
 header.hero .menu.open li
-  background-color: transparent
+  background-color: $gray0
   @include frob-always
     border-bottom: 1px rgba(white, 0.15) solid
 

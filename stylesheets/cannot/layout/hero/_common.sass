@@ -1,5 +1,4 @@
 header.hero
-  background: $gray0
   color: rgba(white, 0.6)
   -webkit-font-smoothing: antialiased
 
@@ -15,7 +14,11 @@ main.hero
 
 
 #hero
-  background-color: $gray0
+  background-color: $gray3
+  background-position: center top
+  background-size: cover
+  background-repeat: no-repeat
+  background-image: url(_images/hero.jpg)
   color: white
   margin-top: ln(-2)
   display: flex
@@ -27,6 +30,7 @@ main.hero
 #hero .hero-wrapper
   margin-top: ln(2)
   margin-bottom: ln(2)
+  background-color: $accent-color
 
 #hero h1
   display: inline-block
