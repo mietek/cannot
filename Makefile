@@ -76,7 +76,7 @@ vpath %.js config bower_components/cannot/config
 
 fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
 
-fswatch-off     := pgrep -f 'fswatch.* --format pgrep/$(project-name)' | xargs kill
+fswatch-off     := pgrep -f 'fswatch.* --format-time pgrep/$(project-name)' | xargs kill
 browsersync-off := pgrep -f 'browser-sync.* --files pgrep/$(project-name)' | xargs kill
 
 .PHONY : unwatch
@@ -88,7 +88,7 @@ define watch-macro
   define $(mode)-watch
     $(fswatch-off)
     $(browsersync-off)
-    fswatch --exclude='.*/out/.*' --one-per-batch --recursive $(fswatch-roots) --format pgrep/$(project-name) | xargs -n1 -I{} '$(MAKE)' $(mode)-build &
+    fswatch --exclude='.*/out/.*' --one-per-batch --recursive $(fswatch-roots) --format-time pgrep/$(project-name) | xargs -n1 -I{} '$(MAKE)' $(mode)-build &
     ( while ps -p $$$${PPID} >/dev/null ; do sleep 1 ; done ; $(fswatch-off) ; $(browsersync-off) ) &
     browser-sync start --no-online --files 'out/$(mode)/**/*' --server 'out/$(mode)' --config=$$(filter %/browsersync.js,$$^) --files pgrep/$(project-name)
   endef
