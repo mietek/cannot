@@ -1,10 +1,11 @@
 header.hero
   background: black
-  color: rgba(white, 0.4)
+  color: rgba(white, 0.6)
+  -webkit-font-smoothing: antialiased
 
 header.hero a
   @include smart-text-glow(white)
-  color: rgba(white, 0.4)
+  color: rgba(white, 0.6)
   @include frob-when-frobbed
     color: white
 
@@ -21,6 +22,7 @@ main.hero
   flex-direction: column
   justify-content: space-around
   text-align: center
+  -webkit-font-smoothing: antialiased
 
 #hero .hero-wrapper
   margin-top: ln(2)
@@ -42,7 +44,7 @@ main.hero
   margin-bottom: ln(1/2)
   position: relative
   @include smart-icon-before("down", white, white)
-  @include smart-opacity-before(0.4, 1)
+  @include smart-opacity-before(0.6, 1)
   @include smart-image-glow-before($white)
 
 #hero-button:before

@@ -1,22 +1,27 @@
-header.hero .menu-button
-  @include smart-image-glow(white)
-  @include smart-icon-before("closed", white, white)
-  @include smart-image-glow-after(white)
-  @include frob-always
-    &:after
-      background-color: white
-
 header.hero .menu
   background: none
+  &:before
+    border-bottom: 1px rgba(white, 0.15) solid
 
 header.hero .menu li
   background-color: white
-  @include smart-icon-after("right", white, white)
+  @include smart-opacity-after(0.3, 1)
   @include smart-image-glow-after(white)
+  @include smart-icon-after("right", white, white)
   @include frob-always
     border-bottom: 0px white solid
 
 header.hero .menu.open li
   background-color: transparent
   @include frob-always
-    border-bottom: 1px rgba($object-color, 0.2) solid
+    border-bottom: 1px rgba(white, 0.15) solid
+
+
+header.hero .menu-button
+  @include smart-opacity(0.3, 1)
+  @include smart-image-glow(white)
+  @include smart-icon-before("closed", white, white)
+  @include smart-image-glow-after(white)
+  @include frob-always
+    &:after
+      background-color: white
