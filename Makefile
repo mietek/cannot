@@ -34,6 +34,16 @@ $(foreach mode,dev pub,$(eval $(cannot-macro)))
 .DELETE_ON_ERROR :
 
 
+# Utilities
+# ---------
+
+find-files = $(shell find -L $(1) -type f -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
+find-dirs  = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
+
+extract-resources = grep -Eo 'url\($(1)/[^)]+\)' $< | sed -E 's,^.*/(.*)\).*$$,\1,' | sort -u >$@ || touch $@
+extract-comments = grep -Eo '/\* $(1): .* \*/' $< | sed -E 's/^.*: (.*) .*$$/\1/' | sort -u >$@ || touch $@
+
+
 # Publishing
 # ----------
 
@@ -135,8 +145,6 @@ $(foreach mode,dev pub,$(eval $(optimize-macro)))
 # Pages
 # -----
 
-find-files = $(shell find -L $(1) -type f -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
-
 vpath %.md   pages          bower_components/cannot/pages
 vpath %.txt  page-metadata  bower_components/cannot/page-metadata
 vpath %.html page-includes  bower_components/cannot/page-includes
@@ -226,9 +234,6 @@ $(foreach mode,dev pub,$(eval $(stylesheets-macro)))
 # Fonts
 # -----
 
-find-dirs         = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
-extract-resources = grep -Eo 'url\($(1)/[^)]+\)' $< | sed -E 's,^.*/(.*)\).*$$,\1,' | sort -u >$@ || touch $@
-
 font-roots := fonts $(wildcard bower_components/*/fonts)
 font-dirs  := $(call find-dirs,$(font-roots),*)
 
@@ -236,13 +241,16 @@ vpath %.woff $(font-dirs)
 
 out/tmp/dev/fonts.txt: out/tmp/dev/stylesheets.css | out/tmp/dev ; $(call extract-resources,_fonts)
 
-fonts = $(shell cat out/tmp/dev/fonts.txt)
-
 define fonts-macro
-  $(mode)-fonts = $$(addprefix out/$(mode)/_fonts/,$$(fonts))
+  define $(mode)-echo-fonts
+    echo '$(mode)-font-names := $$$$(shell cat out/tmp/dev/fonts.txt)' >$$@
+    echo '$(mode)-fonts := $$$$(addprefix out/$(mode)/_fonts/,$$$$($(mode)-font-names))' >>$$@
+    echo '$(mode)-fonts : $$$$($(mode)-fonts)' >>$$@
+    echo '$$$$($(mode)-fonts) :' >>$$@
+  endef
 
   .PHONY                   : $(mode)-fonts
-  out/tmp/$(mode)/fonts.mk : out/tmp/dev/fonts.txt | out/tmp/$(mode) ; echo '$(mode)-fonts: $$($(mode)-fonts)' >$$@
+  out/tmp/$(mode)/fonts.mk : out/tmp/dev/fonts.txt | out/tmp/$(mode) ; $$($(mode)-echo-fonts)
   -include out/tmp/$(mode)/fonts.mk
 
   out/$(mode)/_fonts/% : % | out/$(mode)/_fonts ; cp $$< $$@
@@ -255,7 +263,6 @@ $(foreach mode,dev pub,$(eval $(fonts-macro)))
 
 image-roots := images bower_components/cannot/images
 image-dirs  := $(call find-dirs,$(image-roots),*)
-std-images  := favicon-16.png favicon-32.png favicon-48.png
 
 vpath %.ico $(image-dirs)
 vpath %.jpg $(image-dirs)
@@ -264,13 +271,16 @@ vpath %.svg $(image-dirs)
 
 out/tmp/dev/images.txt: out/tmp/dev/stylesheets.css | out/tmp/dev ; $(call extract-resources,_images)
 
-images = $(std-images) $(filter-out iconsheet%,$(shell cat out/tmp/dev/images.txt))
-
 define images-macro
-  $(mode)-images = out/$(mode)/favicon.ico $$(addprefix out/$(mode)/_images/,$$(images) $$(addsuffix .gz,$$(filter %.svg,$$(images))))
+  define $(mode)-echo-images
+    echo '$(mode)-image-names := favicon-16.png favicon-32.png favicon-48.png $$$$(filter-out iconsheet%,$$$$(shell cat out/tmp/dev/images.txt))' >$$@
+    echo '$(mode)-images := out/$(mode)/favicon.ico $$$$(addprefix out/$(mode)/_images/,$$$$($(mode)-image-names) $$$$(addsuffix .gz,$$(filter %.svg,$$$$($(mode)-image-names))))' >>$$@
+    echo '$(mode)-images : $$$$($(mode)-images)' >>$$@
+    echo '$$$$($(mode)-images) :' >>$$@
+  endef
 
   .PHONY                    : $(mode)-images
-  out/tmp/$(mode)/images.mk : out/tmp/dev/images.txt | out/tmp/$(mode) ; echo '$(mode)-images: $$($(mode)-images)' >$$@
+  out/tmp/$(mode)/images.mk : out/tmp/dev/images.txt | out/tmp/$(mode) ; $$($(mode)-echo-images)
   -include out/tmp/$(mode)/images.mk
 
   out/$(mode)/%.ico         : %.ico | out/$(mode)         ; cp $$< $$@
@@ -284,8 +294,6 @@ $(foreach mode,dev pub,$(eval $(images-macro)))
 # Iconsheets
 # ----------
 
-extract-comments = grep -Eo '/\* $(1): .* \*/' $< | sed -E 's/^.*: (.*) .*$$/\1/' | sort -u >$@ || touch $@
-
 vpath %.txt image-metadata bower_components/cannot/image-metadata
 
 out/tmp/dev/icon-shapes.txt : icon-shapes.txt | out/tmp/dev ; cp $< $@
@@ -295,10 +303,7 @@ out/tmp/pub/icon-shapes.txt : out/tmp/dev/stylesheets.css | out/tmp/pub ; $(call
 out/tmp/pub/icon-colors.txt : out/tmp/dev/stylesheets.css | out/tmp/pub ; $(call extract-comments,icon-color)
 
 define iconsheet-helper-macro
-  $(mode)-icon-shapes = $$(shell cat out/tmp/$(mode)/icon-shapes.txt)
-  $(mode)-icon-colors = $$(shell cat out/tmp/$(mode)/icon-colors.txt)
-
-  define $(mode)-write-iconsheet-helper
+  define $(mode)-echo-iconsheet-helper
     echo '$$$$icon-shapes: ' >$$@
     cat out/tmp/$(mode)/icon-shapes.txt >>$$@
     echo '; $$$$icon-colors: ' >>$$@
@@ -308,27 +313,31 @@ define iconsheet-helper-macro
 
   .PHONY                          : $(mode)-iconsheet
   out/tmp/$(mode)/icons.ready     : out/tmp/$(mode)/icon-shapes.txt out/tmp/$(mode)/icon-colors.txt ; touch $$@
-  out/tmp/$(mode)/_iconsheet.scss : out/tmp/$(mode)/icons.ready                                     ; $$($(mode)-write-iconsheet-helper)
+  out/tmp/$(mode)/_iconsheet.scss : out/tmp/$(mode)/icons.ready                                     ; $$($(mode)-echo-iconsheet-helper)
 endef
 $(foreach mode,dev pub,$(eval $(iconsheet-helper-macro)))
 
-define iconsheet-macro
-  $(mode)-icon-cells$($(scale))   = $$(patsubst %,icon-$$$${shape}-%$($(scale)).png,$$($(mode)-icon-colors))
-  $(mode)-icon-columns$($(scale)) = $$(foreach shape,$$($(mode)-icon-shapes),out/tmp/$(mode)/icon-column-$$(shape)$$($(scale)).png)
+define compile-icon-column
+  convert $^ -append $@
+endef
 
-  define $(mode)-write-iconsheet$$($(scale))
-    echo >$$@
-    for shape in $$($(mode)-icon-shapes) ; do \
-      echo "out/tmp/$(mode)/icon-column-$$$${shape}$$($(scale)).png : $$($(mode)-icon-cells$$($(scale))) | out/tmp/$(mode)" >>$$@ ; \
-      echo '	convert $$$$^ -append $$$$@' >>$$@ ; \
-    done
-    echo 'out/$(mode)/_images/iconsheet$$($(scale)).png : $$($(mode)-icon-columns$$($(scale))) | out/$(mode)/_images' >>$$@ ; \
-    echo '	convert $$$$^ +append $$$$@' >>$$@
-    echo '	$$$$($(mode)-optimize-png)' >>$$@
+define iconsheet-macro
+  define $(mode)-compile-iconsheet
+    convert $$^ +append $$@
+    $$($(mode)-optimize-png)
+  endef
+
+  define $(mode)-echo-iconsheet$($(scale))
+    echo '$(mode)-icon-shapes$($(scale)) := $$$$(shell cat out/tmp/$(mode)/icon-shapes.txt)' >$$@
+    echo '$(mode)-icon-colors$($(scale)) := $$$$(shell cat out/tmp/$(mode)/icon-colors.txt)' >>$$@
+    echo '$(mode)-icon-columns$($(scale)) := $$$$(foreach shape,$$$$($(mode)-icon-shapes$($(scale))),out/tmp/$(mode)/icon-column-$$$$(shape)$$($(scale)).png)' >>$$@
+    echo '$(mode)-icon-column-cells$($(scale)) := $$$$(addsuffix $($(scale)).png,$$$$(addprefix icon-%-,$$$$($(mode)-icon-colors$($(scale)))))' >>$$@
+    echo '$$$$($(mode)-icon-columns$($(scale))) : out/tmp/$(mode)/icon-column-%$($(scale)).png : $$$$($(mode)-icon-column-cells$($(scale))) | out/tmp/$(mode) ; $$$$(compile-icon-column)' >>$$@
+    echo 'out/$(mode)/_images/iconsheet$($(scale)).png : $$$$($(mode)-icon-columns$($(scale))) | out/$(mode)/_images ; $$$$($(mode)-compile-iconsheet)' >>$$@
   endef
 
   $(mode)-iconsheet                        : out/$(mode)/_images/iconsheet$$($(scale)).png
-  out/tmp/$(mode)/iconsheet$$($(scale)).mk : out/tmp/$(mode)/icons.ready ; $$($(mode)-write-iconsheet$$($(scale)))
+  out/tmp/$(mode)/iconsheet$$($(scale)).mk : out/tmp/$(mode)/icons.ready ; $$($(mode)-echo-iconsheet$$($(scale)))
   -include out/tmp/$(mode)/iconsheet$$($(scale)).mk
 endef
 scale@1x :=
