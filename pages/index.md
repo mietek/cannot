@@ -1,5 +1,11 @@
 ---
 title: Not canned
+html-class: hero
+header-class: hero
+main-class: hero
+hero:
+  <h1>Cannot</h1>
+  <p>Not canned.</p>
 ---
 
 
