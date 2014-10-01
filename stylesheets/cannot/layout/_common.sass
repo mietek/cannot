@@ -167,15 +167,28 @@ footer
 
 
 
-
 #what-browser
+  background: rgba(#f00, 0.8)
+  background: linear-gradient(to right, rgba(#f00, 0.8) 0%, rgba(white, 0.0) 100%)
+  color: white
   bottom: 0
-  height: ln(2)
-  line-height: ln(2)
+  height: ln(1)
+  line-height: ln(1)
   padding-right: ln(1)
   padding-left: ln(1)
   position: fixed
   width: 100%
+
+#what-browser a
+  @include smart-text-glow(white)
+  @include frob-always
+    color: white
+    &:after
+      border-bottom: 1px rgba(white, 0.4) solid
+
+#what-browser p
+  margin: 0
+
 
 
 @import "cannot/layout/accent/common"
