@@ -21,5 +21,34 @@ footer nav h1 a
     transition: ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
 
 
+header.hero nav h1 a
+  @include smart-opacity(0.6, 1)
+  @include smart-image-glow(white)
+  @include image("logotype-white-large", "png")
+  @include frob-when-frobbed
+    @include image("logotype-white-large", "png")
+  @include frob-always
+    text-shadow: none
+    transition: ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
+
+#hero h1
+  @include image("logotype-white-hero-large", "png")
+  @include no-text
+  background-position: center center
+  width: 272px
+  height: ln(2)
+  background-size: 272px ln(2)
+
+
+header.accent nav h1 a
+  @include smart-image-glow(white)
+  @include image("logotype-white-large", "png")
+  @include frob-when-frobbed
+    @include image("logotype-white-large", "png")
+  @include frob-always
+    text-shadow: none
+    transition: ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
+
+
 main h1
   letter-spacing: -2px
