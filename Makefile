@@ -12,8 +12,6 @@
 
 project-name := $(notdir $(CURDIR))
 
-.DELETE_ON_ERROR :
-
 .PHONY : all build clean dev watch pub push open
 all    : dev-watch
 build  : dev-build pub-build
@@ -22,8 +20,7 @@ dev    : dev-watch
 watch  : dev-watch
 pub    : pub-push
 push   : pub-push
-open   : page-metadata/canonical-url.txt
-	open `cat page-metadata/canonical-url.txt`
+open   : canonical-url.txt ; open `cat $<`
 
 define cannot-macro
   .PHONY        : $(mode)-build
@@ -33,6 +30,8 @@ define cannot-macro
   out/$(mode) out/$(mode)/_fonts out/$(mode)/_images out/tmp/$(mode) : ; [ -d $$@ ] || mkdir -p $$@
 endef
 $(foreach mode,dev pub,$(eval $(cannot-macro)))
+
+.DELETE_ON_ERROR :
 
 
 # Publishing
