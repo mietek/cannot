@@ -13,15 +13,6 @@ $layout-width: $layout-width-small
 @import "cannot/menu"
 
 
-header
-  position: relative
-  overflow: hidden
-
-
-footer nav
-  @include rule-before
-
-
 nav h1 a
   background-position: ln(1) center
   padding-left: ln(1)
@@ -29,6 +20,10 @@ nav h1 a
   height: ln(2)
   line-height: ln(2)
 
+
+header
+  position: relative
+  overflow: hidden
 
 #header-button-wrapper
   position: absolute
@@ -60,6 +55,12 @@ main nav
   padding-left: 0 !important
   padding-right: 0 !important
 
+
+footer
+  position: relative
+
+footer nav
+  @include rule-before
 
 #footer-button-wrapper
   position: absolute

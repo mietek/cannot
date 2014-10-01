@@ -25,7 +25,7 @@ strong
 
 
 nav h1
-  position: relative
+  position: relative // TODO: Why?
 
 nav h1 a
   @include text-button
@@ -41,6 +41,7 @@ header
 
 main
   margin-top: ln(-2)
+  padding-top: ln(6)
   padding-bottom: ln(6)
 
 footer
@@ -48,27 +49,22 @@ footer
 
 
 
-
-main h1
-  color: $accent-color
-  font-size: em(2)
-  font-weight: bold
-  line-height: ln(2)
-  margin-top: ln(4)
-  margin-bottom: ln(1)
-
-main h1:first-of-type
-  margin-top: 0
-  padding-top: ln(6)
-
-
-main h2
-  color: $accent-color
-  font-size: em(3/2)
-  font-weight: bold
-  line-height: ln(2)
-  margin-bottom: ln(1/2)
+main section
   position: relative
+
+section.level1
+  margin-top: ln(6)
+  &:first-of-type
+    margin-top: 0
+  h1
+    color: $accent-color
+    font-size: em(2)
+    font-weight: bold
+    line-height: ln(2)
+    margin-bottom: ln(1)
+
+section.level2
+  margin-top: ln(4)
   &:before
     border-top: 1px $accent-color solid
     position: absolute
@@ -76,18 +72,16 @@ main h2
     left: 0
     right: 0
     content: ""
-
-section.level2
-  margin-top: ln(4)
-
-main h3
-  color: $accent-color
-  font-weight: bold
-  margin-bottom: ln(1/2)
+  h2
+    color: $accent-color
+    font-size: em(3/2)
+    font-weight: bold
+    line-height: ln(2)
+    margin-bottom: ln(1/2)
+    position: relative
 
 section.level3
   margin-top: ln(3)
-  position: relative
   &:before
     border-top: 1px rgba($object-color, 0.2) solid
     position: absolute
@@ -95,37 +89,54 @@ section.level3
     left: 0
     right: 0
     content: ""
-
-main h4
-  color: $accent-color
-  font-weight: bold
-  margin-bottom: ln(1/2)
+  h3
+    color: $accent-color
+    font-weight: bold
+    margin-bottom: ln(1/2)
+  p:first-of-type
+    margin-top: ln(1/2) // TODO: Why does it have more?
 
 section.level4
-  margin-top: ln(3/2)
-
-main h5
-  font-weight: bold
-  margin-bottom: ln(1/2)
+  margin-top: ln(2)
+  h4
+    color: $accent-color
+    font-weight: bold
+    margin-bottom: ln(1/2)
+  p:first-of-type
+    margin-top: ln(1/2) // TODO: Why does it have more?
 
 section.level5
-  margin-top: ln(1)
-
-main h6
-  color: $object-color
-  font-weight: bold
-  margin-bottom: ln(1/2)
+  margin-top: ln(3/2)
+  h5
+    font-weight: bold
+    margin-bottom: ln(1/2)
+  p:first-of-type
+    margin-top: ln(1/2) // TODO: Why does it have more?
 
 section.level6
-  margin-top: ln(1/2)
+  margin-top: ln(1)
+  h6
+    font-style: italic
+    margin-bottom: ln(1/2)
+  p:first-of-type
+    margin-top: ln(1/2) // TODO: Why does it have more?
 
+
+
+
+
+.toc
+  margin-bottom: ln(1)
+
+.toc.menu
+  display: none !important
 
 hr
   border: none
   border-top: 1px $accent-color solid
   height: ln(1)
-  margin-top: ln(5)
-  margin-bottom: ln(1/2)
+  margin-top: ln(5) - 1
+  margin-bottom: ln(1/2) + 1
 
 p, main ul, main ol, main pre, main blockquote
   margin-top: ln(1/2)
