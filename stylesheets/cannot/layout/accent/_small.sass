@@ -1,0 +1,31 @@
+header.accent .menu
+  background: none
+  &:before
+    border-bottom: 1px rgba(white, 0.15) solid
+
+header.accent .menu li
+  background-color: white
+  @include smart-opacity-after(0.3, 1)
+  @include smart-image-glow-after(white)
+  @include smart-icon-after("right", white, white)
+  @include frob-always
+    border-bottom: 0px $blue solid
+
+header.accent .menu.open li
+  background-color: transparent
+  @include frob-always
+    border-bottom: 1px rgba(white, 0.15) solid
+
+header.accent .menu.open li:last-of-type
+  @include frob-always
+    border-bottom: none
+
+
+header.accent .menu-button
+  @include smart-opacity(0.3, 1)
+  @include smart-image-glow(white)
+  @include smart-icon-before("closed", white, white)
+  @include smart-image-glow-after(white)
+  @include frob-always
+    &:after
+      background-color: white

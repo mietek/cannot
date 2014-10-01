@@ -1,0 +1,10 @@
+header.accent
+  background-color: $accent-color
+  color: white
+  -webkit-font-smoothing: antialiased
+
+header.accent a
+  @include smart-text-glow(white)
+  color: white
+  @include frob-when-frobbed
+    color: white
