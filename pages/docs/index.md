@@ -3,7 +3,8 @@ title: Docs
 ---
 
 
-# Docs
+Docs
+====
 
 Lorem ipsum dolor sit amet, oratio patrioque prodesset cu cum. Usu an cibo cetero suavitate, ne verear senserit pro, et mutat maiestatis vel. Eu denique accumsan democritum ius. Nec ex nusquam intellegam, pro te tation quaeque sensibus. Nibh vocent audire per ne. Nulla nostrum fabellas qui eu, ex oblique facilisi recteque usu.[^1]
 
@@ -12,7 +13,8 @@ Te pro stet quodsi comprehensam. Cum inermis maiorum accusam no. Eu eos sale dic
 Elitr inimicus ad vis. Vim no vero harum concludaturque, at qui facilis corpora dissentiunt, diam veri duo ad. Sed erat mutat atomorum ea, et nam albucius platonem moderatius. Usu ubique deserunt conclusionemque id, alii appetere mea id, wisi tamquam usu ex.
 
 
-## Nec oration
+Nec oration
+-----------
 
 Nec oratio adolescens theophrastus no. Id eos clita facete fuisset. Ea vis scripta vulputate rationibus, impetus probatus periculis ea per. Qui admodum eleifend liberavisse ne, reque intellegebat ne cum. Te idque accusamus cum, duo et alii similique.
 

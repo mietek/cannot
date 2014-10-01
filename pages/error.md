@@ -3,7 +3,8 @@ title: Error
 ---
 
 
-# Error
+Error
+=====
 
 > Yesterday it worked<br>
 > Today it is not working<br>
