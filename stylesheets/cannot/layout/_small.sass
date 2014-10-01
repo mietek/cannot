@@ -17,11 +17,6 @@ header
   position: relative
   overflow: hidden
 
-#header-menu-button-wrapper
-  position: absolute
-  top: 0
-  right: 0
-
 
 footer nav
   @include rule-before
@@ -35,9 +30,15 @@ nav h1 a
   line-height: ln(2)
 
 
+#header-button-wrapper
+  position: absolute
+  top: 0
+  right: 0
+
 header aside
   margin-left: ln(1)
   margin-right: ln(1)
+
 
 main section.level1 > *
   padding-left: ln(1)
@@ -58,6 +59,15 @@ main section.footnotes > *
 main nav
   padding-left: 0 !important
   padding-right: 0 !important
+
+
+#footer-button-wrapper
+  position: absolute
+  top: 0
+  right: 0
+
+#footer-button
+  @include smart-icon-before("up", $object-color-name, $accent-color-name)
 
 footer aside
   margin-left: ln(1)

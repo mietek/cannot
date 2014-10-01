@@ -40,29 +40,12 @@ main.hero
   margin-top: ln(2)
   margin-bottom: ln(1/2)
 
-#hero-button
+#hero-button-wrapper
   display: inline-block
-  width: ln(2) + $icon-size
-  height: ln(2)
   margin-bottom: ln(1/2)
   position: relative
+
+#hero-button
+  @include smart-opacity(0.4, 1)
+  @include smart-image-glow($white)
   @include smart-icon-before("down", white, white)
-  @include smart-opacity-before(0.4, 1)
-  @include smart-image-glow-before($white)
-
-#hero-button:before
-  width: $icon-size
-  height: $icon-size
-  position: absolute
-  top: (ln(2) - $icon-size) / 2
-  right: (ln(2) + $icon-size - $icon-size) / 2
-  z-index: 1
-  pointer-events: none
-  content: ""
-  transition: ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
-
-#hero-button a
-  @include no-text
-  display: block
-  width: 100%
-  height: 100%

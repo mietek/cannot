@@ -126,7 +126,7 @@ exports.addTocToSection = function (container) {
   }
 
   addEventListener('load', function () {
-    var headerMenuButton = document.getElementById('header-menu-button');
+    var headerMenuButton = document.getElementById('header-button');
     var headerMenu = document.getElementById('header-menu');
     if (headerMenuButton && headerMenu) {
       headerMenuButton.addEventListener('click', function (event) {

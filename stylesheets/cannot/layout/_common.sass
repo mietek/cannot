@@ -5,6 +5,9 @@
   @return line-height($n) * 1px
 
 
+@import "cannot/layout/button"
+
+
 body
   font-size: em(1)
   line-height: ln(1)
@@ -164,39 +167,6 @@ footer
   // @include frob-when-frobbed
   //   opacity: 1
 
-
-
-.footer-button
-  display: block
-  width: ln(2) + $icon-size
-  height: ln(2)
-  position: absolute
-  bottom: ln(-2)
-  right: ln(-1)
-  @include smart-icon-before("up", $object-color-name, $accent-color-name)
-  @include smart-opacity-before(0.2, 1)
-  @include smart-image-glow-before($accent-color)
-
-.footer-button:before
-  width: $icon-size
-  height: $icon-size
-  position: absolute
-  top: (ln(2) - $icon-size) / 2
-  right: (ln(2) + $icon-size - $icon-size) / 2
-  z-index: 1
-  pointer-events: none
-  content: ""
-  transition: ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
-
-.footer-button a
-  @include no-text
-  display: block
-  width: 100%
-  height: 100%
-
-
-footer aside
-  margin-right: ln(3)
 
 
 
