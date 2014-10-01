@@ -27,6 +27,53 @@ exports.restartAnimation = function (target) {
 };
 
 
+exports.addTocToSection = function (container) {
+  if (!container) {
+    return;
+  }
+  var level = parseInt(container.className.replace(/level/, ''));
+  var containerHeading = container.getElementsByTagName('h' + level)[0];
+  var containerTitle = containerHeading.textContent.replace(/↩/, '');
+
+  var toc = document.createElement('ul');
+  toc.className = 'toc toc' + level + ' menu open';
+  var itemCount = 0;
+  var sections = container.getElementsByClassName('level' + (level + 1));
+  [].forEach.call(sections, function (section) {
+    var sectionHeading = section.getElementsByTagName('h' + (level + 1))[0];
+    if (!sectionHeading) {
+      return;
+    }
+    var sectionTitle = sectionHeading.textContent;
+    var item = document.createElement('li');
+    var link = document.createElement('a');
+    link.href = '#' + section.id;
+    link.title = sectionTitle;
+    link.appendChild(document.createTextNode(sectionTitle));
+    item.appendChild(link);
+    toc.appendChild(item);
+
+    var backLinkButton = document.createElement('span');
+    backLinkButton.className = 'backlink-button';
+    var backLink = document.createElement('a');
+    backLink.className = 'backlink';
+    backLink.href = '#' + container.id;
+    backLink.title = containerTitle;
+    backLink.appendChild(document.createTextNode('↩'));
+    backLinkButton.appendChild(backLink);
+    section.insertBefore(backLinkButton, sectionHeading.nextSibling);
+
+    itemCount += 1;
+    exports.addTocToSection(section);
+  });
+  if (itemCount) {
+    var nav = document.createElement('nav');
+    nav.appendChild(toc);
+    container.insertBefore(nav, containerHeading.nextSibling);
+  }
+};
+
+
 (function () {
   var lastResizeT;
 
@@ -94,5 +141,11 @@ exports.restartAnimation = function (target) {
         }
       });
     }
+
+    if (document.body.classList.contains('toc')) {
+      exports.addTocToSection(document.getElementsByClassName('level1')[0]);
+    }
+
+    easeScroll.applyToLocalLinks();
   });
 })();
