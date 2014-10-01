@@ -3,9 +3,9 @@ cannot
 
 Microframework for building websites.
 
-Suitable for static sites and client-side apps.  Not canned.
+Suitable for static sites and client-side apps.
 
-Work in progress.
+Not canned.
 
 
 Usage
