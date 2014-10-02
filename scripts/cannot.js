@@ -27,7 +27,7 @@ exports.restartAnimation = function (target) {
 };
 
 
-exports.addTocToSection = function (container) {
+exports.insertTocInSection = function (container) {
   if (!container) {
     return;
   }
@@ -53,23 +53,30 @@ exports.addTocToSection = function (container) {
     item.appendChild(link);
     toc.appendChild(item);
 
-    var backLinkButton = document.createElement('span');
-    backLinkButton.className = 'backlink-button';
-    var backLink = document.createElement('a');
-    backLink.className = 'backlink';
-    backLink.href = '#' + container.id;
-    backLink.title = containerTitle;
-    backLink.appendChild(document.createTextNode('↩'));
-    backLinkButton.appendChild(backLink);
-    section.insertBefore(backLinkButton, sectionHeading.nextSibling);
+    var backlinkButtonWrapper = document.createElement('span');
+    backlinkButtonWrapper.className = 'button-wrapper';
+    var backlinkButton = document.createElement('span');
+    backlinkButton.className = 'button';
+    var backlink = document.createElement('a');
+    backlink.className = 'backlink';
+    backlink.href = '#' + container.id;
+    backlink.title = containerTitle;
+    backlink.appendChild(document.createTextNode('↩'));
+    backlinkButton.appendChild(backlink);
+    backlinkButtonWrapper.appendChild(backlinkButton);
+    section.insertBefore(backlinkButtonWrapper, sectionHeading.nextSibling);
 
     itemCount += 1;
-    exports.addTocToSection(section);
+    exports.insertTocInSection(section);
   });
   if (itemCount) {
     var nav = document.createElement('nav');
     nav.appendChild(toc);
-    container.insertBefore(nav, containerHeading.nextSibling);
+    if (window.insertToc !== undefined) {
+      window.insertToc(nav, container);
+    } else {
+      container.insertBefore(nav, containerHeading.nextSibling);
+    }
   }
 };
 
@@ -142,8 +149,8 @@ exports.addTocToSection = function (container) {
       });
     }
 
-    if (document.body.classList.contains('toc')) {
-      exports.addTocToSection(document.getElementsByClassName('level1')[0]);
+    if (document.documentElement.classList.contains('insert-toc')) {
+      exports.insertTocInSection(document.getElementsByClassName('level1')[0]);
     }
 
     easeScroll.applyToLocalLinks();

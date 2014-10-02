@@ -1,5 +1,6 @@
 ---
 title: Docs
+html-class: insert-toc
 ---
 
 
