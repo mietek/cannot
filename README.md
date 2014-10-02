@@ -15,11 +15,16 @@ Do you need a website?  Say hello@mietek.io
 
 Examples:
 
-- [My website](https://github.com/mietek/mietek-website)
-- [Website for Least Fixed](https://github.com/mietek/least-fixed-website)
-- [Website for Halcyon](https://github.com/mietek/halcyon-website)
-- [Website for Haskell on Heroku](https://github.com/mietek/haskell-on-heroku-website)
-- [Website for Motoworks Cambridge](https://github.com/mietek/motoworks-website)
+- [My website](https://github.com/mietek/mietek-website/)
+  ([Live](http://mietek.github.io/))
+- [Website for Least Fixed](https://github.com/mietek/least-fixed-website/)
+  ([Live](http://mietek.github.io/least-fixed-website/))
+- [Website for Halcyon](https://github.com/mietek/halcyon-website/)
+  ([Live](http://mietek.github.io/halcyon-website/))
+- [Website for Haskell on Heroku](https://github.com/mietek/haskell-on-heroku-website/)
+  ([Live](http://mietek.github.io/haskell-on-heroku-website/))
+- [Website for Motoworks Cambridge](https://github.com/mietek/motoworks-website/)
+  ([Live](http://mietek.github.io/motoworks-website/))
 
 
 ### Installation
