@@ -1,54 +1,26 @@
-nav h1 a
-  width: 136px
-  background-size: 136px ln(1)
-
-header nav h1 a
-  @include smart-image-glow($accent-color)
-  @include image("logotype-large", "png")
-  @include frob-when-frobbed
-    @include image("logotype-orange-large", "png")
-  @include frob-always
-    text-shadow: none
-    transition: ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
-
-footer nav h1 a
-  @include smart-image-glow($accent-color)
-  @include image("logotype-gray9-large", "png")
-  @include frob-when-frobbed
-    @include image("logotype-orange-large", "png")
-  @include frob-always
-    text-shadow: none
-    transition: ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
-
-
-header.hero nav h1 a
-  @include smart-opacity(0.6, 1)
-  @include smart-image-glow(white)
-  @include image("logotype-white-large", "png")
-  @include frob-when-frobbed
-    @include image("logotype-white-large", "png")
-  @include frob-always
-    text-shadow: none
-    transition: ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
-
-#hero h1
-  @include image("logotype-white-hero-large", "png")
-  @include no-text
-  background-position: center center
-  width: 272px
-  height: ln(2)
-  background-size: 272px ln(2)
-
-
-header.accent nav h1 a
-  @include smart-image-glow(white)
-  @include image("logotype-white-large", "png")
-  @include frob-when-frobbed
-    @include image("logotype-white-large", "png")
-  @include frob-always
-    text-shadow: none
-    transition: ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
-
-
 main h1
   letter-spacing: -2px
+
+
+nav.menu-bar h1.logotype a
+  width: 136px
+  background-size: 136px auto
+
+header nav.menu-bar h1.logotype a
+  @include smart-logotype(color, orange, large)
+
+footer nav.menu-bar h1.logotype a
+  @include smart-logotype(gray9, orange, large)
+
+
+header.hero nav.menu-bar h1.logotype a
+  @include smart-logotype(white, white, large)
+
+#hero h1.logotype
+  @include image("logotype-white-hero-large", "png")
+  width: 272px
+  background-size: 272px auto
+
+
+header.accent nav.menu-bar h1.logotype a
+  @include smart-logotype(white, white, large)
