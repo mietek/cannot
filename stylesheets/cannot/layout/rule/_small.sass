@@ -1,0 +1,27 @@
+@mixin rule-before($color, $top: -1px, $bottom: none, $size: 1px)
+  position: relative
+  &:before
+    border-bottom: $size $color solid
+    position: absolute
+    @if $bottom == none
+      top: $top
+    @else
+      bottom: $bottom
+    left: 0
+    right: 0
+    z-index: 9001
+    content: ""
+
+@mixin rule-after($color, $bottom: 0px, $top: none, $size: 1px)
+  position: relative
+  &:after
+    border-top: $size $color solid
+    position: absolute
+    @if $top == none
+      bottom: $bottom
+    @else
+      top: $top
+    left: 0
+    right: 0
+    z-index: 9001
+    content: ""

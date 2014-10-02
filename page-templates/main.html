@@ -17,14 +17,15 @@ $if(head-bonus)$$head-bonus$$endif$
 <body$if(body-class)$ class="$body-class$"$endif$>
 <header id="header"$if(header-class)$ class="$header-class$"$endif$>
 <div class="wrapper">
-<nav class="menu-bar">
+<nav id="header-menu-bar" class="menu-bar">
 <h1 class="logotype"><a href="." title="$project-title$">$project-title$</a></h1>
-$if(menu-items)$<span id="header-button-wrapper" class="menu-button-wrapper"><span id="header-button" class="menu-button"><a href="" title="Menu">Menu</a></span></span>$endif$
+$if(menu-items)$<span id="header-button-wrapper" class="button-wrapper"><span id="header-button" class="menu-button"><a href="" title="Menu">Menu</a></span></span>$endif$
 <ul id="header-menu" class="menu">
 $menu-items$
 </ul>
 $if(menu-items)$<script>
 if (localStorage['header-menu-open']) {
+  document.getElementById('header-menu-bar').classList.add('open');
   document.getElementById('header-menu').classList.add('open');
   document.getElementById('header-button').classList.add('open');
 }
@@ -47,7 +48,7 @@ $body$
 </main>
 <footer id="footer"$if(footer-class)$ class="$footer-class$"$endif$>
 <div class="wrapper">
-<nav class="menu-bar">
+<nav id="footer-menu-bar" class="menu-bar">
 <h1 class="logotype"><a href="." title="$project-title$">$project-title$</a></h1>
 <span id="footer-button-wrapper" class="button-wrapper"><span id="footer-button" class="button"><a href="" class="click-to-top" title="Top">Top</a></span></span>
 <ul id="footer-menu" class="menu open">

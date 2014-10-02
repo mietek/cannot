@@ -17,29 +17,6 @@ $layout-width-large:  1440px !default
 @import "cannot/animation"
 @import "cannot/frob"
 @import "cannot/glow"
-@import "cannot/link"
-@import "cannot/link-animation"
-
-
-@mixin rule-before
-  position: relative
-  &:before
-    border-bottom: 1px rgba($object-color, 0.2) solid
-    position: absolute
-    top: -1px
-    left: 0
-    right: 0
-    content: ""
-
-@mixin rule-after
-  position: relative
-  &:after
-    border-top: 1px rgba($object-color, 0.2) solid
-    position: absolute
-    bottom: 0
-    left: 0
-    right: 0
-    content: ""
 
 
 @media (max-width: $layout-width-small)
@@ -73,7 +50,7 @@ main
   min-height: 100%
 
 
-.wrapper
+div.wrapper
   margin-left: auto
   margin-right: auto
   min-width: $layout-width-min

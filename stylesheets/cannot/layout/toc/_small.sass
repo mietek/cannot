@@ -1,9 +1,18 @@
-.toc li
+section.with-toc ul.menu.toc li
+  @include smart-icon-after("down", $object-color-name, $accent-color-name)
+
+
+section.with-toc section.level3
+  padding-left: ln(1)
+
+section.with-toc section.level3 > *
   margin-left: 0
 
-.toc li:before
-  content: none
+section.with-toc section.level3 > section
+  margin-left: ln(-1)
 
+section.with-toc section.level3 > nav
+  margin-left: ln(-1)
 
-.backlink:after
-  right: ln(1)
+section.with-toc section.level3 > hr
+  margin-left: ln(-1)

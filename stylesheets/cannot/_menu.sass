@@ -1,34 +1,15 @@
-.menu
-  @include rule-before
-  background-color: rgba($background-color, 0.8)
-  width: 100%
-  height: auto
-  position: relative
-  z-index: 1
-
-
-.menu li
-  height: ln(2)
-  line-height: ln(2)
-  overflow: hidden
-  position: relative
+ul.menu li
   @include smart-opacity-after(0.2, 1)
   @include smart-image-glow-after($accent-color)
   @include smart-icon-after("right", $object-color-name, $accent-color-name)
+  height: ln(2)
+  line-height: ln(2)
+  position: relative
 
-// NOTE: The z-index helps prevent Safari from flickering between antialiased and subpixel-antialised text *in other elements with a dark background* when this element animates. The 'pointer-events: none' counters the 'z-index' and lets pointer events through to the underlying layers.
+ul.menu li:after
+  @include button-icon
 
-.menu li:after
-  width: $icon-size
-  height: $icon-size
-  position: absolute
-  top: (ln(2) - $icon-size) / 2
-  right: ln(1)
-  z-index: 2 // TODO: Why 2?
-  pointer-events: none
-  content: ""
-
-.menu li a
+ul.menu li a
   @include text-button
   @include no-underline
   display: block
@@ -36,8 +17,45 @@
   height: 100%
   padding-left: ln(1)
   padding-right: ln(1)
-  position: relative
-  z-index: 1 // TODO: Why?
+
+
+// Animation start
+
+ul.menu
+  @include rule-after($accent-color, $size: 0)
+
+ul.menu li
+  background-color: $accent-color
+  height: 0
+
+ul.menu li
+  @include rule-before($accent-color, $size: 0)
+
+ul.menu li:after
+  right: -100%
+
+ul.menu li a
+  text-indent: -100%
+
+
+// Animation end
+
+ul.menu.open
+  @include rule-after(rgba($object-color, 0.2))
+  opacity: 1
+
+ul.menu.open li
+  background-color: transparent
+  height: ln(2)
+
+ul.menu.open li
+  @include rule-before(rgba($object-color, 0.2))
+
+ul.menu.open li:after
+  right: ln(1)
+
+ul.menu.open li a
+  text-indent: 0
 
 
 @import "cannot/menu-animation"

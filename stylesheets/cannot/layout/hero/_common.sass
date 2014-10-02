@@ -8,10 +8,6 @@ header.hero a
   @include frob-when-frobbed
     color: white
 
-main.hero
-  margin-top: 0
-  margin-bottom: ln(-2)
-
 
 #hero
   background-color: $gray3
@@ -26,7 +22,9 @@ main.hero
   text-align: center
   -webkit-font-smoothing: antialiased
 
-#hero .hero-wrapper
+#hero div.hero-wrapper
+  @include rule-before(rgba(white, 0.1), $top: 0px)
+  @include rule-after(rgba(white, 0.1))
   margin-top: ln(2)
   margin-bottom: ln(2)
   background-color: $accent-color
@@ -43,6 +41,7 @@ main.hero
 
 #hero-button-wrapper
   display: inline-block
+  margin-top: ln(1/2)
   margin-bottom: ln(1/2)
   position: relative
 
@@ -50,3 +49,8 @@ main.hero
   @include smart-opacity(0.4, 1)
   @include smart-image-glow($white)
   @include smart-icon-before("down", white, white)
+
+
+main.hero
+  margin-top: 0
+  margin-bottom: ln(-2)

@@ -18,22 +18,18 @@
     text-shadow: none
 
 
+// NOTE: There is a bug in Safari where text-shadow does not transition smoothly.
+
 a
   @include text-button
   @include smart-text-glow($accent-color)
-  text-decoration: none
+  @include rule-after(rgba($object-color, 0.4) solid)
   color: $object-color
-  position: relative
+  text-decoration: none
+  transition: ease(color, 1, 0), ease(text-shadow, 1, 0)
   &:after
-    border-bottom: 1px rgba($object-color, 0.4) solid
-    position: absolute
-    left: 0
-    right: 0
-    top: 0
-    bottom: 1px
-    display: block
-    content: ""
+    height: ln(1)
+    transition: ease(border-bottom-color, 1, 0)
   @include frob-when-frobbed
+    @include rule-after(rgba($accent-color, 0.4) solid)
     color: $accent-color
-    &:after
-      border-bottom: 1px rgba($accent-color, 0.4) solid

@@ -53,7 +53,7 @@ exports.insertTocInSection = function (container) {
     var backlinkButtonWrapper = document.createElement('span');
     backlinkButtonWrapper.className = 'button-wrapper';
     var backlinkButton = document.createElement('span');
-    backlinkButton.className = 'button';
+    backlinkButton.className = 'backlink-button';
     var backlink = document.createElement('a');
     backlink.className = 'backlink';
     backlink.href = '#' + container.id;
@@ -61,7 +61,7 @@ exports.insertTocInSection = function (container) {
     backlink.appendChild(document.createTextNode('↩'));
     backlinkButton.appendChild(backlink);
     backlinkButtonWrapper.appendChild(backlinkButton);
-    section.insertBefore(backlinkButtonWrapper, sectionHeading.nextSibling);
+    section.insertBefore(backlinkButtonWrapper, section.lastChild);
 
     itemCount += 1;
     exports.insertTocInSection(section);
@@ -69,6 +69,7 @@ exports.insertTocInSection = function (container) {
   if (itemCount) {
     var nav = document.createElement('nav');
     nav.appendChild(toc);
+    container.classList.add('with-toc');
     if (window.insertToc !== undefined) {
       window.insertToc(nav, container);
     } else {
@@ -122,11 +123,13 @@ exports.insertTocInSection = function (container) {
   }
 
   addEventListener('load', function () {
+    var headerMenuBar = document.getElementById('header-menu-bar');
     var headerMenuButton = document.getElementById('header-button');
     var headerMenu = document.getElementById('header-menu');
-    if (headerMenuButton && headerMenu) {
+    if (headerMenuBar && headerMenuButton && headerMenu) {
       headerMenuButton.addEventListener('click', function (event) {
         event.preventDefault();
+        headerMenuBar.classList.toggle('open');
         headerMenu.classList.toggle('open');
         headerMenuButton.classList.toggle('open');
         var open = (localStorage['header-menu-open'] === 'true');

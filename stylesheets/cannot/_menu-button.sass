@@ -1,18 +1,5 @@
-// NOTE: The z-index helps prevent Safari from flickering between antialiased and subpixel-antialised text *in other elements with a dark background* when this element animates. The 'pointer-events: none' counters the 'z-index' and lets pointer events through to the underlying layers.
-
-.menu-button-wrapper
-  display: block
-  width: ln(2) + $icon-size
-  height: ln(2)
-  z-index: 2
-
-.menu-button
-  display: block
-  width: ln(2) + $icon-size
-  height: ln(2)
-  position: relative
-  @include smart-opacity(0.2, 1)
-  @include smart-image-glow($accent-color)
+span.menu-button
+  @include button
   @include smart-icon-before("closed", $object-color-name, $accent-color-name)
   @include smart-image-glow-after($accent-color)
   &:after
@@ -21,18 +8,36 @@
     &:after
       background-color: $accent-color
 
-.menu-button:before, .menu-button:after
-  width: $icon-size
-  height: $icon-size
-  position: absolute
-  top: (ln(2) - $icon-size) / 2
-  right: (ln(2) + $icon-size - $icon-size) / 2
-  z-index: 3
-  pointer-events: none
-  content: ""
+span.menu-button:after
+  @include button-icon
 
-.menu-button a
-  @include no-text
-  display: block
-  width: 100%
-  height: 100%
+
+// Animation start
+
+span.menu-button
+  @include frob-always
+    &:before
+      height: $icon-size
+      top: (ln(2) - $icon-size) / 2
+      transform: rotate(0deg)
+    &:after
+      opacity: 0
+      height: $icon-size
+      top: (ln(2) - $icon-size) / 2
+      transform: rotate(0deg)
+
+
+// Animation end
+
+span.menu-button.open
+  @include frob-always
+    &:before
+      height: $icon-stroke
+      top: (ln(2) - $icon-stroke) / 2
+      transform: rotate(-180deg)
+    &:after
+      @include image-glow(none)
+      opacity: 1
+      height: $icon-stroke
+      top: (ln(2) - $icon-stroke) / 2
+      transform: rotate(-180deg)

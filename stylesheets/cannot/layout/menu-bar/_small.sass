@@ -3,3 +3,16 @@ nav.menu-bar h1.logotype a
   padding-left: ln(1)
   height: ln(2)
   line-height: ln(2)
+
+
+#header-menu-bar
+  @include rule-after(rgba($object-color, 0.2))
+
+#header-menu-bar.open
+  @include rule-after(rgba($object-color, 0.2), $size: 0)
+
+#header-menu-bar.open:after
+  transition: ease-out(border-top-width, 0, 0)
+
+#header-menu-bar:after
+  transition: ease-in(border-top-width, 0, 3)

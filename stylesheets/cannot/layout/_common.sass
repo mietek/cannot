@@ -13,9 +13,10 @@ body
   line-height: ln(1)
 
 aside
-  font-size: em(3/4)
-  position: relative // To counter font-size
-  top: em(1/8)
+  font-size: em(2/3)
+  padding-top: em(2/3) // To counter font-size
+  p:first-of-type
+    margin-top: 0
 
 em
   font-style: italic
@@ -24,20 +25,60 @@ strong
   font-weight: bold
 
 
+// To get above main
+header
+  position: relative
+  z-index: 1
+
+header div.wrapper > *
+  margin-right: ln(1)
+
+header div.wrapper > nav
+  margin-left: 0
+  margin-right: 0
+
+
 main
   margin-top: ln(-2)
   padding-top: ln(6)
   padding-bottom: ln(6)
 
-footer
-  padding-bottom: ln(1)
-  color: $object-color
-  -webkit-font-smoothing: antialiased
 
-
-
-main section
+section
   position: relative // For span.backlink-button
+
+section > *
+  margin-right: ln(1)
+
+section > section
+  margin-left: 0
+  margin-right: 0
+
+section > hr
+  margin-left: 0
+  margin-right: 0
+
+section p
+  margin-top: ln(1/2)
+
+section ul
+  margin-top: ln(1/2)
+
+section ol
+  margin-top: ln(1/2)
+
+section blockquote
+  margin-top: ln(1/2)
+
+section pre
+  margin-top: ln(1/2)
+
+section hr
+  @include rule-after($accent-color)
+  border: none
+  height: ln(1/2)
+  margin-top: ln(3)
+  margin-bottom: ln(1)
 
 section.level1
   margin-top: ln(6)
@@ -51,14 +92,8 @@ section.level1
     margin-bottom: ln(1)
 
 section.level2
+  @include rule-before($accent-color, $top: ln(-1/2) - 1)
   margin-top: ln(4)
-  &:before
-    border-top: 1px $accent-color solid
-    position: absolute
-    top: ln(-1/2) - 1
-    left: 0
-    right: 0
-    content: ""
   h2
     color: $accent-color
     font-size: em(3/2)
@@ -68,113 +103,55 @@ section.level2
     position: relative
 
 section.level3
-  margin-top: ln(3)
-  &:before
-    border-top: 1px rgba($object-color, 0.2) solid
-    position: absolute
-    top: ln(-1/2) - 1
-    left: 0
-    right: 0
-    content: ""
+  @include rule-before(rgba($object-color, 0.2))
+  margin-top: ln(2)
   h3
     color: $accent-color
     font-weight: bold
+    padding-top: ln(1/2)
+    padding-bottom: ln(1/2)
     margin-bottom: ln(1/2)
-  p:first-of-type
-    margin-top: ln(1/2) // TODO: Why does it have more?
 
 section.level4
-  margin-top: ln(2)
+  margin-top: ln(1)
   h4
     color: $accent-color
     font-weight: bold
+    padding-top: ln(1/2)
+    padding-bottom: ln(1/2)
     margin-bottom: ln(1/2)
-  p:first-of-type
-    margin-top: ln(1/2) // TODO: Why does it have more?
 
 section.level5
-  margin-top: ln(3/2)
+  margin-top: ln(1)
   h5
     font-weight: bold
+    padding-top: ln(1/2)
+    padding-bottom: ln(1/2)
     margin-bottom: ln(1/2)
-  p:first-of-type
-    margin-top: ln(1/2) // TODO: Why does it have more?
 
 section.level6
   margin-top: ln(1)
   h6
     font-style: italic
+    padding-top: ln(1/2)
+    padding-bottom: ln(1/2)
     margin-bottom: ln(1/2)
-  p:first-of-type
-    margin-top: ln(1/2) // TODO: Why does it have more?
-
-
-
-
-
-nav h1
-  position: relative // TODO: Why?
-
-header
-  position: relative
-  z-index: 1
-
-
-
-.toc
-  margin-bottom: ln(1)
-
-.toc.menu
-  display: none !important
-
-hr
-  border: none
-  border-top: 1px $accent-color solid
-  height: ln(1)
-  margin-top: ln(5) - 1
-  margin-bottom: ln(1/2) + 1
-
-p, main ul, main ol, main pre, main blockquote
-  margin-top: ln(1/2)
-  margin-bottom: ln(1/2)
-
-main p:last-of-type
-  margin-bottom: 0
-
-// TODO: sup
-// sup
-//   font-size: em(2/3)
-//   position: relative
-//   bottom: em(1/2)
-
-
-
-main ul li
-  margin-left: ln(1)
-  position: relative
-
-main ul li:before
-  color: $accent-color
-  content: "•"
-  position: absolute
-  left: ln(-1)
-  top: 0
-
-
-
-
 
 
 footer
+  padding-bottom: ln(1)
   color: $object-color
-  // opacity: 0.5
-  // -webkit-font-smoothing: antialiased
-  // @include frob-always
-  //   transition: ease(opacity, 1, 0)
-  // @include frob-when-frobbed
-  //   opacity: 1
+  -webkit-font-smoothing: antialiased
 
+footer div.wrapper > *
+  margin-right: ln(1)
 
+footer div.wrapper > nav
+  margin-left: 0
+  margin-right: 0
+
+footer nav
+  @include rule-before(rgba($object-color, 0.2))
 
 
 #what-browser
@@ -195,10 +172,6 @@ footer
     color: white
     &:after
       border-bottom: 1px rgba(white, 0.4) solid
-
-#what-browser p
-  margin: 0
-
 
 
 @import "cannot/layout/menu-bar/common"

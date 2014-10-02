@@ -7,6 +7,9 @@ $layout-width: $layout-width-small
   @return $n * $line-height-small
 
 
+@import "cannot/layout/rule/small"
+@import "cannot/link"
+
 @import "cannot/layout/common"
 @import "cannot/layout/small-medium"
 
@@ -19,11 +22,6 @@ header
 
 header div.wrapper > *
   margin-left: ln(1)
-  margin-right: ln(1)
-
-header div.wrapper > nav
-  margin-left: 0
-  margin-right: 0
 
 #header-button-wrapper
   position: absolute // Referencing header
@@ -31,15 +29,10 @@ header div.wrapper > nav
   right: 0
 
 
-main section > *
+section > *
   margin-left: ln(1)
-  margin-right: ln(1)
 
-main section > section
-  margin-left: 0
-  margin-right: 0
-
-main section > nav
+section > nav
   margin-left: 0
   margin-right: 0
 
@@ -49,14 +42,6 @@ footer
 
 footer div.wrapper > *
   margin-left: ln(1)
-  margin-right: ln(1)
-
-footer div.wrapper > nav
-  margin-left: 0
-  margin-right: 0
-
-footer nav
-  @include rule-before
 
 #footer-button-wrapper
   position: absolute // Referencing footer

@@ -3,34 +3,42 @@
   width: ln(2) + $icon-size
   height: ln(2)
 
+
+@mixin button-icon
+  width: $icon-size
+  height: $icon-size
+  position: absolute
+  top: (ln(2) - $icon-size) / 2
+  right: ((ln(2) + $icon-size) - $icon-size) / 2
+  z-index: 3
+  pointer-events: none
+  content: ""
+
+@mixin button-link
+  @include text-button
+  @include no-text
+  display: block
+  width: 100%
+  height: 100%
+
 @mixin button
+  @include smart-opacity(0.2, 1)
+  @include smart-image-glow($accent-color)
+  @include smart-icon-before("block", $object-color-name, $accent-color-name)
   display: block
   width: ln(2) + $icon-size
   height: ln(2)
   position: relative
   z-index: 2
   transition: ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
-  @include smart-opacity(0.2, 1)
-  @include smart-image-glow($accent-color)
-  @include smart-icon-before("block", $object-color-name, $accent-color-name)
   &:before
-    width: $icon-size
-    height: $icon-size
-    position: absolute
-    top: (ln(2) - $icon-size) / 2
-    right: (ln(2) + $icon-size - $icon-size) / 2
-    z-index: 3
-    pointer-events: none
-    content: ""
+    @include button-icon
   a
-    @include no-text
-    display: block
-    width: 100%
-    height: 100%
+    @include button-link
 
 
-.button-wrapper
+span.button-wrapper
   @include button-wrapper
 
-.button
+span.button
   @include button
