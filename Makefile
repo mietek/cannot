@@ -41,7 +41,7 @@ find-files = $(shell find -L $(1) -type f -false $(foreach pattern,$(2),-or -nam
 find-dirs  = $(shell find -L $(1) -type d -false $(foreach pattern,$(2),-or -name '$(pattern)') 2>/dev/null)
 
 extract-resources = grep -Eo 'url\($(1)/[^)]+\)' $< | sed -E 's,^.*/(.*)\).*$$,\1,' | sort -u >$@ || touch $@
-extract-comments = grep -Eo '/\* $(1): .* \*/' $< | sed -E 's/^.*: (.*) .*$$/\1/' | sort -u >$@ || touch $@
+extract-comments  = grep -Eo '/\* $(1): .* \*/' $< | sed -E 's/^.*: (.*) .*$$/\1/' | sort -u >$@ || touch $@
 
 
 # Publishing
@@ -76,6 +76,7 @@ pub-push : unwatch
 	-git -C out/pub commit -m "Automatic commit"
 	git -C out/pub push
 	git fetch $(pub-remote-name) $(pub-branch)
+	[ -f sync.sh ] && ./sync.sh
 
 
 # Watching
