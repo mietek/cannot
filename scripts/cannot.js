@@ -2,6 +2,8 @@
 
 var easeScroll = require('ease-scroll');
 
+/* global scrollY */
+
 
 exports.rot13 = function (string) {
   return string
@@ -9,11 +11,6 @@ exports.rot13 = function (string) {
     .replace(/[a-zA-Z]/g, function (c) {
       return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
     });
-};
-
-
-exports.ts = function (n) {
-  return n * 1000 / 6;
 };
 
 
@@ -89,36 +86,28 @@ exports.insertTocInSection = function (container) {
     if (!document.documentElement.classList.contains('no-transition')) {
       document.documentElement.classList.add('no-transition');
       var onTimeout = function () {
-        if (Date.now() - lastResizeT < exports.ts(1)) {
-          setTimeout(onTimeout, exports.ts(1));
+        if (Date.now() - lastResizeT < 100) {
+          setTimeout(onTimeout, 100);
         } else {
           document.documentElement.classList.remove('no-transition');
         }
       };
-      setTimeout(onTimeout, exports.ts(1));
+      setTimeout(onTimeout, 100);
     }
   });
 
   addEventListener('load', function () {
     document.documentElement.classList.remove('no-transition');
-    [].forEach.call(document.getElementsByClassName('click-to-shake'), function (element) {
-      element.addEventListener('click', function (event) {
-        event.preventDefault();
-        element.classList.remove('shake');
-        exports.restartAnimation(element);
-        element.classList.add('shake');
-      });
-    });
     [].forEach.call(document.getElementsByClassName('click-to-top'), function (element) {
       element.addEventListener('click', function (event) {
         event.preventDefault();
-        easeScroll.scrollToOffset(0, exports.ts(3));
+        easeScroll.scrollToOffset(0);
       });
     });
     [].forEach.call(document.getElementsByClassName('click-to-main'), function (element) {
       element.addEventListener('click', function (event) {
         event.preventDefault();
-        easeScroll.scrollToElementById('main', exports.ts(3));
+        easeScroll.scrollToElementById('main');
       });
     });
   });
@@ -154,5 +143,22 @@ exports.insertTocInSection = function (container) {
     }
 
     easeScroll.applyToLocalLinks();
+
+    var localBase = location.origin + location.pathname;
+    var links = document.links;
+    [].forEach.call(links, function (link) {
+      if (link.href === localBase) {
+        link.addEventListener('click', function (event) {
+          event.preventDefault();
+          if (scrollY === 0) {
+            link.classList.remove('shake');
+            exports.restartAnimation(link);
+            link.classList.add('shake');
+          } else {
+            easeScroll.scrollToOffset(0);
+          }
+        });
+      }
+    });
   });
 })();
