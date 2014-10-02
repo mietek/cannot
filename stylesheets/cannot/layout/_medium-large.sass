@@ -1,92 +1,43 @@
-$column-count: 3
-$column-width: ($layout-width - ln($column-count + 1)) / $column-count
+header div.wrapper > *
+  margin-left: (1/3) * 100%
+  margin-right: ln(1)
 
-@function columns($n)
-  @return $n * $column-width
+header div.wrapper > nav
+  margin-left: 0
+  margin-right: 0
 
-
-
-header nav h1
+header nav
   @include rule-after
-
-footer nav h1
-  @include rule-before
-
-
-
-
 
 #header-button-wrapper
   display: none
+
+
+main section > *
+  margin-left: (1/3) * 100%
+  margin-right: ln(1)
+
+main section > section
+  margin-left: 0
+  margin-right: 0
+
+
+footer div.wrapper > *
+  margin-left: (1/3) * 100%
+  margin-right: ln(1)
+
+footer div.wrapper > nav
+  margin-left: 0
+  margin-right: 0
+
+footer nav
+  @include rule-before
 
 #footer-button-wrapper
   display: none
 
 
-header
-  padding-left: ln(1)
-  padding-right: ln(1)
-
-main
-  padding-left: ln(1)
-  padding-right: ln(1)
-
-footer
-  padding-left: ln(1)
-  padding-right: ln(1)
-
-
-header aside
-  margin-left: (1/3 * 100%)
-
-main section.level1 > *
-  padding-left: (1/3 * 100%)
-
-main section.level2
-  padding-left: 0
-
-main section.level2 > *
-  padding-left: (1/3 * 100%)
-
-main section.footnotes > *
-  padding-left: (1/3 * 100%)
-
-footer aside
-  margin-left: (1/3 * 100%)
-
-
-.menu-bar
-  position: relative
-
-.menu-bar h1
-  position: relative
-  padding-top: ln(1/2)
-  padding-bottom: ln(1/2)
-
-.menu-bar h1 a
-  background-position: left center
-  height: ln(1)
-
-.menu-bar ul
-  width: (2/3 * 100%)
-  height: ln(1)
-  position: absolute
-  top: ln(1/2)
-  right: 0
-  display: flex
-  justify-content: space-between
-
-.menu-bar ul li
-  display: inline
-  margin-right: ln(1)
-
-.menu-bar ul li:last-of-type
-  margin-right: 0
-
-.menu-bar ul li a
-  @include no-underline
-
-
+@import "cannot/layout/menu-bar/medium-large"
 @import "cannot/layout/accent/medium-large"
 @import "cannot/layout/hero/medium-large"
 @import "cannot/layout/toc/medium-large"

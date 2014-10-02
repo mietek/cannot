@@ -13,60 +13,61 @@ $layout-width: $layout-width-small
 @import "cannot/menu"
 
 
-nav h1 a
-  background-position: ln(1) center
-  padding-left: ln(1)
-  padding-right: ln(1)
-  height: ln(2)
-  line-height: ln(2)
-
-
 header
-  position: relative
+  position: relative // For #header-button-wrapper
   overflow: hidden
 
-#header-button-wrapper
-  position: absolute
-  top: 0
-  right: 0
-
-header aside
+header div.wrapper > *
   margin-left: ln(1)
   margin-right: ln(1)
 
+header div.wrapper > nav
+  margin-left: 0
+  margin-right: 0
+
+#header-button-wrapper
+  position: absolute // Referencing header
+  top: 0
+  right: 0
+
 
 main section > *
-  padding-left: ln(1)
-  padding-right: ln(1)
+  margin-left: ln(1)
+  margin-right: ln(1)
 
-main section
-  padding-left: 0
-  padding-right: 0
+main section > section
+  margin-left: 0
+  margin-right: 0
 
-main nav
-  padding-left: 0 !important
-  padding-right: 0 !important
+main section > nav
+  margin-left: 0
+  margin-right: 0
 
 
 footer
-  position: relative
+  position: relative // For #footer-button-wrapper
+
+footer div.wrapper > *
+  margin-left: ln(1)
+  margin-right: ln(1)
+
+footer div.wrapper > nav
+  margin-left: 0
+  margin-right: 0
 
 footer nav
   @include rule-before
 
 #footer-button-wrapper
-  position: absolute
+  position: absolute // Referencing footer
   top: 0
   right: 0
 
 #footer-button
   @include smart-icon-before("up", $object-color-name, $accent-color-name)
 
-footer aside
-  margin-left: ln(1)
-  margin-right: ln(1)
 
-
+@import "cannot/layout/menu-bar/small"
 @import "cannot/layout/accent/small"
 @import "cannot/layout/hero/small"
 @import "cannot/layout/toc/small"

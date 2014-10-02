@@ -129,3 +129,13 @@
   @include frob-when-frobbed
     &:after
       @include icon($name, $frobbed-color-name)
+
+
+@mixin smart-logotype($unfrobbed, $frobbed, $size)
+  @if $unfrobbed == color
+    $unfrobbed: ""
+  @else
+    $unfrobbed: "-#{$unfrobbed}"
+  @include image("logotype#{$unfrobbed}-#{$size}", "png")
+  @include frob-when-frobbed
+    @include image("logotype-#{$frobbed}-#{$size}", "png")

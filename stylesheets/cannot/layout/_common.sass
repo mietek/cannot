@@ -14,7 +14,7 @@ body
 
 aside
   font-size: em(3/4)
-  position: relative
+  position: relative // To counter font-size
   top: em(1/8)
 
 em
@@ -23,21 +23,6 @@ em
 strong
   font-weight: bold
 
-
-nav h1
-  position: relative // TODO: Why?
-
-nav h1 a
-  @include text-button
-  @include no-underline
-  display: block
-  -webkit-font-smoothing: antialiased
-
-
-
-header
-  position: relative
-  z-index: 1
 
 main
   margin-top: ln(-2)
@@ -50,7 +35,7 @@ footer
 
 
 main section
-  position: relative
+  position: relative // For span.backlink-button
 
 section.level1
   margin-top: ln(6)
@@ -122,6 +107,15 @@ section.level6
     margin-top: ln(1/2) // TODO: Why does it have more?
 
 
+
+
+
+nav h1
+  position: relative // TODO: Why?
+
+header
+  position: relative
+  z-index: 1
 
 
 
@@ -205,6 +199,7 @@ footer
 
 
 
+@import "cannot/layout/menu-bar/common"
 @import "cannot/layout/accent/common"
 @import "cannot/layout/hero/common"
 @import "cannot/layout/toc/common"
