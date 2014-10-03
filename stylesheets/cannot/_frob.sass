@@ -139,3 +139,4 @@
   @include image("logotype#{$unfrobbed}-#{$size}", "png")
   @include frob-when-frobbed
     @include image("logotype-#{$frobbed}-#{$size}", "png")
+  transition: ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
