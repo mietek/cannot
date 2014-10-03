@@ -1,0 +1,10 @@
+header.hero nav.menu-bar h1.logotype a
+  @include smart-opacity(1, 1)
+
+header.hero nav.menu-bar h1.logotype
+  opacity: 0.6
+  transition: ease-in(opacity, 1, 2)
+
+header.hero nav.menu-bar.open h1.logotype
+  opacity: 1
+  transition: ease-out(opacity, 1, 0)

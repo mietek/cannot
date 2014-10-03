@@ -1,8 +1,8 @@
-header.hero
+header.hero nav.menu-bar
   color: rgba(white, 0.6)
   -webkit-font-smoothing: antialiased
 
-header.hero a
+header.hero nav.menu-bar a
   @include smart-text-glow(white)
   color: rgba(white, 0.6)
   @include frob-when-frobbed
@@ -23,8 +23,8 @@ header.hero a
   -webkit-font-smoothing: antialiased
 
 #hero div.hero-wrapper
-  @include rule-before(rgba(white, 0.1), $top: 0px)
-  @include rule-after(rgba(white, 0.1))
+  @include rule-before(rgba(white, 0.3), $top: 0)
+  @include rule-after(rgba(white, 0.3))
   margin-top: ln(2)
   margin-bottom: ln(2)
   background-color: $accent-color

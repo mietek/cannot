@@ -5,14 +5,14 @@ nav.menu-bar h1.logotype a
   line-height: ln(2)
 
 
-#header-menu-bar
+header nav.menu-bar
   @include rule-after(rgba($object-color, 0.2))
 
-#header-menu-bar.open
+header nav.menu-bar.open
   @include rule-after(rgba($object-color, 0.2), $size: 0)
 
-#header-menu-bar.open:after
+header nav.menu-bar.open:after
   transition: ease-out(border-top-width, 0, 0)
 
-#header-menu-bar:after
+header nav.menu-bar:after
   transition: ease-in(border-top-width, 0, 3)
