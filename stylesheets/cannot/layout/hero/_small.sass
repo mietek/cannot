@@ -9,7 +9,7 @@ header.hero nav.menu-bar:before
   z-index: -1
 
 header.hero nav.menu-bar
-  @include rule-after(rgba(white, 0.15))
+  @include rule-after(rgba(white, 0.2))
   background-color: transparent
   transition: ease-in(background-color, 1, 2)
 
@@ -36,7 +36,7 @@ header.hero span.menu-button
 
 header.hero nav.menu-bar.open
   @include rule-after(rgba(white, 0.3), $size: 0)
-  background-color: $orange
+  background-color: $accent-color
   color: white
   transition: ease-out(background-color, 1, 0)
 

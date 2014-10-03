@@ -1,4 +1,5 @@
 section.with-toc ul.toc
+  margin-top: ln(1)
   margin-bottom: ln(1)
 
 
@@ -43,8 +44,14 @@ section.with-toc section.level3 > p:first-of-type
   margin-top: ln(1)
 
 
+section.with-toc section.level2 h2 + nav ul.toc
+  margin-top: 0
+
+section.with-toc section.level3 h3 + nav ul.toc
+  margin-top: ln(1/2)
+
 section.with-toc section.level4 h4 + nav ul.toc
   margin-top: ln(-1/2)
 
-section.with-toc section.level4 h5 + nav ul.toc
+section.with-toc section.level5 h5 + nav ul.toc
   margin-top: ln(-1/2)
