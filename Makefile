@@ -176,11 +176,13 @@ define pages-macro
       -o $$@ $$<
   endef
 
-  .PHONY            : $(mode)-pages
-  $(mode)-pages     : $$(addsuffix .gz,$$($(mode)-pages))
   $$($(mode)-pages) : out/$(mode)/%.html : %.md $(page-metadata) $(page-includes) $(page-template) | out/$(mode) ; $$($(mode)-compile-md)
 endef
 $(foreach mode,dev pub,$(eval $(pages-macro)))
+
+.PHONY    : dev-pages pub-pages
+dev-pages : $(dev-pages)
+pub-pages : $(addsuffix .gz,$(pub-pages))
 
 
 # Scripts
@@ -200,11 +202,13 @@ define scripts-macro
     webpack --bail --define $(mode)=$(mode) $$($(mode)-webpack-flags) --config=$$(filter %/$(webpack-config),$$^) $$< $$@
   endef
 
-  .PHONY                  : $(mode)-scripts
-  $(mode)-scripts         : out/$(mode)/_scripts.js.gz
   out/$(mode)/_scripts.js : $$(scripts) $(webpack-config) | out/$(mode) ; $$($(mode)-compile-js)
 endef
 $(foreach mode,dev pub,$(eval $(scripts-macro)))
+
+.PHONY      : dev-scripts pub-scripts
+dev-scripts : out/dev/_scripts.js
+pub-scripts : out/pub/_scripts.js.gz
 
 
 # Stylesheets
@@ -226,13 +230,15 @@ define stylesheets-macro
     sass --line-numbers --sourcemap=none --style expanded --cache-location out/tmp/$(mode)/.sass-cache $$(addprefix --load-path ,$$($(mode)-helper-roots)) $$< $$@
   endef
 
-  .PHONY                              : $(mode)-stylesheets
-  $(mode)-stylesheets                 : out/$(mode)/_stylesheets.css.gz
   out/tmp/$(mode)/stylesheets.css     : $(stylesheet-main) $$($(mode)-helpers)            ; $$($(mode)-compile-sass)
   out/tmp/$(mode)/stylesheets.pre.css : out/tmp/$(mode)/stylesheets.css                   ; $$(prefix-css)
   out/$(mode)/_stylesheets.css        : out/tmp/$(mode)/stylesheets.pre.css | out/$(mode) ; $$($(mode)-copy-optimized-css)
 endef
 $(foreach mode,dev pub,$(eval $(stylesheets-macro)))
+
+.PHONY          : dev-stylesheets pub-stylesheets
+dev-stylesheets : out/dev/_stylesheets.css
+pub-stylesheets : out/pub/_stylesheets.css.gz
 
 
 # Fonts
@@ -278,8 +284,8 @@ out/tmp/dev/images.txt: out/tmp/dev/stylesheets.css | out/tmp/dev ; $(call extra
 define images-macro
   define $(mode)-echo-images
     echo '$(mode)-image-names := favicon-16.png favicon-32.png favicon-48.png $$$$(filter-out iconsheet%,$$$$(shell cat out/tmp/dev/images.txt))' >$$@
-    echo '$(mode)-images := out/$(mode)/favicon.ico $$$$(addprefix out/$(mode)/_images/,$$$$($(mode)-image-names) $$$$(addsuffix .gz,$$$$(filter %.svg,$$$$($(mode)-image-names))))' >>$$@
-    echo '$(mode)-images : $$$$($(mode)-images)' >>$$@
+    echo '$(mode)-images := out/$(mode)/favicon.ico $$$$(addprefix out/$(mode)/_images/,$$$$($(mode)-image-names))' >>$$@
+    echo '$(mode)-images : $(if $(filter dev,$(mode)),$$$$(dev-images),$$$$(addsuffix .gz,$$$$(filter %.svg,$$$$(pub-images))))' >>$$@
     echo '$$$$($(mode)-images) :' >>$$@
   endef
 
