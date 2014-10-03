@@ -112,30 +112,33 @@ $(foreach mode,dev pub,$(eval $(watch-macro)))
 # Optimization
 # ------------
 
-dev-optimize-zip :=
-pub-optimize-zip = advdef --iter 100 --shrink-insane --quiet -z $@
+dev-optimize-zip := true
+define pub-optimize-zip
+  advdef --iter 100 --shrink-insane --quiet -z $@
+endef
 
 dev-copy-optimized-css = cp $< $@
-pub-copy-optimized-css = cleancss --s0 --skip-rebase $< >$@
+define pub-copy-optimized-css
+  cleancss --s0 --skip-rebase $< >$@
+endef
 
-dev-copy-optimized-jpg = cp $< $@
-pub-copy-optimized-jpg = jpegoptim --force -m90 --strip-all --quiet --stdout $< >$@
+define dev-copy-optimized-jpg
+  jpegoptim --force --all-progressive -m60 --strip-all --quiet --stdout $< >$@
+endef
+pub-copy-optimized-jpg = $(dev-copy-optimized-jpg)
 
-dev-optimize-png :=
+dev-optimize-png := true
 define pub-optimize-png
-  optipng -clobber -o6 -strip all -quiet $@
-  $(pub-optimize-zip)
+  optipng -clobber -o6 -strip all -quiet $@ && $(pub-optimize-zip)
 endef
 
 define optimize-macro
   define $(mode)-create-zip
-    gzip --fast --force --keep --no-name --to-stdout $$< >$$@
-    $$($(mode)-optimize-zip)
+    gzip --fast --force --keep --no-name --to-stdout $$< >$$@ && $$($(mode)-optimize-zip)
   endef
 
   define $(mode)-copy-optimized-png
-    cp $$< $$@
-    $$($(mode)-optimize-png)
+    cp $$< $$@ && $$($(mode)-optimize-png)
   endef
 
   out/$(mode)/%.gz : out/$(mode)/% | out/$(mode) ; $$($(mode)-create-zip)
@@ -285,9 +288,9 @@ define images-macro
   -include out/tmp/$(mode)/images.mk
 
   out/$(mode)/%.ico         : %.ico | out/$(mode)         ; cp $$< $$@
-  out/$(mode)/_images/%     : %     | out/$(mode)/_images ; cp $$< $$@
   out/$(mode)/_images/%.jpg : %.jpg | out/$(mode)/_images ; $$($(mode)-copy-optimized-jpg)
   out/$(mode)/_images/%.png : %.png | out/$(mode)/_images ; $$($(mode)-copy-optimized-png)
+  out/$(mode)/_images/%     : %     | out/$(mode)/_images ; cp $$< $$@
 endef
 $(foreach mode,dev pub,$(eval $(images-macro)))
 
@@ -324,8 +327,7 @@ endef
 
 define iconsheet-macro
   define $(mode)-compile-iconsheet
-    convert $$^ +append $$@
-    $$($(mode)-optimize-png)
+    convert $$^ +append $$@ && $$($(mode)-optimize-png)
   endef
 
   define $(mode)-echo-iconsheet$($(scale))
