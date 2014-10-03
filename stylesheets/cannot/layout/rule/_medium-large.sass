@@ -9,10 +9,9 @@
       bottom: $bottom
     left: ln(1)
     right: ln(1)
-    z-index: 9001
     content: ""
 
-@mixin rule-after($color, $bottom: 0px, $top: none, $size: 1px)
+@mixin rule-after($color, $bottom: 0, $top: none, $size: 1px)
   position: relative
   &:after
     border-top: $size $color solid
@@ -23,5 +22,4 @@
       top: $top
     left: ln(1)
     right: ln(1)
-    z-index: 9001
     content: ""
