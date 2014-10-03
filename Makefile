@@ -177,7 +177,7 @@ define pages-macro
   endef
 
   .PHONY            : $(mode)-pages
-  $(mode)-pages     : $$($(mode)-pages)
+  $(mode)-pages     : $$(addsuffix .gz,$$($(mode)-pages))
   $$($(mode)-pages) : out/$(mode)/%.html : %.md $(page-metadata) $(page-includes) $(page-template) | out/$(mode) ; $$($(mode)-compile-md)
 endef
 $(foreach mode,dev pub,$(eval $(pages-macro)))
@@ -278,7 +278,7 @@ out/tmp/dev/images.txt: out/tmp/dev/stylesheets.css | out/tmp/dev ; $(call extra
 define images-macro
   define $(mode)-echo-images
     echo '$(mode)-image-names := favicon-16.png favicon-32.png favicon-48.png $$$$(filter-out iconsheet%,$$$$(shell cat out/tmp/dev/images.txt))' >$$@
-    echo '$(mode)-images := out/$(mode)/favicon.ico $$$$(addprefix out/$(mode)/_images/,$$$$($(mode)-image-names) $$$$(addsuffix .gz,$$(filter %.svg,$$$$($(mode)-image-names))))' >>$$@
+    echo '$(mode)-images := out/$(mode)/favicon.ico $$$$(addprefix out/$(mode)/_images/,$$$$($(mode)-image-names) $$$$(addsuffix .gz,$$$$(filter %.svg,$$$$($(mode)-image-names))))' >>$$@
     echo '$(mode)-images : $$$$($(mode)-images)' >>$$@
     echo '$$$$($(mode)-images) :' >>$$@
   endef
@@ -290,7 +290,7 @@ define images-macro
   out/$(mode)/%.ico         : %.ico | out/$(mode)         ; cp $$< $$@
   out/$(mode)/_images/%.jpg : %.jpg | out/$(mode)/_images ; $$($(mode)-copy-optimized-jpg)
   out/$(mode)/_images/%.png : %.png | out/$(mode)/_images ; $$($(mode)-copy-optimized-png)
-  out/$(mode)/_images/%     : %     | out/$(mode)/_images ; cp $$< $$@
+  out/$(mode)/_images/%.svg : %.svg | out/$(mode)/_images ; cp $$< $$@
 endef
 $(foreach mode,dev pub,$(eval $(images-macro)))
 
@@ -308,7 +308,8 @@ out/tmp/pub/icon-colors.txt : out/tmp/dev/stylesheets.css | out/tmp/pub ; $(call
 
 define iconsheet-helper-macro
   define $(mode)-echo-iconsheet-helper
-    echo '$$$$icon-shapes: ' >$$@
+    echo '$$$$$(mode): true;' >$$@
+    echo '$$$$icon-shapes: ' >>$$@
     cat out/tmp/$(mode)/icon-shapes.txt >>$$@
     echo '; $$$$icon-colors: ' >>$$@
     cat out/tmp/$(mode)/icon-colors.txt >>$$@
