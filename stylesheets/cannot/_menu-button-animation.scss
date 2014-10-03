@@ -20,7 +20,7 @@ span.menu-button.open {
       transition:
 //        ease(filter, 1, 0),           // General menu-button transition
 //        ease(-webkit-filter, 1, 0),   // General menu-button transition
-        ease(opacity, 0, 0),          // Step 0
+        linear(opacity, 0, 0),        // Step 0
         ease(height, 1, 0),           // Step 1
         ease(top, 1, 0),              // Step 1
         ease(transform, 2, 1),        // Step 2
@@ -51,8 +51,8 @@ span.menu-button {
     }
     &:after {
       transition:
-        ease(filter, 0, 0),           // Workaround
-        ease(-webkit-filter, 0, 0),   // Workaround
+        linear(filter, 0, 0),         // Workaround
+        linear(-webkit-filter, 0, 0), // Workaround
 //        ease(filter, 1, 0),           // General menu-button transition
 //        ease(-webkit-filter, 1, 0),   // General menu-button transition
         ease(transform, 2, 0),        // Step 1

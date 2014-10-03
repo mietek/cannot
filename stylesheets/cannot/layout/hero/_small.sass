@@ -1,28 +1,15 @@
-header.hero nav.menu-bar:before
-  background-color: white
-  top: 0
-  bottom: ln(2)
-  left: 0
-  right: 0
-  position: absolute
-  content: ""
-  z-index: -1
-
 header.hero nav.menu-bar
   @include rule-after(rgba(white, 0.2))
-  background-color: transparent
-  transition: ease-in(background-color, 1, 2)
 
 header.hero ul.menu
   @include rule-after(white, $size: 0)
-  background-color: $accent-color
+  background-color: $gray0
 
 header.hero ul.menu li
   @include rule-before(white, $size: 0)
   @include smart-opacity-after(0.3, 1)
   @include smart-image-glow-after(white)
   @include smart-icon-after("right", white, white)
-  background-color: white
 
 header.hero span.menu-button
   @include smart-opacity(0.3, 1)
@@ -35,21 +22,10 @@ header.hero span.menu-button
 
 
 header.hero nav.menu-bar.open
-  @include rule-after(rgba(white, 0.3), $size: 0)
-  background-color: $accent-color
-  color: white
-  transition: ease-out(background-color, 1, 0)
-
-header.hero nav.menu-bar.open a
-  color: white
+  @include rule-after(rgba(white, 0.2), $size: 0)
 
 header.hero ul.menu.open
-  @include rule-after(rgba(white, 0.3))
+  @include rule-after(rgba(white, 0.2))
 
 header.hero ul.menu.open li
-  @include rule-before(rgba(white, 0.3))
-  @include smart-opacity-after(0.4, 1)
-  background-color: $accent-color
-
-header.hero span.menu-button.open
-  @include smart-opacity(0.4, 1)
+  @include rule-before(rgba(white, 0.2))

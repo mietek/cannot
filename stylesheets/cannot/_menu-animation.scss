@@ -2,13 +2,13 @@
 
 ul.menu.open:after {
   transition:
-    ease-out(border-top-width, 0, 0), // Step <1
+    linear(border-top-width, 0, 0),   // Step <1
     ease-out(border-top-color, 2, 0); // Step 1
 }
 
 ul.menu.open li:before {
   transition:
-    ease-out(border-bottom-width, 0, 0), // Step <1
+    linear(border-bottom-width, 0, 0),   // Step <1
     ease-out(border-bottom-color, 2, 0); // Step 1
 }
 
