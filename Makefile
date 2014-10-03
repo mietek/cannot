@@ -308,7 +308,7 @@ out/tmp/pub/icon-colors.txt : out/tmp/dev/stylesheets.css | out/tmp/pub ; $(call
 
 define iconsheet-helper-macro
   define $(mode)-echo-iconsheet-helper
-    echo '$$$$$(mode): true;' >$$@
+    echo '$$$$mode: $(mode);' >$$@
     echo '$$$$icon-shapes: ' >>$$@
     cat out/tmp/$(mode)/icon-shapes.txt >>$$@
     echo '; $$$$icon-colors: ' >>$$@
