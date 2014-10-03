@@ -1,6 +1,5 @@
 @mixin frob-always
-  &
-    @content
+  @content
   .touch &:active
     @content
   .no-touch &:hover
@@ -22,8 +21,7 @@
 
 
 @mixin frob-when-low
-  &
-    @content
+  @content
   .no-touch &:active
     @content
 
@@ -110,11 +108,9 @@
 
 
 @mixin smart-icon($name, $unfrobbed-color-name, $frobbed-color-name)
-  &
-    @include icon($name, $unfrobbed-color-name)
+  @include icon($name, $unfrobbed-color-name)
   @include frob-when-frobbed
-    &
-      @include icon($name, $frobbed-color-name)
+    @include icon($name, $frobbed-color-name)
 
 @mixin smart-icon-before($name, $unfrobbed-color-name, $frobbed-color-name)
   &:before

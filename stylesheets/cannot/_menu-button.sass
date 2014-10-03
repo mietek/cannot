@@ -1,43 +1,19 @@
 span.menu-button
   @include button
   @include smart-icon-before("closed", $object-color-name, $accent-color-name)
-  @include smart-image-glow-after($accent-color)
-  &:after
-    background-color: $object-color
-  @include frob-when-frobbed
-    &:after
-      background-color: $accent-color
-
-span.menu-button:after
-  @include button-icon
 
 
 // Animation start
 
-span.menu-button
-  @include frob-always
-    &:before
-      height: $icon-size
-      top: (ln(2) - $icon-size) / 2
-      transform: rotate(0deg)
-    &:after
-      opacity: 0
-      height: $icon-size
-      top: (ln(2) - $icon-size) / 2
-      transform: rotate(0deg)
+span.menu-button:before
+  height: $icon-size
+  top: (ln(2) - $icon-size) / 2
+  transform: rotate(0deg)
 
 
 // Animation end
 
-span.menu-button.open
-  @include frob-always
-    &:before
-      height: $icon-stroke
-      top: (ln(2) - $icon-stroke) / 2
-      transform: rotate(-180deg)
-    &:after
-      @include image-glow(none)
-      opacity: 1
-      height: $icon-stroke
-      top: (ln(2) - $icon-stroke) / 2
-      transform: rotate(-180deg)
+span.menu-button.open:before
+  height: $icon-stroke
+  top: (ln(2) - $icon-stroke) / 2
+  transform: rotate(-180deg)
