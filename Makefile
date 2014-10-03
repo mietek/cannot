@@ -76,7 +76,7 @@ pub-push : unwatch
 	-git -C out/pub commit -m "Automatic commit"
 	git -C out/pub push
 	git fetch $(pub-remote-name) $(pub-branch)
-	[ -f sync.sh ] && ./sync.sh
+	[ -f sync.sh ] && ./sync.sh || true
 
 
 # Watching
