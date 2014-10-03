@@ -2,7 +2,7 @@
 
 var easeScroll = require('ease-scroll');
 
-/* global scrollY */
+/* global scrollY, devicePixelRatio */
 
 
 exports.rot13 = function (string) {
@@ -79,6 +79,27 @@ exports.insertTocInSection = function (container) {
 };
 
 
+exports.detectHairline = function () {
+  var hairline = false;
+  if (window.devicePixelRatio && devicePixelRatio >= 2) {
+    var div = document.createElement('div');
+    div.style.border = '.5px solid transparent';
+    document.body.appendChild(div);
+    if (div.offsetHeight === 1) {
+      hairline = true;
+    }
+    document.body.removeChild(div);
+  }
+  if (hairline) {
+    document.documentElement.classList.remove('no-hairline');
+    document.documentElement.classList.add('hairline');
+  } else {
+    document.documentElement.classList.remove('hairline');
+    document.documentElement.classList.add('no-hairline');
+  }
+};
+
+
 (function () {
   var lastResizeT;
 
@@ -91,6 +112,7 @@ exports.insertTocInSection = function (container) {
           setTimeout(onTimeout, 100);
         } else {
           document.documentElement.classList.remove('no-transition');
+          exports.detectHairline();
         }
       };
       setTimeout(onTimeout, 100);
@@ -121,6 +143,8 @@ exports.insertTocInSection = function (container) {
   } else {
     document.documentElement.classList.add('no-touch');
   }
+
+  exports.detectHairline();
 
   addEventListener('load', function () {
     var headerMenuBar = document.getElementById('header-menu-bar');

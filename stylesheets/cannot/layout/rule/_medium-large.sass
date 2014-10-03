@@ -1,29 +1,11 @@
 @mixin rule-before($color, $top: -1px, $bottom: none, $size: 1px)
-  position: relative
+  @include rule-before-common($color, $top, $bottom, $size)
   &:before
-    border-bottom: $size $color solid
-    position: absolute
-    @if $bottom == none
-      top: $top
-    @else
-      bottom: $bottom
     left: ln(1)
     right: ln(1)
-    content: ""
-    @include hires
-      transform: scaleY(0.5)
 
 @mixin rule-after($color, $bottom: 0, $top: none, $size: 1px)
-  position: relative
+  @include rule-after-common($color, $bottom, $top, $size)
   &:after
-    border-top: $size $color solid
-    position: absolute
-    @if $top == none
-      bottom: $bottom
-    @else
-      top: $top
     left: ln(1)
     right: ln(1)
-    content: ""
-    @include hires
-      transform: scaleY(0.5)

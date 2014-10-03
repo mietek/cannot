@@ -22,12 +22,14 @@ header.hero nav.menu-bar a
   text-align: center
   -webkit-font-smoothing: antialiased
 
-#hero div.hero-wrapper
-  @include rule-before(rgba(white, 0.3), $top: 0)
-  @include rule-after(rgba(white, 0.3))
+#hero div.hero-sash
   margin-top: ln(2)
   margin-bottom: ln(2)
   background-color: $accent-color
+
+#hero div.hero-sash div.wrapper
+  @include rule-before(rgba(white, 0.3), $top: 0)
+  @include rule-after(rgba(white, 0.3))
 
 #hero h1.logotype
   background-position: center center

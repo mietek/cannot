@@ -1,0 +1,33 @@
+@mixin rule-before-common($color, $top, $bottom, $size)
+  position: relative
+  &:before
+    border-bottom: $size $color solid
+    position: absolute
+    @if $bottom == none
+      top: $top
+    @else
+      bottom: $bottom
+    content: ""
+  @if $size == 1px
+    .hairline &:before
+      border-bottom: 0.5px $color solid
+    .no-hairline &:before
+      @include hires
+        transform: scaleY(0.5)
+
+@mixin rule-after-common($color, $bottom, $top, $size)
+  position: relative
+  &:after
+    border-top: $size $color solid
+    position: absolute
+    @if $top == none
+      bottom: $bottom
+    @else
+      top: $top
+    content: ""
+  @if $size == 1px
+    .hairline &:after
+      border-top: 0.5px $color solid
+    .no-hairline &:after
+      @include hires
+        transform: scaleY(0.5)
