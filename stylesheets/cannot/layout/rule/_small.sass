@@ -10,6 +10,8 @@
     left: 0
     right: 0
     content: ""
+    @include hires
+      transform: scaleY(0.5)
 
 @mixin rule-after($color, $bottom: 0, $top: none, $size: 1px)
   position: relative
@@ -23,3 +25,5 @@
     left: 0
     right: 0
     content: ""
+    @include hires
+      transform: scaleY(0.5)
