@@ -5,7 +5,7 @@
 
 @mixin no-underline
   @include frob-always
-    border-bottom: none
+    text-decoration: none
 
 @mixin no-text
   @include no-underline
@@ -23,9 +23,6 @@ a
   @include text-button
   @include smart-text-glow($accent-color)
   color: $object-color
-  text-decoration: none
-  border-bottom: 1px rgba($object-color, 0.4) solid
-  transition: ease(color, 1, 0), ease(border-bottom-color, 1, 0), ease(text-shadow, 1, 0)
+  transition: ease(color, 1, 0), ease(text-shadow, 1, 0)
   @include frob-when-frobbed
     color: $accent-color
-    border-bottom: 1px rgba($accent-color, 0.4) solid
