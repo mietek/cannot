@@ -1,7 +1,8 @@
 @mixin text-button
   cursor: pointer
-  user-select: none
-  -webkit-tap-highlight-color: transparent
+  .touch &
+    user-select: none
+    -webkit-tap-highlight-color: transparent
 
 @mixin no-underline
   @include frob-always
