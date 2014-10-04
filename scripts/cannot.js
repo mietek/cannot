@@ -70,11 +70,7 @@ exports.insertTocInSection = function (container) {
     var nav = document.createElement('nav');
     nav.appendChild(toc);
     container.classList.add('with-toc');
-    if (window.insertToc !== undefined) {
-      window.insertToc(nav, container);
-    } else {
-      container.insertBefore(nav, containerHeading.nextSibling);
-    }
+    container.insertBefore(nav, sections[0]);
   }
 };
 
