@@ -11,6 +11,8 @@ Uses [ease-scroll](https://github.com/mietek/ease-scroll/) for smooth scrolling.
 Usage
 -----
 
+Undergoing rapid development.  Not currently intended to be used by others.
+
 Do you need a website?  Say hello@mietek.io
 
 Examples:
