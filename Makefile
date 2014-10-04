@@ -157,6 +157,7 @@ vpath %.html page-templates bower_components/cannot/page-templates
 page-template := main.html
 page-includes := menu-items.html head-extra.html header-extra.html footer-extra.html
 page-metadata := $(wildcard page-metadata/*.txt)
+gzip-suffix   := $(if $(filter no-gzip,$(shell cat page-metadata/no-gzip.txt)),,.gz)
 std-pages     := index.md error.md license/index.md
 pages         := $(sort $(std-pages) $(subst pages/,,$(call find-files,pages,*.md)))
 
@@ -182,7 +183,7 @@ $(foreach mode,dev pub,$(eval $(pages-macro)))
 
 .PHONY    : dev-pages pub-pages
 dev-pages : $(dev-pages)
-pub-pages : $(addsuffix .gz,$(pub-pages))
+pub-pages : $(addsuffix $(gzip-suffix),$(pub-pages))
 
 
 # Scripts
@@ -208,7 +209,7 @@ $(foreach mode,dev pub,$(eval $(scripts-macro)))
 
 .PHONY      : dev-scripts pub-scripts
 dev-scripts : out/dev/_scripts.js
-pub-scripts : out/pub/_scripts.js.gz
+pub-scripts : $(addsuffix $(gzip-suffix),out/pub/_scripts.js)
 
 
 # Stylesheets
@@ -238,7 +239,7 @@ $(foreach mode,dev pub,$(eval $(stylesheets-macro)))
 
 .PHONY          : dev-stylesheets pub-stylesheets
 dev-stylesheets : out/dev/_stylesheets.css
-pub-stylesheets : out/pub/_stylesheets.css.gz
+pub-stylesheets : $(addsuffix $(gzip-suffix),out/pub/_stylesheets.css)
 
 
 # Fonts
@@ -285,7 +286,7 @@ define images-macro
   define $(mode)-echo-images
     echo '$(mode)-image-names := favicon-16.png favicon-32.png favicon-48.png $$$$(filter-out iconsheet%,$$$$(shell cat out/tmp/dev/images.txt))' >$$@
     echo '$(mode)-images := out/$(mode)/favicon.ico $$$$(addprefix out/$(mode)/_images/,$$$$($(mode)-image-names))' >>$$@
-    echo '$(mode)-images : $(if $(filter dev,$(mode)),$$$$(dev-images),$$$$(pub-images) $$$$(addsuffix .gz,$$$$(filter %.svg,$$$$(pub-images))))' >>$$@
+    echo '$(mode)-images : $(if $(filter dev,$(mode)),$$$$(dev-images),$$$$(pub-images) $$$$(addsuffix $(gzip-suffix),$$$$(filter %.svg,$$$$(pub-images))))' >>$$@
     echo '$$$$($(mode)-images) :' >>$$@
   endef
 
