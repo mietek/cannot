@@ -64,8 +64,32 @@ section p
 section ul
   margin-top: ln(1/2)
 
+section ul li
+  margin-left: ln(1)
+  position: relative
+
+section ul li:before
+  color: $accent-color
+  content: "•"
+  position: absolute
+  left: ln(-1)
+  top: 0
+
 section ol
   margin-top: ln(1/2)
+  counter-reset: numbered-list
+
+section ol li
+  margin-left: ln(1)
+  position: relative
+
+section ol li:before
+  color: $accent-color
+  content: counter(numbered-list)
+  counter-increment: numbered-list
+  position: absolute
+  left: ln(-1)
+  top: 0
 
 section blockquote
   margin-top: ln(1/2)
