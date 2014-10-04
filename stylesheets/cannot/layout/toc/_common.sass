@@ -14,6 +14,12 @@ section.with-toc span.backlink-button
   @include smart-icon-before("up", $object-color-name, $accent-color-name)
 
 
+section.with-toc section.level2 > blockquote:first-of-type
+  margin-top: ln(1)
+
+section.with-toc section.level2 > blockquote:first-of-type + nav ul
+  margin-top: ln(1/2)
+
 // NOTE: This offsets the baseline by 1px with Helvetica Neue, but not with Concourse.
 section.with-toc section.level3 > h3
   display: inline-block
