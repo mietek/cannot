@@ -1,9 +1,3 @@
-@mixin button-wrapper
-  display: block
-  width: ln(2) + $icon-size
-  height: ln(2)
-
-
 @mixin button-icon
   width: $icon-size
   height: $icon-size
@@ -22,6 +16,7 @@
   height: 100%
 
 @mixin button
+  @include button-link
   @include smart-opacity(0.2, 1)
   @include smart-image-glow($accent-color)
   @include smart-icon-after("block", $object-color-name, $accent-color-name)
@@ -33,12 +28,7 @@
   transition: ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
   &:after
     @include button-icon
-  a
-    @include button-link
 
-
-span.button-wrapper
-  @include button-wrapper
 
 span.button
   @include button

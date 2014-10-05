@@ -14,11 +14,11 @@ $if(head-extra)$$head-extra$$endif$
 $if(head-bonus)$$head-bonus$$endif$
 </head>
 <body$if(body-class)$ class="$body-class$"$endif$>
-<header id="header"$if(header-class)$ class="$header-class$"$endif$>
+<header id="top"$if(header-class)$ class="$header-class$"$endif$>
 <div class="wrapper">
 <nav id="header-menu-bar" class="menu-bar">
 <h1 class="logotype"><a href="." title="$project-title$">$project-title$</a></h1>
-$if(menu-items)$<span id="header-button-wrapper" class="button-wrapper"><span id="header-button" class="menu-button"><a href="" title="Menu">Menu</a></span></span>$endif$
+$if(menu-items)$<span id="header-button" class="menu-button"><a href="" title="Menu">Menu</a></span>$endif$
 <ul id="header-menu" class="menu">
 $menu-items$
 </ul>
@@ -38,20 +38,20 @@ $if(hero)$<div id="hero">
 <div class="hero-sash">
 <div class="wrapper">
 $hero$
-<span id="hero-button-wrapper" class="button-wrapper"><span id="hero-button" class="button"><a href="" class="click-to-main" title="More">More</a></span></span>
+<span id="hero-button"><a href="#more" title="More">More</a></span>
 </div>
 </div>
 </div>$endif$
-<main id="main"$if(main-class)$ class="$main-class$"$endif$>
+<main id="more"$if(main-class)$ class="$main-class$"$endif$>
 <div class="wrapper">
 $body$
 </div>
 </main>
-<footer id="footer"$if(footer-class)$ class="$footer-class$"$endif$>
+<footer id="bottom"$if(footer-class)$ class="$footer-class$"$endif$>
 <div class="wrapper">
 <nav id="footer-menu-bar" class="menu-bar">
 <h1 class="logotype"><a href="." title="$project-title$">$project-title$</a></h1>
-<span id="footer-button-wrapper" class="button-wrapper"><span id="footer-button" class="button"><a href="" class="click-to-top" title="Top">Top</a></span></span>
+<span id="footer-button"><a href="#top" title="Top">Top</a></span>
 <ul id="footer-menu" class="menu open">
 $menu-items$
 </ul>

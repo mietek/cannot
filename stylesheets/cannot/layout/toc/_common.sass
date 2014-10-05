@@ -3,13 +3,16 @@ section.with-toc ul.toc
   margin-bottom: ln(1)
 
 
-section.with-toc span.button-wrapper
-  margin-right: 0
+section.with-toc
+  position: relative // For backlink-button
+
+section.with-toc span.backlink-button
   position: absolute
   top: 0
   right: 0
+  margin-right: 0
 
-section.with-toc span.backlink-button
+section.with-toc span.backlink-button a
   @include button
   @include smart-icon-after("up", $object-color-name, $accent-color-name)
 

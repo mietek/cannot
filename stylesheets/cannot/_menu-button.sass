@@ -1,11 +1,11 @@
-span.menu-button
+span.menu-button a
   @include button
   @include smart-icon-after("closed", $object-color-name, $accent-color-name)
 
 
 // Animation start
 
-span.menu-button:after
+span.menu-button a:after
   height: $icon-size
   top: (ln(2) - $icon-size) / 2
   transform: rotate(0deg)
@@ -13,7 +13,7 @@ span.menu-button:after
 
 // Animation end
 
-span.menu-button.open:after
+span.menu-button.open a:after
   height: $icon-stroke
   top: (ln(2) - $icon-stroke) / 2
   transform: rotate(-180deg)

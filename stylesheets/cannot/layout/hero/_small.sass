@@ -7,11 +7,13 @@ header.hero ul.menu
 
 header.hero ul.menu li
   @include rule-before(white, $size: 0)
+
+header.hero ul.menu li a
   @include smart-opacity-after(0.3, 1)
   @include smart-image-glow-after(white)
   @include smart-icon-after("right", white, white)
 
-header.hero span.menu-button
+header.hero span.menu-button a
   @include smart-opacity(0.3, 1)
   @include smart-image-glow(white)
   @include smart-icon-after("closed", white, white)

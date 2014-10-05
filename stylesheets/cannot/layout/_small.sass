@@ -17,13 +17,13 @@ $layout-width: $layout-width-small
 
 
 header
-  position: relative // For #header-button-wrapper
+  position: relative // For #header-button
   overflow: hidden
 
 header div.wrapper > *
   margin-left: ln(1)
 
-#header-button-wrapper
+#header-button
   position: absolute // Referencing header
   top: 0
   right: 0
@@ -45,17 +45,18 @@ section ul.menu li:before
 
 
 footer
-  position: relative // For #footer-button-wrapper
+  position: relative // For #footer-button
 
 footer div.wrapper > *
   margin-left: ln(1)
 
-#footer-button-wrapper
+#footer-button
   position: absolute // Referencing footer
   top: 0
   right: 0
 
-#footer-button
+#footer-button a
+  @include button
   @include smart-icon-after("up", $object-color-name, $accent-color-name)
 
 
