@@ -9,6 +9,8 @@ header.hero nav.menu-bar
 header.hero nav.menu-bar a
   @include smart-text-glow(white)
   color: rgba(white, 0.6)
+  &:focus
+    @include box-glow(white)
   @include frob-when-frobbed
     color: white
 
