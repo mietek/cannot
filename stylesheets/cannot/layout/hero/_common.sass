@@ -2,17 +2,18 @@
   background-color: $hero-background-color
 
 
-header.hero nav.menu-bar
-  color: rgba(white, 0.6)
-  -webkit-font-smoothing: antialiased
-
-header.hero nav.menu-bar a
+header.hero a
   @include smart-text-glow(white)
   color: rgba(white, 0.6)
   &:focus
     @include box-glow(white)
   @include frob-when-frobbed
     color: white
+
+header.hero nav.menu-bar
+  @include rule-after(rgba(white, 0.2))
+  color: rgba(white, 0.6)
+  -webkit-font-smoothing: antialiased
 
 
 #hero
@@ -27,6 +28,14 @@ header.hero nav.menu-bar a
   justify-content: space-around
   text-align: center
   -webkit-font-smoothing: antialiased
+
+#hero a
+  @include smart-text-glow(white)
+  color: rgba(white, 0.6)
+  &:focus
+    @include box-glow(white)
+  @include frob-when-frobbed
+    color: white
 
 #hero div.hero-sash
   margin-top: ln(2)
