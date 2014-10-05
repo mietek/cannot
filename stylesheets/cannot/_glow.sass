@@ -1,21 +1,32 @@
 // NOTE: There is a bug in WebKit where filter either does not transition or transitions only within a clipped boundary, for a number or milliseconds or until a pointer event.  Wrapping the filtered element in another element works around this.
 
+$box-glow-radius: 3px !default
+$box-glow-rounds: 3 !default
+$active-box-glow-rounds: 6 !default
 
-$glow-radius: 2px !default
-
+$text-glow-radius: 2px !default
 $text-glow-rounds: 2 !default
 $active-text-glow-rounds: 4 !default
 
+$image-glow-radius: 2px !default
 $image-glow-rounds: 2 !default
 $active-image-glow-rounds: 4 !default
 
 
-@function _text-shadow($color, $radius, $rounds)
+@function _shadow($color, $radius, $rounds)
   $result: ""
   @for $i from 1 through $rounds
     @if $result != ""
       $result: ", #{$result}"
     $result: "0 0 #{$radius} #{$color} #{$result}"
+  @return unquote($result)
+
+@function _inset-shadow($color, $radius, $rounds)
+  $result: ""
+  @for $i from 1 through $rounds
+    @if $result != ""
+      $result: ", #{$result}"
+    $result: "inset 0 0 #{$radius} #{$color} #{$result}"
   @return unquote($result)
 
 @function _filter($color, $radius, $rounds)
@@ -27,11 +38,17 @@ $active-image-glow-rounds: 4 !default
   @return unquote($result)
 
 
+@mixin _box-glow($color, $radius, $rounds)
+  @if $color == none
+    box-shadow: none
+  @else
+    box-shadow: _shadow($color, $radius, $rounds), _inset-shadow($color, $radius, $rounds)
+
 @mixin _text-glow($color, $radius, $rounds)
   @if $color == none
     text-shadow: none
   @else
-    text-shadow: _text-shadow($color, $radius, $rounds)
+    text-shadow: _shadow($color, $radius, $rounds)
 
 @mixin _image-glow($color, $radius, $rounds)
   @if $color == none
@@ -43,15 +60,22 @@ $active-image-glow-rounds: 4 !default
     -webkit-filter: $filter
 
 
+@mixin box-glow($color)
+  @include _box-glow($color, $box-glow-radius, $box-glow-rounds)
+
+@mixin active-box-glow($color)
+  @include _box-glow($color, $box-glow-radius, $active-box-glow-rounds)
+
+
 @mixin text-glow($color)
-  @include _text-glow($color, $glow-radius, $text-glow-rounds)
+  @include _text-glow($color, $text-glow-radius, $text-glow-rounds)
 
 @mixin active-text-glow($color)
-  @include _text-glow($color, $glow-radius, $active-text-glow-rounds)
+  @include _text-glow($color, $text-glow-radius, $active-text-glow-rounds)
 
 
 @mixin image-glow($color)
-  @include _image-glow($color, $glow-radius, $image-glow-rounds)
+  @include _image-glow($color, $image-glow-radius, $image-glow-rounds)
 
 @mixin active-image-glow($color)
-  @include _image-glow($color, $glow-radius, $active-image-glow-rounds)
+  @include _image-glow($color, $image-glow-radius, $active-image-glow-rounds)
