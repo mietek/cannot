@@ -1,15 +1,12 @@
 ul.menu li
-  @include smart-opacity-after(0.2, 1)
-  @include smart-image-glow-after($accent-color)
-  @include smart-icon-after("right", $object-color-name, $accent-color-name)
   height: ln(2)
   line-height: ln(2)
   position: relative
 
-ul.menu li:after
-  @include button-icon
-
 ul.menu li a
+  @include smart-opacity-after(0.2, 1)
+  @include smart-image-glow-after($accent-color)
+  @include smart-icon-after("right", $object-color-name, $accent-color-name)
   @include text-button
   @include no-underline
   display: block
@@ -17,6 +14,10 @@ ul.menu li a
   height: 100%
   padding-left: ln(1)
   padding-right: ln(1)
+  position: relative
+
+ul.menu li a:after
+  @include button-icon
 
 
 // Animation start
@@ -31,7 +32,7 @@ ul.menu li
 ul.menu li
   @include rule-before($accent-color, $size: 0)
 
-ul.menu li:after
+ul.menu li a:after
   right: -100%
 
 ul.menu li a
@@ -51,7 +52,7 @@ ul.menu.open li
 ul.menu.open li
   @include rule-before(rgba($object-color, 0.2))
 
-ul.menu.open li:after
+ul.menu.open li a:after
   right: ln(1)
 
 ul.menu.open li a

@@ -66,6 +66,8 @@
 
 
 @mixin smart-opacity($low, $medium, $high: $medium)
+  &:focus
+    opacity: $medium
   @include frob-when-low
     opacity: $low
   @include frob-when-medium
@@ -74,6 +76,9 @@
     opacity: $high
 
 @mixin smart-opacity-after($low, $medium, $high: $medium)
+  &:focus
+    &:after
+      opacity: $medium
   @include frob-when-low
     &:after
       opacity: $low
@@ -87,12 +92,17 @@
 
 @mixin smart-icon($name, $unfrobbed-color-name, $frobbed-color-name)
   @include icon($name, $unfrobbed-color-name)
+  &:focus
+    @include icon($name, $frobbed-color-name)
   @include frob-when-frobbed
     @include icon($name, $frobbed-color-name)
 
 @mixin smart-icon-after($name, $unfrobbed-color-name, $frobbed-color-name)
   &:after
     @include icon($name, $unfrobbed-color-name)
+  &:focus
+    &:after
+      @include icon($name, $frobbed-color-name)
   @include frob-when-frobbed
     &:after
       @include icon($name, $frobbed-color-name)
@@ -104,6 +114,8 @@
   @else
     $unfrobbed: "-#{$unfrobbed}"
   @include image("logotype#{$unfrobbed}-#{$size}", "png")
+  &:focus
+    @include image("logotype-#{$frobbed}-#{$size}", "png")
   @include frob-when-frobbed
     @include image("logotype-#{$frobbed}-#{$size}", "png")
-  transition: ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
+  transition: ease(box-shadow, 1, 0), ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)

@@ -24,6 +24,10 @@ a
   @include text-button
   @include smart-text-glow($accent-color)
   color: $object-color
-  transition: ease(color, 1, 0), ease(text-shadow, 1, 0)
+  transition: ease(box-shadow, 1, 0), ease(color, 1, 0), ease(text-shadow, 1, 0)
+  &:focus
+    @include box-glow($accent-color)
+    color: $accent-color
+    outline: 0
   @include frob-when-frobbed
     color: $accent-color

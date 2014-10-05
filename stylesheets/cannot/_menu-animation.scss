@@ -18,7 +18,15 @@ ul.menu.open li {
     ease-out(background-color, 1, 0); // Step 1
 }
 
-ul.menu.open li:after {
+ul.menu.open li a {
+  transition:
+    ease(box-shadow, 1, 0),      // Link
+    ease(color, 1, 0),           // Link
+    ease(text-shadow, 1, 0),     // Link
+    ease-out(text-indent, 2, 1); // Step 2
+}
+
+ul.menu.open li a:after {
   transition:
     ease(opacity, 1, 0),        // Icon
     ease(filter, 1, 0),         // Icon
@@ -26,29 +34,23 @@ ul.menu.open li:after {
     ease-out(right, 2, 1);      // Step 2
 }
 
-ul.menu.open li a {
-  transition:
-    ease(color, 1, 0),           // Link
-    ease(text-shadow, 1, 0),     // Link
-    ease-out(text-indent, 2, 1); // Step 2
-}
-
 
 // Backwards
 
-ul.menu li:after {
+ul.menu li a {
+  transition:
+    ease(box-shadow, 1, 0),     // Link
+    ease(color, 1, 0),          // Link
+    ease(text-shadow, 1, 0),    // Link
+    ease-in(text-indent, 2, 0); // Step 1
+}
+
+ul.menu li a:after {
   transition:
     ease(opacity, 1, 0),        // Icon
     ease(filter, 1, 0),         // Icon
     ease(-webkit-filter, 1, 0), // Icon
     ease-in(right, 2, 0);       // Step 1
-}
-
-ul.menu li a {
-  transition:
-    ease(color, 1, 0),          // Link
-    ease(text-shadow, 1, 0),    // Link
-    ease-in(text-indent, 2, 0); // Step 1
 }
 
 ul.menu li {
