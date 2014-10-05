@@ -157,7 +157,7 @@ vpath %.html page-templates bower_components/cannot/page-templates
 page-template := main.html
 page-includes := menu-items.html head-extra.html header-extra.html footer-extra.html
 page-metadata := $(wildcard page-metadata/*.txt)
-gzip-suffix   := $(if $(filter no-gzip,$(shell cat page-metadata/no-gzip.txt)),,.gz)
+gzip-suffix   := $(if $(filter no-gzip,$(shell cat page-metadata/no-gzip.txt 2>/dev/null)),,.gz)
 std-pages     := index.md error.md license/index.md
 pages         := $(sort $(std-pages) $(subst pages/,,$(call find-files,pages,*.md)))
 
