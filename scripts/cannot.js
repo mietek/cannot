@@ -2,7 +2,7 @@
 
 var easeScroll = require('ease-scroll');
 
-/* global scrollY, devicePixelRatio */
+/* global devicePixelRatio */
 
 
 exports.rot13 = function (string) {
@@ -21,6 +21,56 @@ exports.restartAnimation = function (target) {
     return forceReflow;
   })(target.offsetHeight);
   target.style.display = display;
+};
+
+
+exports.detectTouch = function () {
+  if ('ontouchstart' in window) {
+    document.documentElement.classList.add('touch');
+  } else {
+    document.documentElement.classList.add('no-touch');
+  }
+};
+
+
+exports.detectHairline = function () {
+  var hairline = false;
+  if (window.devicePixelRatio && devicePixelRatio >= 2) {
+    var div = document.createElement('div');
+    div.style.border = '.5px solid transparent';
+    document.body.appendChild(div);
+    if (div.offsetHeight === 1) {
+      hairline = true;
+    }
+    document.body.removeChild(div);
+  }
+  if (hairline) {
+    document.documentElement.classList.remove('no-hairline');
+    document.documentElement.classList.add('hairline');
+  } else {
+    document.documentElement.classList.remove('hairline');
+    document.documentElement.classList.add('no-hairline');
+  }
+};
+
+
+exports.disableTransitionsDuringResize = function () {
+  var lastResizeT;
+  addEventListener('resize', function () {
+    lastResizeT = Date.now();
+    if (!document.documentElement.classList.contains('no-transition')) {
+      document.documentElement.classList.add('no-transition');
+      var onTimeout = function () {
+        if (Date.now() - lastResizeT < 100) {
+          setTimeout(onTimeout, 100);
+        } else {
+          document.documentElement.classList.remove('no-transition');
+          exports.detectHairline();
+        }
+      };
+      setTimeout(onTimeout, 100);
+    }
+  });
 };
 
 
@@ -75,113 +125,37 @@ exports.insertTocInSection = function (container) {
 };
 
 
-exports.detectHairline = function () {
-  var hairline = false;
-  if (window.devicePixelRatio && devicePixelRatio >= 2) {
-    var div = document.createElement('div');
-    div.style.border = '.5px solid transparent';
-    document.body.appendChild(div);
-    if (div.offsetHeight === 1) {
-      hairline = true;
-    }
-    document.body.removeChild(div);
-  }
-  if (hairline) {
-    document.documentElement.classList.remove('no-hairline');
-    document.documentElement.classList.add('hairline');
-  } else {
-    document.documentElement.classList.remove('hairline');
-    document.documentElement.classList.add('no-hairline');
+exports.enableHeaderMenuButton = function () {
+  var headerMenuBar = document.getElementById('header-menu-bar');
+  var headerMenuButton = document.getElementById('header-button');
+  var headerMenu = document.getElementById('header-menu');
+  if (headerMenuBar && headerMenuButton && headerMenu) {
+    headerMenuButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      headerMenuBar.classList.toggle('open');
+      headerMenu.classList.toggle('open');
+      headerMenuButton.classList.toggle('open');
+      var open = (localStorage['header-menu-open'] === 'true');
+      if (open) {
+        localStorage.removeItem('header-menu-open');
+      } else {
+        localStorage['header-menu-open'] = 'true';
+      }
+    });
   }
 };
 
 
 (function () {
-  var lastResizeT;
-
-  addEventListener('resize', function () {
-    lastResizeT = Date.now();
-    if (!document.documentElement.classList.contains('no-transition')) {
-      document.documentElement.classList.add('no-transition');
-      var onTimeout = function () {
-        if (Date.now() - lastResizeT < 100) {
-          setTimeout(onTimeout, 100);
-        } else {
-          document.documentElement.classList.remove('no-transition');
-          exports.detectHairline();
-        }
-      };
-      setTimeout(onTimeout, 100);
-    }
-  });
-
+  exports.detectTouch();
+  exports.detectHairline();
+  exports.disableTransitionsDuringResize();
   addEventListener('load', function () {
     document.documentElement.classList.remove('no-transition');
-    [].forEach.call(document.getElementsByClassName('click-to-top'), function (element) {
-      element.addEventListener('click', function (event) {
-        event.preventDefault();
-        easeScroll.scrollToOffset(0);
-      });
-    });
-    [].forEach.call(document.getElementsByClassName('click-to-main'), function (element) {
-      element.addEventListener('click', function (event) {
-        event.preventDefault();
-        easeScroll.scrollToElementById('main');
-      });
-    });
-  });
-})();
-
-
-(function () {
-  if ('ontouchstart' in window) {
-    document.documentElement.classList.add('touch');
-  } else {
-    document.documentElement.classList.add('no-touch');
-  }
-
-  exports.detectHairline();
-
-  addEventListener('load', function () {
-    var headerMenuBar = document.getElementById('header-menu-bar');
-    var headerMenuButton = document.getElementById('header-button');
-    var headerMenu = document.getElementById('header-menu');
-    if (headerMenuBar && headerMenuButton && headerMenu) {
-      headerMenuButton.addEventListener('click', function (event) {
-        event.preventDefault();
-        headerMenuBar.classList.toggle('open');
-        headerMenu.classList.toggle('open');
-        headerMenuButton.classList.toggle('open');
-        var open = (localStorage['header-menu-open'] === 'true');
-        if (open) {
-          localStorage.removeItem('header-menu-open');
-        } else {
-          localStorage['header-menu-open'] = 'true';
-        }
-      });
-    }
-
     if (document.documentElement.classList.contains('insert-toc')) {
       exports.insertTocInSection(document.getElementsByClassName('level1')[0]);
     }
-
+    exports.enableHeaderMenuButton();
     easeScroll.applyToLocalLinks();
-
-    var localBase = location.origin + location.pathname;
-    var links = document.links;
-    [].forEach.call(links, function (link) {
-      if (link.href === localBase) {
-        link.addEventListener('click', function (event) {
-          event.preventDefault();
-          if (scrollY === 0) {
-            link.classList.remove('shake');
-            exports.restartAnimation(link);
-            link.classList.add('shake');
-          } else {
-            easeScroll.scrollToOffset(0);
-          }
-        });
-      }
-    });
   });
 })();
