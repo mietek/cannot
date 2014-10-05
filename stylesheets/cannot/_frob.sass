@@ -53,17 +53,6 @@
   @include frob-when-high
     @include active-image-glow($color)
 
-@mixin smart-image-glow-before($color)
-  @include frob-when-low
-    &:before
-      @include image-glow(none)
-  @include frob-when-medium
-    &:before
-      @include image-glow($color)
-  @include frob-when-high
-    &:before
-      @include active-image-glow($color)
-
 @mixin smart-image-glow-after($color)
   @include frob-when-low
     &:after
@@ -84,17 +73,6 @@
   @include frob-when-high
     opacity: $high
 
-@mixin smart-opacity-before($low, $medium, $high: $medium)
-  @include frob-when-low
-    &:before
-      opacity: $low
-  @include frob-when-medium
-    &:before
-      opacity: $medium
-  @include frob-when-high
-    &:before
-      opacity: $high
-
 @mixin smart-opacity-after($low, $medium, $high: $medium)
   @include frob-when-low
     &:after
@@ -111,13 +89,6 @@
   @include icon($name, $unfrobbed-color-name)
   @include frob-when-frobbed
     @include icon($name, $frobbed-color-name)
-
-@mixin smart-icon-before($name, $unfrobbed-color-name, $frobbed-color-name)
-  &:before
-    @include icon($name, $unfrobbed-color-name)
-  @include frob-when-frobbed
-    &:before
-      @include icon($name, $frobbed-color-name)
 
 @mixin smart-icon-after($name, $unfrobbed-color-name, $frobbed-color-name)
   &:after

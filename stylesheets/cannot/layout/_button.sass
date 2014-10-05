@@ -24,14 +24,14 @@
 @mixin button
   @include smart-opacity(0.2, 1)
   @include smart-image-glow($accent-color)
-  @include smart-icon-before("block", $object-color-name, $accent-color-name)
+  @include smart-icon-after("block", $object-color-name, $accent-color-name)
   display: block
   width: ln(2) + $icon-size
   height: ln(2)
   position: relative
   z-index: 2
   transition: ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
-  &:before
+  &:after
     @include button-icon
   a
     @include button-link

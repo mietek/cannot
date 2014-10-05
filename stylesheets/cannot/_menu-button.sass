@@ -1,11 +1,11 @@
 span.menu-button
   @include button
-  @include smart-icon-before("closed", $object-color-name, $accent-color-name)
+  @include smart-icon-after("closed", $object-color-name, $accent-color-name)
 
 
 // Animation start
 
-span.menu-button:before
+span.menu-button:after
   height: $icon-size
   top: (ln(2) - $icon-size) / 2
   transform: rotate(0deg)
@@ -13,7 +13,7 @@ span.menu-button:before
 
 // Animation end
 
-span.menu-button.open:before
+span.menu-button.open:after
   height: $icon-stroke
   top: (ln(2) - $icon-stroke) / 2
   transform: rotate(-180deg)

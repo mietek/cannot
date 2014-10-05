@@ -5,7 +5,7 @@ span.menu-button.open {
     ease(filter, 1, 0),           // General menu-button transition
     ease(-webkit-filter, 1, 0),   // General menu-button transition
     ease(opacity, 1, 0);          // General menu-button transition
-  &:before {
+  &:after {
     transition:
       ease(filter, 1, 0),           // General menu-button transition
       ease(-webkit-filter, 1, 0),   // General menu-button transition
@@ -23,7 +23,7 @@ span.menu-button {
     ease(filter, 1, 0),           // General menu-button transition
     ease(-webkit-filter, 1, 0),   // General menu-button transition
     ease(opacity, 1, 0);          // General menu-button transition
-  &:before {
+  &:after {
     transition:
       ease(filter, 1, 0),           // General menu-button transition
       ease(-webkit-filter, 1, 0),   // General menu-button transition
