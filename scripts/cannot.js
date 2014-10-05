@@ -92,16 +92,27 @@ exports.insertTocInSection = function (container) {
       return;
     }
     var sectionTitle = sectionHeading.textContent;
+
     var item = document.createElement('li');
     var link = document.createElement('a');
     link.href = '#' + section.id;
     link.title = sectionTitle;
-    link.appendChild(document.createTextNode(sectionTitle));
+    if (sectionHeading.firstChild.tagName === 'CODE') {
+      var code = document.createElement('code');
+      code.appendChild(document.createTextNode(sectionTitle));
+      link.appendChild(code);
+    } else {
+      link.appendChild(document.createTextNode(sectionTitle));
+    }
     item.appendChild(link);
     toc.appendChild(item);
 
-    var backlinkButtonWrapper = document.createElement('span');
-    backlinkButtonWrapper.className = 'button-wrapper';
+    var sectionLink = document.createElement('a');
+    sectionLink.className = 'section-link';
+    sectionLink.href = '#' + section.id;
+    sectionLink.title = sectionTitle;
+    sectionLink.appendChild(sectionHeading.replaceChild(sectionLink, sectionHeading.firstChild));
+
     var backlinkButton = document.createElement('span');
     backlinkButton.className = 'backlink-button';
     var backlink = document.createElement('a');
@@ -110,8 +121,11 @@ exports.insertTocInSection = function (container) {
     backlink.title = containerTitle;
     backlink.appendChild(document.createTextNode('↩'));
     backlinkButton.appendChild(backlink);
-    backlinkButtonWrapper.appendChild(backlinkButton);
-    section.insertBefore(backlinkButtonWrapper, section.lastChild);
+    if (sectionHeading.nextSibling) {
+      section.insertBefore(backlinkButton, sectionHeading.nextSibling);
+    } else {
+      section.appendChild(backlinkButton);
+    }
 
     itemCount += 1;
     exports.insertTocInSection(section);

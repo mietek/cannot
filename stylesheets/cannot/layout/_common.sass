@@ -113,6 +113,9 @@ section.level1
     font-weight: bold
     line-height: ln(2)
     margin-bottom: ln(1)
+    a
+      @include no-underline
+      color: $accent-color
 
 section.level2
   @include rule-before($accent-color, $top: ln(-1/2) - 1)
@@ -124,6 +127,9 @@ section.level2
     line-height: ln(2)
     margin-bottom: ln(1/2)
     position: relative
+    a
+      @include no-underline
+      color: $accent-color
 
 section.level3
   @include rule-before(rgba($object-color, 0.2))
@@ -134,6 +140,9 @@ section.level3
     padding-top: ln(1/2)
     padding-bottom: ln(1/2)
     margin-bottom: ln(1/2)
+    a
+      @include no-underline
+      color: $accent-color
 
 section.level4
   margin-top: ln(1)
@@ -143,6 +152,9 @@ section.level4
     padding-top: ln(1/2)
     padding-bottom: ln(1/2)
     margin-bottom: ln(1/2)
+    a
+      @include no-underline
+      color: $accent-color
 
 section.level5
   margin-top: ln(1)
@@ -151,6 +163,9 @@ section.level5
     padding-top: ln(1/2)
     padding-bottom: ln(1/2)
     margin-bottom: ln(1/2)
+    a
+      @include no-underline
+      color: $body-color
 
 section.level6
   margin-top: ln(1)
@@ -159,6 +174,9 @@ section.level6
     padding-top: ln(1/2)
     padding-bottom: ln(1/2)
     margin-bottom: ln(1/2)
+    a
+      @include no-underline
+      color: $body-color
 
 
 footer
