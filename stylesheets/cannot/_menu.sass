@@ -16,6 +16,9 @@ ul.menu li a
   padding-right: ln(1)
   position: relative
 
+footer ul.menu li a
+  @include smart-icon-after("right", $subject-color-name, $accent-color-name)
+
 ul.menu li a:after
   @include button-icon
 
@@ -45,12 +48,18 @@ ul.menu.open
   @include rule-after(rgba($object-color, 0.2))
   opacity: 1
 
+footer ul.menu open
+  @include rule-after(rgba($subject-color, 0.2))
+
 ul.menu.open li
   background-color: transparent
   height: ln(2)
 
 ul.menu.open li
   @include rule-before(rgba($object-color, 0.2))
+
+footer ul.menu.open li
+  @include rule-before(rgba($subject-color, 0.2))
 
 ul.menu.open li a:after
   right: ln(1)
