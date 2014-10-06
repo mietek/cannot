@@ -1,6 +1,6 @@
 ---
 title: Lorem ipsum
-html-class: add-section-links insert-section-toc
+page-class: add-section-toc
 ---
 
 

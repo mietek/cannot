@@ -75,7 +75,13 @@ exports.disableTransitionsDuringResize = function () {
 
 
 exports.addSectionLinks = function () {
-  [1, 2, 3, 4, 5, 6].forEach(function (level) {
+  var minSectionLinkLevel = document.documentElement.dataset.minSectionLinkLevel || 2;
+  var maxSectionLinkLevel = document.documentElement.dataset.maxSectionLinkLevel || 6;
+  var levels = [];
+  for (var i = minSectionLinkLevel; i <= maxSectionLinkLevel; i += 1) {
+    levels.push(i);
+  }
+  levels.forEach(function (level) {
     var sections = document.getElementsByClassName('level' + level);
     [].forEach.call(sections, function (section) {
       var heading = section.getElementsByTagName('h' + level)[0];
@@ -109,6 +115,10 @@ exports.insertSectionToc = function (container) {
     return;
   }
   var level = parseInt(container.className.replace(/level/, ''));
+  var maxSectionTocLevel = document.documentElement.dataset.maxSectionTocLevel || 3;
+  if (!level || level > maxSectionTocLevel) {
+    return;
+  }
   var containerHeading = container.getElementsByTagName('h' + level)[0];
   var containerTitle = containerHeading.textContent.replace(/↩/, '');
 
@@ -155,6 +165,12 @@ exports.insertSectionToc = function (container) {
 };
 
 
+exports.addSectionToc = function () {
+  var minSectionTocLevel = document.documentElement.dataset.minSectionTocLevel || 1;
+  exports.insertSectionToc(document.querySelectorAll('section.level' + minSectionTocLevel)[0]);
+};
+
+
 exports.enableHeaderMenuButton = function () {
   var headerMenuBar = document.getElementById('header-menu-bar');
   var headerMenuButton = document.getElementById('header-button');
@@ -182,12 +198,10 @@ exports.enableHeaderMenuButton = function () {
   exports.disableTransitionsDuringResize();
   addEventListener('load', function () {
     document.documentElement.classList.remove('no-transition');
-    if (document.documentElement.classList.contains('insert-section-toc')) {
-      exports.insertSectionToc(document.querySelectorAll('section.level1')[0]);
+    if (document.documentElement.classList.contains('add-section-toc')) {
+      exports.addSectionToc();
     }
-    if (document.documentElement.classList.contains('add-section-links')) {
-      exports.addSectionLinks();
-    }
+    exports.addSectionLinks();
     exports.enableHeaderMenuButton();
     easeScroll.applyToLocalLinks();
   });

@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-transition$if(html-class)$ $html-class$$endif$" lang="en">
+<html class="no-transition$if(page-class)$ $page-class$$endif$"$for(page-data)$data-$page-data.key$="$page-data.value$" $endfor$lang="en">
 <head>
 <meta charset="utf-8">
 <title>$if(project-title)$$project-title$$endif$$if(title)$ — $title$$endif$</title>

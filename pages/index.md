@@ -1,6 +1,6 @@
 ---
 title: Microframework for building websites
-html-class: hero
+page-class: hero
 header-class: hero
 main-class: hero
 hero: |
