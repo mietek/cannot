@@ -47,6 +47,10 @@ main
   padding-bottom: ln(6)
 
 
+
+section
+  position: relative // For .backlink-button
+
 section > *
   margin-right: ln(1)
 
@@ -57,6 +61,16 @@ section > section
 section > hr
   margin-left: 0
   margin-right: 0
+
+section span.backlink-button
+  position: absolute // Referencing section
+  top: 0
+  right: 0
+  margin-right: 0
+
+section span.backlink-button a
+  @include button
+  @include smart-icon-after("up", $object-color-name, $accent-color-name)
 
 section p
   margin-top: ln(1/2)
@@ -205,6 +219,10 @@ section h6 a
   @include frob-when-frobbed
     color: $accent-color
 
+section.with-toc ul.toc
+  margin-top: ln(1)
+  margin-bottom: ln(1)
+
 
 footer
   padding-bottom: ln(1)
@@ -246,6 +264,5 @@ footer nav
 
 @import "cannot/layout/menu-bar-common"
 @import "cannot/layout/hero-common"
-@import "cannot/layout/toc-common"
 
 @import "layout/common"
