@@ -1,4 +1,4 @@
-@mixin rule-before-common($color, $top, $bottom, $size)
+@mixin _rule-before($color, $top, $bottom, $size, $margin)
   @if $color == none
     $color: transparent
     $size: 0
@@ -6,6 +6,8 @@
   &:before
     border-bottom: $size $color solid
     position: absolute
+    left: $margin
+    right: $margin
     @if $bottom == none
       top: $top
     @else
@@ -18,7 +20,7 @@
       @include hires
         transform: scaleY(0.5)
 
-@mixin rule-after-common($color, $bottom, $top, $size)
+@mixin _rule-after($color, $bottom, $top, $size, $margin)
   @if $color == none
     $color: transparent
     $size: 0
@@ -26,6 +28,8 @@
   &:after
     border-top: $size $color solid
     position: absolute
+    left: $margin
+    right: $margin
     @if $top == none
       bottom: $bottom
     @else

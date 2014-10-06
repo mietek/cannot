@@ -2,13 +2,7 @@
 
 
 @mixin rule-before($color, $top: -1px, $bottom: none, $size: 1px)
-  @include rule-before-common($color, $top, $bottom, $size)
-  &:before
-    left: 0
-    right: 0
+  @include _rule-before($color, $top, $bottom, $size, 0)
 
 @mixin rule-after($color, $bottom: 0, $top: none, $size: 1px)
-  @include rule-after-common($color, $bottom, $top, $size)
-  &:after
-    left: 0
-    right: 0
+  @include _rule-after($color, $bottom, $top, $size, 0)
