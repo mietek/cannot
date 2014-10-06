@@ -182,7 +182,7 @@ exports.enableHeaderMenuButton = function () {
   exports.disableTransitionsDuringResize();
   addEventListener('load', function () {
     document.documentElement.classList.remove('no-transition');
-    if (document.documentElement.classList.contains('insert-toc')) {
+    if (document.documentElement.classList.contains('insert-section-toc')) {
       exports.insertSectionToc(document.querySelectorAll('section.level1')[0]);
     }
     exports.addSectionLinks();
