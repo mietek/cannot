@@ -10,8 +10,8 @@ $if(canonical-url)$<link rel="canonical" href="$canonical-url$$path$">$endif$
 <link rel="icon" type="image/png" href="_images/favicon-16.png" sizes="16x16">
 <link rel="icon" type="image/png" href="_images/favicon-32.png" sizes="32x32">
 <link rel="stylesheet" href="_stylesheets.css$if(pub)$$if(no-gzip)$$else$.gz$endif$$endif$">
-$if(head-extra)$$head-extra$$endif$
-$if(head-bonus)$$head-bonus$$endif$
+$if(head)$$head$$endif$
+$if(page-head)$$page-head$$endif$
 </head>
 <body$if(body-class)$ class="$body-class$"$endif$>
 <header id="top"$if(header-class)$ class="$header-class$"$endif$>
@@ -30,8 +30,8 @@ if (localStorage['header-menu-open']) {
 }
 </script>$endif$
 </nav>
-$if(header-extra)$$header-extra$$endif$
-$if(header-bonus)$$header-bonus$$endif$
+$if(header)$$header$$endif$
+$if(page-header)$$page-header$$endif$
 </div>
 </header>
 $if(hero)$<div id="hero">
@@ -56,8 +56,8 @@ $body$
 $menu-items$
 </ul>
 </nav>
-$if(footer-extra)$$footer-extra$$endif$
-$if(footer-bonus)$$footer-bonus$$endif$
+$if(footer)$$footer$$endif$
+$if(page-footer)$$page-footer$$endif$
 </div>
 </footer>
 <!--[if lte IE 9]>
