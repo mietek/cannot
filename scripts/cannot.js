@@ -89,7 +89,7 @@ exports.createBacklinkButton = function (target, title) {
 
 exports.insertBacklinkButton = function (section) {
   var level = parseInt(section.className.replace(/level/, ''));
-  if (!level) {
+  if (!level || level < 2) {
     return;
   }
   var container = section.parentElement;
