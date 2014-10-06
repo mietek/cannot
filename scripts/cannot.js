@@ -74,7 +74,37 @@ exports.disableTransitionsDuringResize = function () {
 };
 
 
-exports.insertTocInSection = function (container) {
+exports.addSectionLinks = function () {
+  [1, 2, 3, 4, 5, 6].forEach(function (level) {
+    var sections = document.getElementsByClassName('level' + level);
+    [].forEach.call(sections, function (section) {
+      var heading = section.getElementsByTagName('h' + level)[0];
+      if (heading) {
+        var link = document.createElement('a');
+        link.className = 'section-link';
+        link.href = '#' + section.id;
+        link.title = heading.textContent;
+        link.appendChild(heading.replaceChild(link, heading.firstChild));
+      }
+    });
+  });
+};
+
+
+exports.createBacklinkButton = function (target, title) {
+  var backlinkButton = document.createElement('span');
+  backlinkButton.className = 'backlink-button';
+  var backlink = document.createElement('a');
+  backlink.className = 'backlink';
+  backlink.href = '#' + target;
+  backlink.title = title;
+  backlink.appendChild(document.createTextNode('↩'));
+  backlinkButton.appendChild(backlink);
+  return backlinkButton;
+};
+
+
+exports.insertSectionToc = function (container) {
   if (!container) {
     return;
   }
@@ -92,7 +122,6 @@ exports.insertTocInSection = function (container) {
       return;
     }
     var sectionTitle = sectionHeading.textContent;
-
     var item = document.createElement('li');
     var link = document.createElement('a');
     link.href = '#' + section.id;
@@ -107,20 +136,7 @@ exports.insertTocInSection = function (container) {
     item.appendChild(link);
     toc.appendChild(item);
 
-    var sectionLink = document.createElement('a');
-    sectionLink.className = 'section-link';
-    sectionLink.href = '#' + section.id;
-    sectionLink.title = sectionTitle;
-    sectionLink.appendChild(sectionHeading.replaceChild(sectionLink, sectionHeading.firstChild));
-
-    var backlinkButton = document.createElement('span');
-    backlinkButton.className = 'backlink-button';
-    var backlink = document.createElement('a');
-    backlink.className = 'backlink';
-    backlink.href = '#' + container.id;
-    backlink.title = containerTitle;
-    backlink.appendChild(document.createTextNode('↩'));
-    backlinkButton.appendChild(backlink);
+    var backlinkButton = exports.createBacklinkButton(container.id, containerTitle);
     if (sectionHeading.nextSibling) {
       section.insertBefore(backlinkButton, sectionHeading.nextSibling);
     } else {
@@ -128,7 +144,7 @@ exports.insertTocInSection = function (container) {
     }
 
     itemCount += 1;
-    exports.insertTocInSection(section);
+    exports.insertSectionToc(section);
   });
   if (itemCount) {
     var nav = document.createElement('nav');
@@ -167,8 +183,9 @@ exports.enableHeaderMenuButton = function () {
   addEventListener('load', function () {
     document.documentElement.classList.remove('no-transition');
     if (document.documentElement.classList.contains('insert-toc')) {
-      exports.insertTocInSection(document.getElementsByClassName('level1')[0]);
+      exports.insertSectionToc(document.querySelectorAll('section.level1')[0]);
     }
+    exports.addSectionLinks();
     exports.enableHeaderMenuButton();
     easeScroll.applyToLocalLinks();
   });
