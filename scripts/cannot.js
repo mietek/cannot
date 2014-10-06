@@ -74,6 +74,36 @@ exports.disableTransitionsDuringResize = function () {
 };
 
 
+exports.createBacklinkButton = function (target, title) {
+  var backlinkButton = document.createElement('span');
+  backlinkButton.className = 'backlink-button';
+  var backlink = document.createElement('a');
+  backlink.className = 'backlink';
+  backlink.href = '#' + target;
+  backlink.title = title;
+  backlink.appendChild(document.createTextNode('↩'));
+  backlinkButton.appendChild(backlink);
+  return backlinkButton;
+};
+
+
+exports.insertBacklinkButton = function (section) {
+  var level = parseInt(section.className.replace(/level/, ''));
+  if (!level) {
+    return;
+  }
+  var container = section.parentElement;
+  var containerHeading = container.getElementsByTagName('h' + (level - 1))[0];
+  var backlinkButton = exports.createBacklinkButton(container.id, containerHeading.textContent);
+  var heading = section.getElementsByTagName('h' + level)[0];
+  if (heading.nextSibling) {
+    section.insertBefore(backlinkButton, heading.nextSibling);
+  } else {
+    section.appendChild(backlinkButton);
+  }
+};
+
+
 exports.addSectionLinks = function () {
   var minSectionLinkLevel = document.documentElement.dataset.minSectionLinkLevel || 2;
   var maxSectionLinkLevel = document.documentElement.dataset.maxSectionLinkLevel || 6;
@@ -91,22 +121,10 @@ exports.addSectionLinks = function () {
         link.href = '#' + section.id;
         link.title = heading.textContent;
         link.appendChild(heading.replaceChild(link, heading.firstChild));
+        exports.insertBacklinkButton(section);
       }
     });
   });
-};
-
-
-exports.createBacklinkButton = function (target, title) {
-  var backlinkButton = document.createElement('span');
-  backlinkButton.className = 'backlink-button';
-  var backlink = document.createElement('a');
-  backlink.className = 'backlink';
-  backlink.href = '#' + target;
-  backlink.title = title;
-  backlink.appendChild(document.createTextNode('↩'));
-  backlinkButton.appendChild(backlink);
-  return backlinkButton;
 };
 
 
@@ -120,7 +138,6 @@ exports.insertSectionToc = function (container) {
     return;
   }
   var containerHeading = container.getElementsByTagName('h' + level)[0];
-  var containerTitle = containerHeading.textContent.replace(/↩/, '');
 
   var toc = document.createElement('ul');
   toc.className = 'toc toc' + level + ' menu open';
@@ -145,13 +162,6 @@ exports.insertSectionToc = function (container) {
     }
     item.appendChild(link);
     toc.appendChild(item);
-
-    var backlinkButton = exports.createBacklinkButton(container.id, containerTitle);
-    if (sectionHeading.nextSibling) {
-      section.insertBefore(backlinkButton, sectionHeading.nextSibling);
-    } else {
-      section.appendChild(backlinkButton);
-    }
 
     itemCount += 1;
     exports.insertSectionToc(section);
