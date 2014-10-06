@@ -5,14 +5,23 @@ nav.menu-bar h1.logotype a
   line-height: ln(2)
 
 
+// Animation start
+
 header nav.menu-bar
   @include rule-after(rgba($object-color, 0.2))
+
+// Animation end
 
 header nav.menu-bar.open
   @include rule-after(rgba($object-color, 0.2), $size: 0)
 
+
+// Forwards
+
 header nav.menu-bar.open:after
   transition: linear(border-top-width, 0, 0)
+
+// Backwards
 
 header nav.menu-bar:after
   transition: linear(border-top-width, 0, 3)
