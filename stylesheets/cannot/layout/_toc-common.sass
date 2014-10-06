@@ -23,6 +23,11 @@ section.with-toc section.level2 > blockquote:first-of-type
 section.with-toc section.level2 > blockquote:first-of-type + nav ul
   margin-top: ln(1/2)
 
+// NOTE: This is H specific.
+section.with-toc section.level2 > nav:first-of-type ul.toc
+  margin-top: 0
+
+
 // NOTE: This offsets the baseline by 1px with Helvetica Neue, but not with Concourse.
 section.with-toc section.level3 > h3
   display: inline-block
@@ -30,34 +35,16 @@ section.with-toc section.level3 > h3
   padding-bottom: 0
   margin-bottom: 0
 
-section.with-toc section.level3 > h3 + blockquote
+section.with-toc section.level3 > blockquote:first-of-type
   display: inline-block
   color: $gray9
-  font-style: italic
   padding-left: 0
   margin-top: 0
   margin-right: ln(3)
 
-section.with-toc section.level3 > h3 + blockquote p
+section.with-toc section.level3 > blockquote:first-of-type p
   display: inline
   margin-top: 0
 
-section.with-toc section.level3 > h3 + blockquote p code
-  background-color: rgba($grayC, 0.1)
-  color: $gray9
-
-section.with-toc section.level3 > h3 + blockquote + *
+section.with-toc section.level3 > blockquote:first-of-type + *
   margin-top: ln(1)
-
-
-section.with-toc section.level2 h2 + nav ul.toc
-  margin-top: 0
-
-section.with-toc section.level3 h3 + nav ul.toc
-  margin-top: ln(1/2)
-
-section.with-toc section.level4 h4 + nav ul.toc
-  margin-top: ln(-1/2)
-
-section.with-toc section.level5 h5 + nav ul.toc
-  margin-top: ln(-1/2)

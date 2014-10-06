@@ -107,76 +107,88 @@ section.level1
   margin-top: ln(6)
   &:first-of-type
     margin-top: 0
-  h1
-    color: $accent-color
-    font-size: em(2)
-    font-weight: bold
-    line-height: ln(2)
-    margin-bottom: ln(1)
-    a
-      @include no-underline
-      color: $accent-color
+
+section h1
+  color: $accent-color
+  font-size: em(2)
+  font-weight: bold
+  line-height: ln(2)
+  margin-bottom: ln(1)
+
+section h1 a
+  @include no-underline
+  color: $accent-color
 
 section.level2
   @include rule-before($accent-color, $top: ln(-1/2) - 1)
   margin-top: ln(4)
-  h2
-    color: $accent-color
-    font-size: em(3/2)
-    font-weight: bold
-    line-height: ln(2)
-    margin-bottom: ln(1/2)
-    position: relative
-    a
-      @include no-underline
-      color: $accent-color
+
+section h2
+  color: $accent-color
+  font-size: em(3/2)
+  font-weight: bold
+  line-height: ln(2)
+  margin-bottom: ln(1/2)
+  position: relative
+
+section h2 a
+  @include no-underline
+  color: $accent-color
 
 section.level3
   @include rule-before(rgba($object-color, 0.2))
   margin-top: ln(2)
-  h3
-    color: $accent-color
-    font-weight: bold
-    padding-top: ln(1/2)
-    padding-bottom: ln(1/2)
-    margin-bottom: ln(1/2)
-    a
-      @include no-underline
-      color: $accent-color
+
+section h3
+  color: $accent-color
+  font-weight: bold
+  padding-top: ln(1/2)
+  padding-bottom: ln(1/2)
+  margin-bottom: ln(1/2)
+
+section h3 a
+  @include no-underline
+  color: $accent-color
 
 section.level4
   margin-top: ln(1)
-  h4
-    color: $accent-color
-    font-weight: bold
-    padding-top: ln(1/2)
-    padding-bottom: ln(1/2)
-    margin-bottom: ln(1/2)
-    a
-      @include no-underline
-      color: $accent-color
+
+section h4
+  color: $accent-color
+  font-weight: bold
+  padding-top: ln(1/2)
+  padding-bottom: ln(1/2)
+  margin-bottom: ln(1/2)
+
+section h4 a
+  @include no-underline
+  color: $accent-color
 
 section.level5
   margin-top: ln(1)
-  h5
-    font-weight: bold
-    padding-top: ln(1/2)
-    padding-bottom: ln(1/2)
-    margin-bottom: ln(1/2)
-    a
-      @include no-underline
-      color: $body-color
+
+section h5
+  font-weight: bold
+  padding-top: ln(1/2)
+  padding-bottom: ln(1/2)
+  margin-bottom: ln(1/2)
+
+section h5 a
+  @include no-underline
+  color: $body-color
 
 section.level6
   margin-top: ln(1)
-  h6
-    font-style: italic
-    padding-top: ln(1/2)
-    padding-bottom: ln(1/2)
-    margin-bottom: ln(1/2)
-    a
-      @include no-underline
-      color: $body-color
+
+section h6
+  font-style: italic
+  padding-top: ln(1/2)
+  padding-bottom: ln(1/2)
+  margin-bottom: ln(1/2)
+
+section h6 a
+  @include no-underline
+  color: $body-color
 
 
 footer
@@ -218,8 +230,8 @@ footer nav
       border-bottom: 1px rgba(white, 0.4) solid
 
 
-@import "cannot/layout/menu-bar/common"
-@import "cannot/layout/hero/common"
-@import "cannot/layout/toc/common"
+@import "cannot/layout/menu-bar-common"
+@import "cannot/layout/hero-common"
+@import "cannot/layout/toc-common"
 
 @import "layout/common"
