@@ -1,19 +1,21 @@
 // NOTE: There is a bug in WebKit where filter either does not transition or transitions only within a clipped boundary, for a number or milliseconds or until a pointer event.  Wrapping the filtered element in another element works around this.
 
 $box-glow-radius: 3px !default
-$box-glow-rounds: 3 !default
+$box-glow-rounds: 0 !default
 $active-box-glow-rounds: 6 !default
 
 $text-glow-radius: 2px !default
-$text-glow-rounds: 2 !default
+$text-glow-rounds: 0 !default
 $active-text-glow-rounds: 4 !default
 
 $image-glow-radius: 2px !default
-$image-glow-rounds: 2 !default
+$image-glow-rounds: 0 !default
 $active-image-glow-rounds: 4 !default
 
 
 @function _shadow($color, $radius, $rounds)
+  @if $rounds == 0
+    @return none
   $result: ""
   @for $i from 1 through $rounds
     @if $result != ""
@@ -22,6 +24,8 @@ $active-image-glow-rounds: 4 !default
   @return unquote($result)
 
 @function _inset-shadow($color, $radius, $rounds)
+  @if $rounds == 0
+    @return none
   $result: ""
   @for $i from 1 through $rounds
     @if $result != ""
@@ -30,6 +34,8 @@ $active-image-glow-rounds: 4 !default
   @return unquote($result)
 
 @function _filter($color, $radius, $rounds)
+  @if $rounds == 0
+    @return none
   $result: ""
   @for $i from 1 through $rounds
     @if $result != ""
