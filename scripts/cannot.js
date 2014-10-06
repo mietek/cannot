@@ -185,7 +185,9 @@ exports.enableHeaderMenuButton = function () {
     if (document.documentElement.classList.contains('insert-section-toc')) {
       exports.insertSectionToc(document.querySelectorAll('section.level1')[0]);
     }
-    exports.addSectionLinks();
+    if (document.documentElement.classList.contains('add-section-links')) {
+      exports.addSectionLinks();
+    }
     exports.enableHeaderMenuButton();
     easeScroll.applyToLocalLinks();
   });
