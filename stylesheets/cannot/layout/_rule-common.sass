@@ -1,4 +1,7 @@
 @mixin rule-before-common($color, $top, $bottom, $size)
+  @if $color == none
+    $color: transparent
+    $size: 0
   position: relative
   &:before
     border-bottom: $size $color solid
@@ -16,6 +19,9 @@
         transform: scaleY(0.5)
 
 @mixin rule-after-common($color, $bottom, $top, $size)
+  @if $color == none
+    $color: transparent
+    $size: 0
   position: relative
   &:after
     border-top: $size $color solid
