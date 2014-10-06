@@ -137,7 +137,6 @@ exports.insertSectionToc = function (container) {
   if (!level || level > maxSectionTocLevel) {
     return;
   }
-  var containerHeading = container.getElementsByTagName('h' + level)[0];
 
   var toc = document.createElement('ul');
   toc.className = 'toc toc' + level + ' menu open';
