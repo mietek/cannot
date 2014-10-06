@@ -56,15 +56,17 @@ header.hero nav.menu-bar
   margin-top: ln(2)
   margin-bottom: ln(1/2)
 
+#hero-button
+  display: inline-block
+  margin-top: ln(1/2)
+  margin-bottom: ln(1/2)
+  position: relative
+
 #hero-button a
   @include button
   @include smart-opacity(0.4, 1)
   @include smart-image-glow($white)
   @include smart-icon-after("down", white, white)
-  display: inline-block
-  margin-top: ln(1/2)
-  margin-bottom: ln(1/2)
-  position: relative
 
 
 main.hero
