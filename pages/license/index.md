@@ -1,5 +1,6 @@
 ---
 title: License
+html-class: add-section-links
 ---
 
 
