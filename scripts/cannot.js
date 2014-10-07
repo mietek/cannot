@@ -124,8 +124,16 @@ exports.addSectionLinks = function () {
       if (heading) {
         var link = document.createElement('a');
         link.className = 'section-link';
-        link.href = '#' + section.id;
-        link.title = heading.textContent;
+        var target, title;
+        if (level === 1) {
+          target = 'top';
+          title = 'Top';
+        } else {
+          target = section.id;
+          title = heading.textContent;
+        }
+        link.href = '#' + target;
+        link.title = title;
         link.appendChild(heading.replaceChild(link, heading.firstChild));
         exports.insertBacklinkButton(section);
       }
