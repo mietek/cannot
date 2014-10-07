@@ -92,9 +92,15 @@ exports.insertBacklinkButton = function (section) {
   if (!level || level < 2) {
     return;
   }
-  var container = section.parentElement;
-  var containerHeading = container.getElementsByTagName('h' + (level - 1))[0];
-  var backlinkButton = exports.createBacklinkButton(container.id, containerHeading.textContent);
+  var target, title;
+  if (level === 2) {
+    target = 'top';
+    title = 'Top';
+  } else {
+    target = section.parentElement.id;
+    title = section.parentElement.getElementsByTagName('h' + (level - 1))[0].textContent;
+  }
+  var backlinkButton = exports.createBacklinkButton(target, title);
   var heading = section.getElementsByTagName('h' + level)[0];
   if (heading.nextSibling) {
     section.insertBefore(backlinkButton, heading.nextSibling);
