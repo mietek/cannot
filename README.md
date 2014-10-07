@@ -3,17 +3,13 @@ cannot
 
 Microframework for building websites.
 
-Suitable for static sites and client-side apps.
-
 Uses [ease-scroll](https://github.com/mietek/ease-scroll/) for smooth scrolling.
 
 
 Usage
 -----
 
-Undergoing rapid development.  Not currently intended for public use.
-
-Need a website?  Say hello@mietek.io
+Work in progress.  Not currently intended for public use.
 
 Examples:
 
