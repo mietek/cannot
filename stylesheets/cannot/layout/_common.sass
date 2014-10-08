@@ -78,12 +78,12 @@ section p
 section ul
   margin-top: ln(1/2)
 
-section ul li
+section ul > li
   margin-left: ln(1)
   min-height: ln(1)
   position: relative
 
-section ul li:before
+section ul > li:before
   color: $accent-color
   content: "•"
   position: absolute
@@ -94,12 +94,12 @@ section ol
   margin-top: ln(1/2)
   counter-reset: numbered-list
 
-section ol li
+section ol > li
   margin-left: ln(1)
   min-height: ln(1)
   position: relative
 
-section ol li:before
+section ol > li:before
   color: $accent-color
   content: counter(numbered-list)
   counter-increment: numbered-list
