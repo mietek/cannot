@@ -8,14 +8,10 @@ header nav.menu-bar h1.logotype a
 section.level1 h1
   letter-spacing: -1px
 
-footer nav.menu-bar h1.logotype a
-  @include smart-logotype($subject-color-name, $accent-color-name, small)
-
-
-header.hero nav.menu-bar h1.logotype a
-  @include smart-logotype(white, white, small)
-
-#hero h1.logotype
-  @include image("logotype-white-hero-small", "png")
+section.level1.logotype h1 a
+  @include smart-logotype(color, $accent-color-name, small, $double: true)
   width: 204px
   background-size: 204px auto
+
+footer nav.menu-bar h1.logotype a
+  @include smart-logotype($subject-color-name, $accent-color-name, small)

@@ -23,10 +23,9 @@ nav.menu-bar h1.logotype a
   @include no-text
   @include smart-image-glow($accent-color)
 
-
-header.hero nav.menu-bar h1.logotype a
-  @include smart-opacity(0.6, 1)
-  @include smart-image-glow(white)
-
-#hero h1.logotype
+section.level1.logotype h1 a
+  @include text-button
+  @include no-underline
   @include no-text
+  @include smart-image-glow($accent-color)
+  display: block
