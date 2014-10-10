@@ -1,7 +1,7 @@
 _cannot_
 ========
 
-[_cannot_](http://cannot.mietek.io/).  Microframework for building websites.
+[_cannot_](http://cannot.mietek.io/).  Not a framework.
 
 Used in:
 
