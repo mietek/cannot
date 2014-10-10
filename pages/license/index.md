@@ -1,10 +1,10 @@
 ---
-title: License
+title: MIT X11 license
 ---
 
 
-License
-=======
+MIT X11 license
+===============
 
 Copyright © 2014 [Miëtek Bak](http://mietek.io/).
 
