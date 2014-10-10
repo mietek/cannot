@@ -1,23 +1,11 @@
 ---
 title: Microframework for building websites
-page-data:
-  - key: min-section-link-level
-    value: 2
-page-footer: |
-  <script>
-    addEventListener('load', function () {
-      document.getElementById('hello').href = cannot.rot13('znvygb:uryyb@yrnfgsvkrq.pbz');
-      document.getElementById('license-link').href = 'license/';
-    });
-  </script>
 ---
 
 [cannot](http://mietek.github.io/cannot/)
 =========================================
 
 Microframework for building websites.
-
-Uses [ease-scroll](https://github.com/mietek/ease-scroll/) for smooth scrolling.
 
 Used in:
 
@@ -54,13 +42,14 @@ $ bower install cannot
 
 Free software:
 
-- [GNU make](http://gnu.org/software/make/) for building.
-- [Pandoc](http://johnmacfarlane.net/pandoc/) for generating pages.
-- [Sass](http://sass-lang.com/) and [CleanCSS](https://github.com/jakubpawlowicz/clean-css/) for processing stylesheets.
-- [Webpack](http://webpack.github.io/) for bundling scripts.
-- [AdvanceComp](http://advancemame.sourceforge.net/comp-readme.html) for recompressing archives.
-- [ImageMagick](http://www.imagemagick.org/), [JPEGOptim](https://github.com/tjko/jpegoptim/), and [OptiPNG](http://optipng.sourceforge.net/) for optimising images.
-- [FSWatch](https://github.com/emcrisostomo/fswatch/) and [BrowserSync](http://www.browsersync.io/) for live preview.
+- [GNU _make_](http://gnu.org/software/make/) for building.
+- [_pandoc_](http://johnmacfarlane.net/pandoc/) for generating pages.
+- [Sass](http://sass-lang.com/) and [_clean-css_](https://github.com/jakubpawlowicz/clean-css/) for processing stylesheets.
+- [_webpack_](http://webpack.github.io/) for bundling scripts.
+- [AdvanceCOMP](http://advancemame.sourceforge.net/comp-readme.html) for recompressing archives.
+- [ImageMagick](http://www.imagemagick.org/), [_jpegoptim_](https://github.com/tjko/jpegoptim/), and [OptiPNG](http://optipng.sourceforge.net/) for optimising images.
+- [_fswatch_](https://github.com/emcrisostomo/fswatch/) and [BrowserSync](http://www.browsersync.io/) for live preview.
+- [_ease-scroll_](https://github.com/mietek/ease-scroll/) for smooth scrolling.
 
 ```
 $ brew install advancecomp fswatch imagemagick jpegoptim node optipng pandoc
@@ -88,3 +77,11 @@ License
 -------
 
 Made by [Miëtek Bak](http://mietek.io/).  Published under the <a id="license-link" href="https://github.com/mietek/license/blob/master/LICENSE.md">MIT X11 license</a>.
+
+
+<script>
+addEventListener('load', function () {
+document.getElementById('hello').href = cannot.rot13('znvygb:uryyb@yrnfgsvkrq.pbz');
+document.getElementById('license-link').href = 'license/';
+});
+</script>
