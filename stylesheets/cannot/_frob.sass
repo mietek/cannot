@@ -116,3 +116,17 @@
   @include frob-when-frobbed
     @include image("logotype-#{$frobbed}-#{$size}", "png", $double)
   transition: ease(box-shadow, 1, 0), ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
+
+
+@mixin smart-logo-after($unfrobbed, $frobbed, $size, $double: false)
+  @if $unfrobbed == color
+    $unfrobbed: ""
+  @else
+    $unfrobbed: "-#{$unfrobbed}"
+  &:after
+    @include image("logo#{$unfrobbed}-#{$size}", "png", $double)
+  @include frob-when-frobbed
+    &:after
+      @include image("logo-#{$frobbed}-#{$size}", "png", $double)
+  &:after
+    transition: ease(box-shadow, 1, 0), ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)

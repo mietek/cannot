@@ -29,6 +29,9 @@ code
   font-size: em(5/6)
   line-height: ln(5/6)
 
+.small-caps
+  font-variant: small-caps
+
 
 // To get above main
 header
@@ -114,6 +117,16 @@ section ol > li:before
 
 section blockquote
   margin-top: ln(1/2)
+  color: $subject-color
+
+// NOTE: Without this, a bug in WebKit shows a different color for text-decoration than for text.
+section blockquote :not(a) > code
+  color: $object-color
+
+section blockquote a
+  color: $object-color
+  @include frob-when-frobbed
+    color: $accent-color
 
 section pre
   background-color: rgba($subject-color, 0.1)
@@ -242,7 +255,6 @@ section.with-toc ul.toc
   margin-top: ln(1)
   margin-bottom: ln(1)
 
-
 footer
   padding-bottom: ln(1)
   color: $subject-color
@@ -259,6 +271,12 @@ footer div.wrapper > nav
 
 footer nav
   @include rule-before(rgba($subject-color, 0.2))
+
+
+.error p
+  font-style: italic
+  text-indent: ln(-1)
+  padding-left: ln(1)
 
 
 #what-browser
