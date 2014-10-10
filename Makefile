@@ -70,10 +70,12 @@ pub-push : unwatch
 	rm -rf out/pub
 	git clone $(pub-remote-url) -b $(pub-branch) --single-branch out/pub
 	git -C out/pub rm -rf .
-	touch out/pub/.nojekyll
 	$(MAKE) pub-build
+	touch out/pub/.nojekyll
+	[ -f CNAME ] && cp CNAME out/pub/CNAME || true
+	[ -f out/pub/error.html ] && cp out/pub/error.html out/pub/404.html || true
 	git -C out/pub add -A .
-	-git -C out/pub commit -m "Automatic commit"
+	git -C out/pub commit -m "Automatic commit" || true
 	git -C out/pub push
 	git fetch $(pub-remote-name) $(pub-branch)
 	[ -f sync.sh ] && ./sync.sh || true
