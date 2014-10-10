@@ -193,6 +193,53 @@ exports.addSectionToc = function () {
 };
 
 
+exports.tweakListings = function () {
+  var listings = document.querySelectorAll('pre');
+  [].forEach.call(listings, function (listing) {
+    var code = listing.firstChild;
+    if (code.tagName === 'CODE') {
+      var text = code.firstChild;
+      var lineStart = text.textContent.indexOf('$ ');
+      var lineEnd;
+      if (lineStart === -1) {
+        return;
+      }
+      if (lineStart !== 0) {
+        var atPrompt1 = text.splitText(lineStart);
+        var userInput1 = document.createElement('span');
+        userInput1.className = 'input';
+        userInput1.appendChild(atPrompt1.previousSibling);
+        atPrompt1.parentElement.insertBefore(userInput1, atPrompt1);
+        text = atPrompt1;
+      }
+      while (true) {
+        lineStart = text.textContent.indexOf('$ ');
+        if (lineStart === -1) {
+          break;
+        }
+        lineEnd = text.textContent.indexOf('\n', lineStart);
+        if (lineEnd === -1) {
+          lineEnd = text.textContent.length;
+        }
+        var atPrompt = text.splitText(lineStart);
+        var afterPrompt = atPrompt.splitText(1);
+        var prompt = document.createElement('span');
+        prompt.className = 'prompt';
+        prompt.appendChild(afterPrompt.previousSibling);
+        afterPrompt.parentElement.insertBefore(prompt, afterPrompt);
+        var atCommand = afterPrompt.splitText(1);
+        var afterCommand = atCommand.splitText(lineEnd - lineStart - 2);
+        var userInput = document.createElement('span');
+        userInput.className = 'input';
+        userInput.appendChild(afterCommand.previousSibling);
+        afterCommand.parentElement.insertBefore(userInput, afterCommand);
+        text = afterCommand;
+      }
+    }
+  });
+};
+
+
 exports.enableHeaderMenuButton = function () {
   var headerMenuBar = document.getElementById('header-menu-bar');
   var headerMenuButton = document.getElementById('header-button');
@@ -224,6 +271,7 @@ exports.enableHeaderMenuButton = function () {
       exports.addSectionToc();
     }
     exports.addSectionLinks();
+    exports.tweakListings();
     exports.enableHeaderMenuButton();
     easeScroll.applyToLocalLinks();
   });

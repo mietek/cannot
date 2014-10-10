@@ -24,6 +24,11 @@ em
 strong
   font-weight: bold
 
+code
+  font-family: monospace
+  font-size: em(5/6)
+  line-height: ln(5/6)
+
 
 // To get above main
 header
@@ -111,7 +116,25 @@ section blockquote
   margin-top: ln(1/2)
 
 section pre
+  background-color: rgba($subject-color, 0.1)
+  border-radius: 2px
+  color: $object-color
+  padding: ln(1/2)
+  overflow-x: auto
+  margin-top: ln(1)
+
+section pre + pre
   margin-top: ln(1/2)
+
+section pre + :not(pre)
+  margin-top: ln(1)
+
+section pre span.prompt
+  font-weight: bold
+  color: $accent-color
+
+section pre span.input
+  color: $body-color
 
 section hr
   @include rule-after($accent-color)
