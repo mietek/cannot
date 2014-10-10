@@ -8,8 +8,8 @@ addEventListener('load', function () {
 </script>
 
 
-[_cannot_](http://mietek.github.io/cannot/) { .logotype }
-===========================================
+[_cannot_](http://mietek.github.io/cannot/)
+==========
 
 Microframework for building websites.
 
