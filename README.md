@@ -1,26 +1,16 @@
----
-title: Microframework for building websites
----
-<script>
-addEventListener('load', function () {
-  document.getElementById('hello').href = cannot.rot13('znvygb:uryyb@yrnfgsvkrq.pbz');
-});
-</script>
+_cannot_
+========
 
-
-[_cannot_](http://mietek.github.io/cannot/)
-==========
-
-Microframework for building websites.
+[_cannot_](http://cannot.mietek.io/).  Microframework for building websites.
 
 Used in:
 
-- [This website](http://mietek.github.io/cannot/) ([Source](https://github.com/mietek/cannot/))
-- [My website](http://mietek.github.io/) ([Source](https://github.com/mietek/mietek-website/))
-- [Least Fixed website](http://mietek.github.io/least-fixed-website/) ([Source](https://github.com/mietek/least-fixed-website/))
-- [_bashmenot_ website](http://mietek.github.io/bashmenot-website/) ([Source](https://github.com/mietek/bashmenot-website/))
-- [Halcyon website](http://mietek.github.io/halcyon-website/) ([Source](https://github.com/mietek/halcyon-website/))
-- [Haskell on Heroku website](http://mietek.github.io/haskell-on-heroku-website/) ([Source](https://github.com/mietek/haskell-on-heroku-website/))
+- [This website](http://cannot.mietek.io/) ([Source](https://github.com/mietek/cannot-website/))
+- [My website](http://mietek.io/) ([Source](https://github.com/mietek/mietek-website/))
+- [_bashmenot_ website](http://bashmenot.mietek.io/) ([Source](https://github.com/mietek/bashmenot-website/))
+- [Halcyon website](http://halcyon.sh/) ([Source](https://github.com/mietek/halcyon-website/))
+- [Haskell on Heroku website](http://haskellonheroku.com/) ([Source](https://github.com/mietek/haskell-on-heroku-website/))
+- [Least Fixed website](http://leastfixed.com/) ([Source](https://github.com/mietek/least-fixed-website/))
 - [Motoworks Cambridge website](http://mietek.github.io/motoworks-website/) ([Source](https://github.com/mietek/motoworks-website/))
 
 
@@ -46,13 +36,12 @@ $ bower install cannot
 
 ### Dependencies
 
-Free software:
+Requires [GNU _make_](http://gnu.org/software/make/).
 
-- [GNU _make_](http://gnu.org/software/make/) for building.
 - [_pandoc_](http://johnmacfarlane.net/pandoc/) for generating pages.
 - [Sass](http://sass-lang.com/) and [_clean-css_](https://github.com/jakubpawlowicz/clean-css/) for processing stylesheets.
 - [_webpack_](http://webpack.github.io/) for bundling scripts.
-- [AdvanceCOMP](http://advancemame.sourceforge.net/comp-readme.html) for recompressing archives.
+- [Advance<span class="small-caps">Comp</span>](http://advancemame.sourceforge.net/comp-readme.html) for recompressing archives.
 - [ImageMagick](http://www.imagemagick.org/), [_jpegoptim_](https://github.com/tjko/jpegoptim/), and [OptiPNG](http://optipng.sourceforge.net/) for optimising images.
 - [_fswatch_](https://github.com/emcrisostomo/fswatch/) and [BrowserSync](http://www.browsersync.io/) for live preview.
 - [_ease-scroll_](https://github.com/mietek/ease-scroll/) for smooth scrolling.
@@ -63,23 +52,21 @@ $ gem install sass
 $ npm install -g bower browser-sync clean-css webpack
 ```
 
-Proprietary software:
-
-- [Sketch](http://bohemiancoding.com/sketch/) for rebuilding logotypes, icons, and favicons.
+- [Sketch](http://bohemiancoding.com/sketch/) for rebuilding images.
 - [Icon Slate](http://www.kodlian.com/apps/icon-slate/) for rebuilding favicons.
 
 
 Support
 -------
 
-Please report any problems with _cannot_ on the [issue tracker](https://github.com/mietek/cannot/issues/).
+Please report any problems with _cannot_ on the [issue tracker](https://github.com/mietek/cannot/issues/).  There is a [separate issue tracker](https://github.com/mietek/cannot-website/issues/) for problems with the documentation.
 
 Commercial support for _cannot_ is offered by [Least Fixed](http://leastfixed.com/), a functional software consultancy.
 
-Need help?  Say <a id="hello">hello</a>.
+Need help?  Say [hello](http://leastfixed.com/).
 
 
 License
 -------
 
-Made by [Miëtek Bak](http://mietek.io/).  Published under the [MIT X11 license](http://mietek.github.io/cannot/license/).
+Made by [Miëtek Bak](http://mietek.io/).  Published under the [MIT X11 license](http://cannot.mietek.io/license/).

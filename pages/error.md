@@ -1,19 +1,12 @@
 ---
 title: Error
-page-head: |
-  <style>
-  blockquote p {
-    font-style: italic;
-    text-indent: -1em;
-    margin-left: 1em;
-  }
-  </style>
+page-class: error
 ---
 
 
 Error
 =====
 
-> Yesterday it worked<br>
-> Today it is not working<br>
-> The web is like that.
+Yesterday it worked\
+Today it is not working\
+The web is like that.
