@@ -9,18 +9,17 @@ $image-url-base: "_images" !default
     @return url(#{$image-url-base}/#{$name}.#{$format})
   @return url(#{$image-url-base}/#{$name}@#{$scale}.#{$format})
 
-@mixin background-image-hires($url, $important: false)
+@mixin background-image-hires($url)
   @include hires
-    @if $important
-      background-image: $url !important
-    @else
-      background-image: $url
+    background-image: $url
 
-@mixin image($name, $format, $important: false)
+@mixin image($name, $format, $double: false)
+  $hires-scale: 2x
+  $scale: 1x
+  @if $double
+    $hires-scale: 4x
+    $scale: 2x
   @if $format != svg
-    @include background-image-hires(image-url($name, 2x, $format), $important)
-  @if $important
-    background-image: image-url($name, 1x, $format) !important
-  @else
-    background-image: image-url($name, 1x, $format)
+    @include background-image-hires(image-url($name, $hires-scale, $format))
+  background-image: image-url($name, $scale, $format)
   background-repeat: no-repeat
