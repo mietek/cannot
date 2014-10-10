@@ -1,9 +1,15 @@
 ---
 title: Microframework for building websites
 ---
+<script>
+addEventListener('load', function () {
+  document.getElementById('hello').href = cannot.rot13('znvygb:uryyb@yrnfgsvkrq.pbz');
+});
+</script>
 
-[cannot](http://mietek.github.io/cannot/)
-=========================================
+
+[_cannot_](http://mietek.github.io/cannot/) { .logotype }
+===========================================
 
 Microframework for building websites.
 
@@ -76,12 +82,4 @@ Need help?  Say <a id="hello">hello</a>.
 License
 -------
 
-Made by [Miëtek Bak](http://mietek.io/).  Published under the <a id="license-link" href="https://github.com/mietek/license/blob/master/LICENSE.md">MIT X11 license</a>.
-
-
-<script>
-addEventListener('load', function () {
-document.getElementById('hello').href = cannot.rot13('znvygb:uryyb@yrnfgsvkrq.pbz');
-document.getElementById('license-link').href = 'license/';
-});
-</script>
+Made by [Miëtek Bak](http://mietek.io/).  Published under the [MIT X11 license](http://mietek.github.io/cannot/license/).
