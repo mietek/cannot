@@ -81,7 +81,6 @@ exports.createBacklinkButton = function (target, title) {
   backlink.className = 'backlink';
   backlink.href = '#' + target;
   backlink.title = title;
-  backlink.appendChild(document.createTextNode('↩'));
   backlinkButton.appendChild(backlink);
   return backlinkButton;
 };
