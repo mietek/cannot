@@ -133,13 +133,11 @@ section pre
   color: $object-color
   padding: ln(1/2)
   overflow-x: auto
-  margin-top: ln(1)
+  margin-top: ln(1/2)
+  margin-bottom: ln(1)
 
 section pre + pre
-  margin-top: ln(1/2)
-
-section pre + :not(pre)
-  margin-top: ln(1)
+  margin-top: ln(-1/2)
 
 section pre span.prompt
   font-weight: bold
