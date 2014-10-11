@@ -181,7 +181,13 @@ define pages-macro
       -o $$@ $$<
   endef
 
-  $$($(mode)-pages) : out/$(mode)/%.html : %.md $(page-metadata) $(page-includes) $(page-template) | out/$(mode) ; $$($(mode)-compile-md)
+  define $(mode)-copy-md
+    [ -d $$(@D) ] || mkdir -p $$(@D)
+    cp $$< $$@
+  endef
+
+  out/tmp/$(mode)/%.html                 : %.md $(page-metadata) $(page-includes) $(page-template) | out/tmp/$(mode) ; $$($(mode)-compile-md)
+  $$($(mode)-pages) : out/$(mode)/%.html : out/tmp/$(mode)/%.html                                  | out/$(mode)     ; $$($(mode)-copy-md)
 endef
 $(foreach mode,dev pub,$(eval $(pages-macro)))
 
