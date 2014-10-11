@@ -1,7 +1,7 @@
 _cannot_
 ========
 
-[_cannot_](http://cannot.mietek.io/).  Not a framework.
+[_cannot_](http://cannot.mietek.io/).  Not a web framework.
 
 Used in:
 
