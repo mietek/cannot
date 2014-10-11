@@ -1,1 +1,8 @@
-module.exports = { resolve: { modulesDirectories: ['scripts', 'bower_components' ] } };
+module.exports = {
+  resolve: {
+    modulesDirectories: [
+      'scripts',
+      'bower_components'
+    ]
+  }
+};
