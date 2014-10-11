@@ -36,7 +36,7 @@ $ bower install cannot
 
 ### Dependencies
 
-Requires [GNU _make_](http://gnu.org/software/make/).
+Requires [GNU _make_](http://gnu.org/software/make/) and [GNU _bash_](http://gnu.org/software/bash/).
 
 - [_pandoc_](http://johnmacfarlane.net/pandoc/) for generating pages.
 - [Sass](http://sass-lang.com/) and [_clean-css_](https://github.com/jakubpawlowicz/clean-css/) for processing stylesheets.

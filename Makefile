@@ -12,6 +12,8 @@
 
 project-name := $(notdir $(CURDIR))
 
+SHELL := /usr/bin/env bash
+
 .PHONY : all build clean dev watch pub push open
 all    : dev-watch
 build  : dev-build pub-build
@@ -20,7 +22,7 @@ dev    : dev-watch
 watch  : dev-watch
 pub    : pub-push
 push   : pub-push
-open   : canonical-url.txt ; open `cat $<`
+open   : canonical-url.txt ; open $$(< $< )
 
 define cannot-macro
   .PHONY        : $(mode)-build
@@ -173,8 +175,8 @@ define pages-macro
       --metadata=$(mode):$(mode) \
       --metadata=project-name:$(project-name) \
       --metadata=path:$$(subst index.html,,$$(patsubst out/$(mode)/%,%,$$@)) \
-      $$(foreach metadatum,$$(filter %.txt,$$^),--metadata=$$(patsubst %.txt,%,$$(notdir $$(metadatum))):"`cat $$(metadatum)`") \
-      $$(foreach include,$$(filter %.html,$$(filter-out %/$(page-template),$$^)),--metadata=$$(patsubst %.html,%,$$(notdir $$(include))):"`cat $$(include)`") \
+      $$(foreach metadatum,$$(filter %.txt,$$^),--metadata=$$(patsubst %.txt,%,$$(notdir $$(metadatum))):"$$$$(< $$(metadatum) )") \
+      $$(foreach include,$$(filter %.html,$$(filter-out %/$(page-template),$$^)),--metadata=$$(patsubst %.html,%,$$(notdir $$(include))):"$$$$(< $$(include) )") \
       --template=$$(filter %/$(page-template),$$^) \
       -o $$@ $$<
   endef
