@@ -110,10 +110,10 @@ exports.insertBacklinkButton = function (section) {
 
 
 exports.addSectionLinks = function () {
-  var minSectionLinkLevel = document.documentElement.dataset.minSectionLinkLevel || 2;
-  var maxSectionLinkLevel = document.documentElement.dataset.maxSectionLinkLevel || 6;
+  var minLevel = document.documentElement.dataset.minSectionLinkLevel || 2;
+  var maxLevel = document.documentElement.dataset.maxSectionLinkLevel || 6;
   var levels = [];
-  for (var i = minSectionLinkLevel; i <= maxSectionLinkLevel; i += 1) {
+  for (var i = minLevel; i <= maxLevel; i += 1) {
     levels.push(i);
   }
   levels.forEach(function (level) {
@@ -141,55 +141,74 @@ exports.addSectionLinks = function () {
 };
 
 
-exports.insertSectionToc = function (container) {
-  if (!container) {
+exports.insertToc = function (section, tocItem, insertBefore) {
+  if (!section) {
     return;
   }
-  var level = parseInt(container.className.replace(/level/, ''));
-  var maxSectionTocLevel = document.documentElement.dataset.maxSectionTocLevel || 3;
-  if (!level || level > maxSectionTocLevel) {
+  var level = parseInt(section.className.replace(/level/, ''));
+  var maxLevel = document.documentElement.dataset.maxSectionTocLevel || 3;
+  if (!level || level > maxLevel) {
     return;
   }
-
   var toc = document.createElement('ul');
   toc.className = 'toc toc' + level + ' menu open';
-  var itemCount = 0;
-  var sections = container.getElementsByClassName('level' + (level + 1));
-  [].forEach.call(sections, function (section) {
-    var sectionHeading = section.getElementsByTagName('h' + (level + 1))[0];
-    if (!sectionHeading) {
+  var tocItemCount = 0;
+  var subsections = section.getElementsByClassName('level' + (level + 1));
+  [].forEach.call(subsections, function (subsection) {
+    var subheading = subsection.getElementsByTagName('h' + (level + 1))[0];
+    if (!subheading) {
       return;
     }
-    var sectionTitle = sectionHeading.textContent;
-    var item = document.createElement('li');
+    var tocItem = document.createElement('li');
     var link = document.createElement('a');
-    link.href = '#' + section.id;
-    link.title = sectionTitle;
-    if (sectionHeading.firstChild.tagName === 'CODE') {
-      var code = document.createElement('code');
-      code.appendChild(document.createTextNode(sectionTitle));
-      link.appendChild(code);
-    } else {
-      link.appendChild(document.createTextNode(sectionTitle));
-    }
-    item.appendChild(link);
-    toc.appendChild(item);
-
-    itemCount += 1;
-    exports.insertSectionToc(section);
+    link.href = '#' + subsection.id;
+    link.title = subheading.textContent;
+    [].forEach.call(subheading.childNodes, function (node) {
+      link.appendChild(node.cloneNode(true));
+    });
+    tocItem.appendChild(link);
+    toc.appendChild(tocItem);
+    tocItemCount += 1;
+    exports.insertToc(subsection, tocItem, insertBefore);
   });
-  if (itemCount) {
-    var nav = document.createElement('nav');
-    nav.appendChild(toc);
-    container.classList.add('with-toc');
-    container.insertBefore(nav, sections[0]);
+  if (tocItemCount) {
+    insertBefore(section, level, tocItem, toc);
   }
 };
 
 
 exports.addSectionToc = function () {
-  var minSectionTocLevel = document.documentElement.dataset.minSectionTocLevel || 1;
-  exports.insertSectionToc(document.querySelectorAll('section.level' + minSectionTocLevel)[0]);
+  var minLevel = document.documentElement.dataset.minSectionTocLevel || 1;
+  var section1 = document.querySelectorAll('section.level' + minLevel)[0];
+  exports.insertToc(section1, undefined, function (section, level, tocItem, toc) {
+    var subsection = section.getElementsByClassName('level' + (level + 1))[0];
+    var nav = document.createElement('nav');
+    nav.appendChild(toc);
+    section.classList.add('with-toc');
+    section.insertBefore(nav, subsection);
+  });
+};
+
+
+exports.addMainToc = function () {
+  var minLevel = document.documentElement.dataset.minSectionTocLevel || 1;
+  var section1 = document.querySelectorAll('section.level' + minLevel)[0];
+  exports.insertToc(section1, undefined, function (section, level, tocItem, toc) {
+    if (!tocItem) {
+      var subsection1 = section1.getElementsByClassName('level' + (minLevel + 1))[0];
+      var nav = document.createElement('nav');
+      nav.appendChild(toc);
+      section1.classList.add('with-toc');
+      section1.insertBefore(nav, subsection1);
+    } else {
+      var p = document.createElement('p');
+      [].forEach.call(tocItem.childNodes, function (node) {
+        p.appendChild(node);
+      });
+      tocItem.appendChild(p);
+      tocItem.appendChild(toc);
+    }
+  });
 };
 
 
@@ -269,6 +288,8 @@ exports.enableHeaderMenuButton = function () {
     document.documentElement.classList.remove('no-transition');
     if (document.documentElement.classList.contains('add-section-toc')) {
       exports.addSectionToc();
+    } else if (document.documentElement.classList.contains('add-main-toc')) {
+      exports.addMainToc();
     }
     exports.addSectionLinks();
     exports.tweakListings();
