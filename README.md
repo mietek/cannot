@@ -1,9 +1,7 @@
-_cannot_
-========
+[_cannot_](http://cannot.mietek.io/)
+====================================
 
-[_cannot_](http://cannot.mietek.io/).  Not a web framework.
-
-Used in:
+Not a web framework.  Used in:
 
 - [This website](http://cannot.mietek.io/) ([Source](https://github.com/mietek/cannot-website/))
 - [My website](http://mietek.io/) ([Source](https://github.com/mietek/mietek-website/))
@@ -17,7 +15,7 @@ Used in:
 Usage
 -----
 
-Work in progress.  Not currently intended for public use.
+_cannot_ is not a web framework, and is not currently intended for public use.
 
 ```
 $ ln -s bower_components/cannot/Makefile .
@@ -36,15 +34,15 @@ $ bower install cannot
 
 ### Dependencies
 
-Requires [GNU _make_](http://gnu.org/software/make/) and [GNU _bash_](http://gnu.org/software/bash/).
+_cannot_ requires [GNU _make_](http://gnu.org/software/make/) and [GNU _bash_](http://gnu.org/software/bash/).
 
-- [_pandoc_](http://johnmacfarlane.net/pandoc/) for generating pages.
-- [Sass](http://sass-lang.com/) and [_clean-css_](https://github.com/jakubpawlowicz/clean-css/) for processing stylesheets.
-- [_webpack_](http://webpack.github.io/) for bundling scripts.
-- [Advance<span class="small-caps">Comp</span>](http://advancemame.sourceforge.net/comp-readme.html) for recompressing archives.
-- [ImageMagick](http://www.imagemagick.org/), [_jpegoptim_](https://github.com/tjko/jpegoptim/), and [OptiPNG](http://optipng.sourceforge.net/) for optimising images.
-- [_fswatch_](https://github.com/emcrisostomo/fswatch/) and [BrowserSync](http://www.browsersync.io/) for live preview.
-- [_ease-scroll_](https://github.com/mietek/ease-scroll/) for smooth scrolling.
+- Generating pages requires [_pandoc_](http://johnmacfarlane.net/pandoc/).
+- Processing stylesheets requires [Sass](http://sass-lang.com/) and [_clean-css_](https://github.com/jakubpawlowicz/clean-css/).
+- Bundling scripts requires [_webpack_](http://webpack.github.io/).
+- Recompressing archives requires [Advance<span class="small-caps">Comp</span>](http://advancemame.sourceforge.net/comp-readme.html).
+- Optimising images requires [ImageMagick](http://www.imagemagick.org/), [_jpegoptim_](https://github.com/tjko/jpegoptim/), and [OptiPNG](http://optipng.sourceforge.net/).
+- Automatic reloading requires [_fswatch_](https://github.com/emcrisostomo/fswatch/) and [BrowserSync](http://www.browsersync.io/).
+- Smooth scrolling requires [_ease-scroll_](https://github.com/mietek/ease-scroll/).
 
 ```
 $ brew install advancecomp fswatch imagemagick jpegoptim node optipng pandoc
@@ -52,8 +50,8 @@ $ gem install sass
 $ npm install -g bower browser-sync clean-css webpack
 ```
 
-- [Sketch](http://bohemiancoding.com/sketch/) for rebuilding images.
-- [Icon Slate](http://www.kodlian.com/apps/icon-slate/) for rebuilding favicons.
+- Rebuilding images requires [Sketch](http://bohemiancoding.com/sketch/).
+- Rebuilding favicons requires [Icon Slate](http://www.kodlian.com/apps/icon-slate/).
 
 
 Support
