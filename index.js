@@ -241,15 +241,15 @@ exports.tweakListings = function () {
 
 
 exports.enableHeaderMenuButton = function () {
-  var headerMenuBar = document.getElementById('header-menu-bar');
-  var headerMenuButton = document.getElementById('header-button');
-  var headerMenu = document.getElementById('header-menu');
-  if (headerMenuBar && headerMenuButton && headerMenu) {
-    headerMenuButton.addEventListener('click', function (event) {
+  var menuBar = document.getElementById('header-menu-bar');
+  var menuButton = document.getElementById('header-button');
+  var menu = document.getElementById('header-menu');
+  if (menuBar && menuButton && menu) {
+    menuButton.addEventListener('click', function (event) {
       event.preventDefault();
-      headerMenuBar.classList.toggle('open');
-      headerMenu.classList.toggle('open');
-      headerMenuButton.classList.toggle('open');
+      menuBar.classList.toggle('open');
+      menu.classList.toggle('open');
+      menuButton.classList.toggle('open');
       var open = (localStorage['header-menu-open'] === 'true');
       if (open) {
         localStorage.removeItem('header-menu-open');
