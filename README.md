@@ -3,13 +3,12 @@
 
 Not a web framework.  Used in:
 
-- [This website](http://cannot.mietek.io/) ([Source](https://github.com/mietek/cannot-website/))
-- [My website](http://mietek.io/) ([Source](https://github.com/mietek/mietek-website/))
-- [_bashmenot_ website](http://bashmenot.mietek.io/) ([Source](https://github.com/mietek/bashmenot-website/))
-- [Halcyon website](http://halcyon.sh/) ([Source](https://github.com/mietek/halcyon-website/))
-- [Haskell on Heroku website](http://haskellonheroku.com/) ([Source](https://github.com/mietek/haskell-on-heroku-website/))
-- [Least Fixed website](http://leastfixed.com/) ([Source](https://github.com/mietek/least-fixed-website/))
-- [Motoworks Cambridge website](http://mietek.github.io/motoworks-website/) ([Source](https://github.com/mietek/motoworks-website/))
+- [This website](https://github.com/mietek/cannot-website/)
+- [My website](https://github.com/mietek/mietek-website/)
+- [_bashmenot_ website](https://github.com/mietek/bashmenot-website/)
+- [Halcyon website](https://github.com/mietek/halcyon-website/)
+- [Haskell on Heroku website](https://github.com/mietek/haskell-on-heroku-website/)
+- [Least Fixed website](https://github.com/mietek/least-fixed-website/)
 
 
 Usage
