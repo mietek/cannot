@@ -248,9 +248,12 @@ section h6 a
   @include frob-when-frobbed
     color: $accent-color
 
-section.with-toc ul.toc
+section ul.toc
   margin-top: ln(1)
   margin-bottom: ln(1)
+
+section ul.toc > li > ul.toc
+  margin-top: ln(1/2)
 
 footer
   padding-bottom: ln(1)
