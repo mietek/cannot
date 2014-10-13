@@ -45,6 +45,12 @@ section ul.menu li:before
 section.with-toc ul.menu.toc li a
   @include smart-icon-after("down", $object-color-name, $accent-color-name)
 
+section.with-toc li.with-subtoc > p
+  margin-top: 0
+
+section.with-toc li.with-subtoc > ul.toc
+  display: none
+
 
 footer
   position: relative // For #footer-button

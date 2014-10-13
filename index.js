@@ -207,6 +207,7 @@ exports.addMainToc = function () {
       });
       tocItem.appendChild(p);
       tocItem.appendChild(toc);
+      tocItem.classList.add('with-subtoc');
     }
   });
 };
