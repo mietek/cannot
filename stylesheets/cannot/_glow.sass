@@ -48,7 +48,7 @@ $active-image-glow-rounds: 4 !default
   @if $color == none
     box-shadow: none
   @else
-    box-shadow: _shadow($color, $radius, $rounds), _inset-shadow($color, $radius, $rounds)
+    box-shadow: _shadow($color, $radius, $rounds)
 
 @mixin _text-glow($color, $radius, $rounds)
   @if $color == none

@@ -40,6 +40,15 @@
     @content
 
 
+@mixin smart-box-glow($color)
+  @include frob-when-low
+    @include box-glow(none)
+  @include frob-when-medium
+    @include box-glow($color)
+  @include frob-when-high
+    @include active-box-glow($color)
+
+
 @mixin smart-text-glow($color)
   @include frob-when-low
     @include text-glow(none)
