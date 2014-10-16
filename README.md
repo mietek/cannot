@@ -14,8 +14,8 @@ Examples
 - [My website](https://github.com/mietek/mietek-website/)
 - [_bashmenot_ website](https://github.com/mietek/bashmenot-website/)
 - [Halcyon website](https://github.com/mietek/halcyon-website/)
-- [Haskell on Heroku website](https://github.com/mietek/haskell-on-heroku-website/)
-- [Least Fixed website](https://github.com/mietek/least-fixed-website/)
+- [_Haskell on Heroku_ website](https://github.com/mietek/haskell-on-heroku-website/)
+- [Least Fixed website](https://github.com/mietek/least-fixed-website/)
 
 
 Usage
