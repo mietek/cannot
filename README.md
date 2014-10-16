@@ -1,7 +1,14 @@
 [_cannot_](http://cannot.mietek.io/)
 ====================================
 
-Not a web framework.  Used by:
+_cannot_ is not a web framework.
+
+> _“Those who do not understand Unix are condemned to reinvent it, poorly.”_  
+> — [Henry Spencer](http://en.wikipedia.org/wiki/Henry_Spencer)
+
+
+Examples
+--------
 
 - [This website](https://github.com/mietek/cannot-website/)
 - [My website](https://github.com/mietek/mietek-website/)
@@ -13,8 +20,6 @@ Not a web framework.  Used by:
 
 Usage
 -----
-
-_cannot_ is not a web framework, and is not currently intended for public use.
 
 ```
 $ ln -s bower_components/cannot/Makefile .
@@ -63,8 +68,8 @@ There is a [separate issue tracker](https://github.com/mietek/cannot-website/iss
 About
 -----
 
-My name is [Miëtek Bak](http://mietek.io/).  I make software, and _cannot_ is one of [my projects](http://mietek.io/projects/).
+My name is [Miëtek Bak](http://mietek.io/).  I make software, and _cannot_ is one of [my projects](http://mietek.io/projects/).
 
-This work is published under the [MIT X11 license](http://cannot.mietek.io/license/), and supported by my company, [Least Fixed](http://leastfixed.com/).
+This work is published under the [MIT X11 license](http://cannot.mietek.io/license/), and supported by my company, [Least Fixed](http://leastfixed.com/).
 
-How can I help you?  Would you like to work with me?  Say [hello](http://mietek.io/).
+Would you like to work with me?  Say [hello](http://mietek.io/).
