@@ -53,17 +53,18 @@ $ npm install -g bower browser-sync clean-css webpack
 - Rebuilding favicons requires [Icon Slate](http://www.kodlian.com/apps/icon-slate/).
 
 
-Support
--------
+### Bugs
 
-Please report any problems with _cannot_ on the [issue tracker](https://github.com/mietek/cannot/issues/).  There is a [separate issue tracker](https://github.com/mietek/cannot-website/issues/) for problems with the documentation.
+Please report any problems with _cannot_ on the [issue tracker](https://github.com/mietek/cannot/issues/).
 
-Commercial support for _cannot_ is offered by [Least Fixed](http://leastfixed.com/), a functional software consultancy.
-
-Need help?  Say [hello](http://leastfixed.com/).
+There is a [separate issue tracker](https://github.com/mietek/cannot-website/issues/) for problems with the documentation.
 
 
-License
--------
+About
+-----
 
-Made by [Miëtek Bak](http://mietek.io/).  Published under the [MIT X11 license](http://cannot.mietek.io/license/).
+My name is [Miëtek Bak](http://mietek.io/).  I make software, and _cannot_ is one of [my projects](http://mietek.io/projects/).
+
+This work is published under the [MIT X11 license](http://cannot.mietek.io/license/), and supported by my company, [Least Fixed](http://leastfixed.com/).
+
+How can I help you?  Would you like to work with me?  Say [hello](http://mietek.io/).
