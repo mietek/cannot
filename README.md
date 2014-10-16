@@ -1,7 +1,7 @@
 [_cannot_](http://cannot.mietek.io/)
 ====================================
 
-Not a web framework.  Used in:
+Not a web framework.  Used by:
 
 - [This website](https://github.com/mietek/cannot-website/)
 - [My website](https://github.com/mietek/mietek-website/)
