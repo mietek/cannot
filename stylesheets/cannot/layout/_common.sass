@@ -146,6 +146,13 @@ section pre span.prompt
 section pre span.input
   color: $object-color
 
+section ul
+  margin-top: ln(1/2)
+  margin-bottom: ln(1)
+
+section ul + ul
+  margin-top: -ln(1/2)
+
 section hr
   @include rule-after($accent-color)
   border: none
