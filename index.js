@@ -195,11 +195,9 @@ exports.addMainToc = function () {
   var section1 = document.querySelectorAll('section.level' + minLevel)[0];
   exports.insertToc(section1, undefined, function (section, level, tocItem, toc) {
     if (!tocItem) {
-      var subsection1 = section1.getElementsByClassName('level' + (minLevel + 1))[0];
-      var nav = document.createElement('nav');
+      var nav = document.getElementById('main-toc');
       nav.appendChild(toc);
       section1.classList.add('with-toc');
-      section1.insertBefore(nav, subsection1);
     } else {
       var p = document.createElement('p');
       [].forEach.call(tocItem.childNodes, function (node) {
