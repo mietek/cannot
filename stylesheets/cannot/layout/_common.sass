@@ -28,6 +28,7 @@ code
   font-family: monospace
   font-size: em(5/6)
   line-height: ln(5/6)
+  word-wrap: break-word
 
 .small-caps
   font-variant: small-caps
@@ -82,11 +83,15 @@ section span.backlink-button a
 section p
   margin-top: ln(1/2)
 
+section table
+  width: 100%
+  table-layout: fixed
+
 section table th
   color: $subject-color
 
-section table td:not(:last-of-type)
-  padding-right: ln(1)
+section table td
+  width: 50%
 
 section ul
   margin-top: ln(1/2)
