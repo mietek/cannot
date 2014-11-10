@@ -291,7 +291,9 @@ exports.enableHeaderMenuButton = function () {
       exports.addMainToc();
     }
     exports.addSectionLinks();
-    exports.tweakListings();
+    if (document.documentElement.classList.contains('tweak-listings')) {
+      exports.tweakListings();
+    }
     exports.enableHeaderMenuButton();
     easeScroll.applyToLocalLinks();
   });
