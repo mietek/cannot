@@ -10,7 +10,9 @@
 # The file system watching facility will not pick up the contents of newly symlinked directories without being turned off and on again, as `fswatch` does not automatically follow symlinks.
 
 
-project-name := $(notdir $(CURDIR))
+project-name  := $(notdir $(CURDIR))
+canonical-url := $(shell cat page-metadata/canonical-url.txt)
+s3-bucket     := $(patsubst https://%/,%,$(canonical-url))
 
 SHELL := /usr/bin/env bash
 
@@ -22,7 +24,7 @@ dev    : dev-watch
 watch  : dev-watch
 pub    : pub-push
 push   : pub-push
-open   : canonical-url.txt ; open $$(< $< )
+open   : ; open $(canonical-url)
 
 define cannot-macro
   .PHONY        : $(mode)-build
@@ -49,38 +51,21 @@ extract-comments  = grep -Eo '/\* $(1): .* \*/' $< | sed -E 's/^.*: (.*) .*$$/\1
 # Publishing
 # ----------
 
-pub-remote-name := $(shell git config --get cannot.pub.remote)
-pub-remote-url  := $(shell git config --get remote.$(pub-remote-name).url)
-pub-branch      := $(shell git config --get cannot.pub.branch)
+define pub-sync-zip
+  s3cmd sync out/pub/ s3://$(s3-bucket) --acl-public --no-preserve --add-header='Content-Encoding:gzip' --exclude='*' --include='*.gz'
+endef
 
-.PHONY : pub-init
-pub-init :
-	git checkout --orphan gh-pages
-	git config --add cannot.pub.remote origin
-	git config --add cannot.pub.branch gh-pages
-	git rm -rf .
-	touch .nojekyll
-	git add .nojekyll
-	git commit -m "Initial commit"
-	git push -u origin gh-pages
-	git checkout master
-	git branch -d gh-pages
+define pub-sync-all
+  s3cmd sync out/pub/ s3://$(s3-bucket) --acl-public --no-preserve --delete-removed --exclude='*.git*'
+endef
 
 .PHONY : pub-push
 pub-push : unwatch
 	git push origin master
 	rm -rf out/pub
-	git clone $(pub-remote-url) -b $(pub-branch) --single-branch out/pub
-	git -C out/pub rm -rf .
 	$(MAKE) pub-build
-	touch out/pub/.nojekyll
-	[ -f CNAME ] && cp CNAME out/pub/CNAME || true
-	[ -f out/pub/error.html ] && cp out/pub/error.html out/pub/404.html || true
-	git -C out/pub add -A .
-	git -C out/pub commit -m "Automatic commit" || true
-	git -C out/pub push
-	git fetch $(pub-remote-name) $(pub-branch)
-	[ -f sync.sh ] && ./sync.sh || true
+	$(pub-sync-zip)
+	$(pub-sync-all)
 
 
 # Watching
