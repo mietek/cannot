@@ -153,6 +153,7 @@ $(foreach mode,dev pub,$(eval $(optimize-macro)))
 # Pages
 # -----
 
+vpath %.md   error-pages    bower_components/cannot/error-pages
 vpath %.md   pages          bower_components/cannot/pages
 vpath %.txt  page-metadata  bower_components/cannot/page-metadata
 vpath %.html page-includes  bower_components/cannot/page-includes
@@ -162,7 +163,8 @@ page-template := main.html
 page-includes := menu-items.html head.html header.html footer.html
 page-metadata := $(wildcard page-metadata/*.txt)
 gzip-suffix   := $(if $(filter no-gzip,$(shell cat page-metadata/no-gzip.txt 2>/dev/null)),,.gz)
-std-pages     := index.md error.md license/index.md
+std-errors    := 400 403 404 405 414 416 500 501 502 503 504
+std-pages     := index.md error.md license/index.md $(patsubst %,_error/%.md,$(std-errors))
 pages         := $(sort $(std-pages) $(subst pages/,,$(call find-files,pages,*.md)))
 
 define pages-macro
