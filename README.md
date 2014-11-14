@@ -52,7 +52,7 @@ $ npm install -g bower browser-sync clean-css webpack
 #### Non-free dependencies
 
 - [Sketch](http://bohemiancoding.com/sketch/) for rebuilding images.
-- [Icon Slate](http://www.kodlian.com/apps/icon-slate/) for rebuilding favicons.
+- [Icon Slate](http://kodlian.com/apps/icon-slate/) for rebuilding favicons.
 
 
 ### Bugs
