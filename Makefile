@@ -52,11 +52,11 @@ extract-comments  = grep -Eo '/\* $(1): .* \*/' $< | sed -E 's/^.*: (.*) .*$$/\1
 # ----------
 
 define pub-sync-zip
-  s3cmd sync out/pub/ s3://$(s3-bucket) --acl-public --no-preserve --add-header='Content-Encoding:gzip' --exclude='*' --include='*.gz'
+  s3cmd sync out/pub/ s3://$(s3-bucket) --acl-public --cf-invalidate --no-preserve --add-header='Content-Encoding:gzip' --exclude='*' --include='*.gz'
 endef
 
 define pub-sync-all
-  s3cmd sync out/pub/ s3://$(s3-bucket) --acl-public --no-preserve --delete-removed --exclude='*.git*'
+  s3cmd sync out/pub/ s3://$(s3-bucket) --acl-public --cf-invalidate --no-preserve --delete-removed --exclude='*.git*'
 endef
 
 .PHONY : pub-push
