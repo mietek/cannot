@@ -7,8 +7,8 @@ $line-height-small: 24 !default
 $line-height-large: 32 !default
 
 $layout-width-min:     320px !default
-$layout-width-small:   768px !default
-$layout-width-medium: 1536px !default
+$layout-width-small:   720px !default
+$layout-width-medium: 1520px !default
 $layout-width-large:  1920px !default
 
 
@@ -21,13 +21,13 @@ $layout-width-large:  1920px !default
 @import "cannot/textmate"
 
 
-@media (max-width: $layout-width-small)
+@media (max-width: $layout-width-small - 1)
   @import "cannot/layout/small"
 
-@media (min-width: $layout-width-small + 1) and (max-width: $layout-width-medium)
+@media (min-width: $layout-width-small) and (max-width: $layout-width-medium - 1)
   @import "cannot/layout/medium"
 
-@media (min-width: $layout-width-medium + 1)
+@media (min-width: $layout-width-medium)
   @import "cannot/layout/large"
 
 
