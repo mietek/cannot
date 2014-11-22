@@ -69,6 +69,10 @@ pub-push : unwatch
 	$(pub-sync-zip)
 	$(pub-sync-all)
 
+.PHONY : pub-force-delete
+pub-force-delete :
+	s3cmd sync /dev/null s3://$(s3-bucket) --delete-removed --force
+
 
 # Watching
 # --------
