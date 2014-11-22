@@ -111,7 +111,7 @@ exports.insertBacklinkButton = function (section) {
 
 exports.addSectionLinks = function () {
   var minLevel = document.documentElement.dataset.minSectionLinkLevel || 2;
-  var maxLevel = document.documentElement.dataset.maxSectionLinkLevel || 6;
+  var maxLevel = document.documentElement.dataset.maxSectionLinkLevel || 3;
   var levels = [];
   for (var i = minLevel; i <= maxLevel; i += 1) {
     levels.push(i);
@@ -146,7 +146,7 @@ exports.insertToc = function (section, tocItem, insertBefore) {
     return;
   }
   var level = parseInt(section.className.replace(/level/, ''));
-  var maxLevel = document.documentElement.dataset.maxSectionTocLevel || 3;
+  var maxLevel = document.documentElement.dataset.maxSectionTocLevel || 2;
   if (!level || level > maxLevel) {
     return;
   }
