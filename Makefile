@@ -150,7 +150,8 @@ page-metadata := $(wildcard page-metadata/*.txt)
 gzip-suffix   := $(if $(filter no-gzip,$(shell cat page-metadata/no-gzip.txt 2>/dev/null)),,.gz)
 std-errors    := 400 403 404 405 414 416 500 501 502 503 504
 std-pages     := index.md error.md license/index.md $(patsubst %,_errors/%.md,$(std-errors))
-pages         := $(sort $(std-pages) $(subst pages/,,$(call find-files,pages,*.md)))
+sub-pages     := $(sort $(call find-files,pages,*.md))
+pages         := $(sort $(std-pages) $(subst pages/,,$(sub-pages)))
 
 define pages-macro
   $(mode)-pages := $(patsubst %.md,out/$(mode)/%.html,$(pages))
@@ -173,14 +174,26 @@ define pages-macro
     cp $$< $$@
   endef
 
+  define $(mode)-echo-sitemap
+    echo $$(sort $$(patsubst pages/%index.md,$(canonical-url)%,$$^)) | tr ' ' '\n' >$$@
+  endef
+
+  define $(mode)-echo-robots
+    echo 'User-agent: *' >$$@
+    echo 'Disallow:' >>$$@
+    echo 'Sitemap: $(canonical-url)sitemap.txt' >>$$@
+  endef
+
   out/tmp/$(mode)/%.html                 : %.md $(page-metadata) $(page-includes) $(page-template) | out/tmp/$(mode) ; $$($(mode)-compile-md)
   $$($(mode)-pages) : out/$(mode)/%.html : out/tmp/$(mode)/%.html                                  | out/$(mode)     ; $$($(mode)-copy-md)
+  out/$(mode)/sitemap.txt                : $(sub-pages)                                            | out/$(mode)     ; $$($(mode)-echo-sitemap)
+  out/$(mode)/robots.txt                 :                                                         | out/$(mode)     ; $$($(mode)-echo-robots)
 endef
 $(foreach mode,dev pub,$(eval $(pages-macro)))
 
 .PHONY    : dev-pages pub-pages
-dev-pages : $(dev-pages)
-pub-pages : $(addsuffix $(gzip-suffix),$(pub-pages))
+dev-pages : $(dev-pages) out/dev/sitemap.txt out/dev/robots.txt
+pub-pages : $(addsuffix $(gzip-suffix),$(pub-pages)) out/pub/sitemap.txt out/pub/robots.txt
 
 
 # Scripts
