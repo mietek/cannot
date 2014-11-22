@@ -295,7 +295,7 @@ out/tmp/dev/images.txt: out/tmp/dev/stylesheets.css | out/tmp/dev ; $(call extra
 define images-macro
   define $(mode)-echo-images
     echo '$(mode)-image-names := favicon-16.png favicon-32.png favicon-48.png $$$$(filter-out iconsheet%,$$$$(shell cat out/tmp/dev/images.txt))' >$$@
-    echo '$(mode)-images := out/$(mode)/favicon.ico $$$$(addprefix out/$(mode)/_images/,$$$$($(mode)-image-names))' >>$$@
+    echo '$(mode)-images := out/$(mode)/favicon.ico out/$(mode)/favicon.ico.gz $$$$(addprefix out/$(mode)/_images/,$$$$($(mode)-image-names))' >>$$@
     echo '$(mode)-images : $(if $(filter dev,$(mode)),$$$$(dev-images),$$$$(pub-images) $$$$(addsuffix $(gzip-suffix),$$$$(filter %.svg,$$$$(pub-images))))' >>$$@
     echo '$$$$($(mode)-images) :' >>$$@
   endef
