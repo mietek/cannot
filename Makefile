@@ -151,7 +151,7 @@ page-includes := menu-items.html head.html header.html footer.html
 page-metadata := $(wildcard page-metadata/*.txt)
 gzip-suffix   := $(if $(filter no-gzip,$(shell cat page-metadata/no-gzip.txt 2>/dev/null)),,.gz)
 std-errors    := 400 403 404 405 414 416 500 501 502 503 504
-std-pages     := index.md error.md license/index.md $(patsubst %,_errors/%.md,$(std-errors))
+std-pages     := index.md error.md $(patsubst %,_errors/%.md,$(std-errors))
 sub-pages     := $(sort $(call find-files,pages,*.md))
 pages         := $(sort $(std-pages) $(subst pages/,,$(sub-pages)))
 
