@@ -285,6 +285,29 @@ exports.enableHeaderMenuButton = function () {
 };
 
 
+exports.enableToggleButtons = function () {
+  var buttons = document.getElementsByClassName('toggle-button');
+  [].forEach.call(buttons, function (button) {
+    var target = document.getElementById(button.dataset.target);
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+      button.classList.toggle('open');
+      target.classList.toggle('open');
+      var open = (localStorage[button.dataset.target] === 'true');
+      if (open) {
+        localStorage.removeItem(button.dataset.target);
+      } else {
+        localStorage[button.dataset.target] = 'true';
+      }
+    });
+    if (localStorage[button.dataset.target] === 'true') {
+      button.classList.add('open');
+      target.classList.add('open');
+    }
+  });
+};
+
+
 (function () {
   exports.detectTouch();
   exports.detectHairline();
@@ -300,6 +323,7 @@ exports.enableHeaderMenuButton = function () {
       exports.tweakListings();
     }
     exports.enableHeaderMenuButton();
+    exports.enableToggleButtons();
     easeScroll.applyToLocalLinks();
     var onTimeout = function () {
       document.documentElement.classList.remove('no-transition');

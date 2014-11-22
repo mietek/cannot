@@ -1,0 +1,32 @@
+a.toggle-button.open {
+  transition:
+    ease(filter, 1, 0),           // General toggle-button transition
+    ease(-webkit-filter, 1, 0),   // General toggle-button transition
+    ease(opacity, 1, 0);          // General toggle-button transition
+}
+
+a.toggle-button.open:after {
+  transition:
+    ease(filter, 1, 0),           // General toggle-button transition
+    ease(-webkit-filter, 1, 0),   // General toggle-button transition
+    ease(height, 1, 0),           // Step 1
+    ease(top, 1, 0);              // Step 1
+}
+
+
+// Backwards
+
+a.toggle-button {
+  transition:
+    ease(filter, 1, 0),           // General toggle-button transition
+    ease(-webkit-filter, 1, 0),   // General toggle-button transition
+    ease(opacity, 1, 0);          // General toggle-button transition
+}
+
+a.toggle-button:after {
+  transition:
+    ease(filter, 1, 0),           // General toggle-button transition
+    ease(-webkit-filter, 1, 0),   // General toggle-button transition
+    ease(height, 1, 0),           // Step 1
+    ease(top, 1, 0);              // Step 1
+}

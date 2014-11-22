@@ -1,0 +1,48 @@
+div.toggle
+  position: relative
+
+
+pre.toggle
+  position: relative
+  height: ln(3)
+  transition: ease(height, 1, 0)
+  overflow: hidden
+
+pre.toggle.open
+  transition: ease(height, 1, 0)
+  overflow: auto
+
+pre.toggle:before
+  display: block
+  content: ""
+  position: absolute
+  top: ln(1)
+  height: ln(2)
+  left: 0
+  width: 100%
+  background: linear-gradient(to bottom, rgba(#fcfbfa, 0.0), #fcfbfa)
+  opacity: 1
+  transition: ease(height, 1, 0), ease(opacity, 1, 0)
+
+pre.toggle.open:before
+  opacity: 0
+
+
+a.toggle-button
+  @include block-button
+  @include smart-icon-after("closed", $object-color-name, $accent-color-name)
+  @include smart-opacity(0.4, 1)
+  position: absolute
+  top: 0
+  right: 0
+
+a.toggle-button:after
+  height: $icon-size
+  top: (ln(2) - $icon-size) / 2
+
+a.toggle-button.open:after
+  height: $icon-stroke
+  top: (ln(2) - $icon-stroke) / 2
+
+
+@import "cannot/toggle-button-animation"
