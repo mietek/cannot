@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-transition$if(page-class)$ $page-class$$endif$"$if(page-data)$$for(page-data)$data-$page-data.key$="$page-data.value$" $endfor$$else$ $endif$lang="en">
+<html class="no-transition$if(page-class)$ $page-class$$endif$"$if(page-data)$ $for(page-data)$data-$page-data.key$="$page-data.value$" $endfor$$else$ $endif$lang="en">
 <head>
 <meta charset="utf-8">
 <title>$if(project-title)$$project-title$$endif$$if(title)$ — $title$$endif$</title>
@@ -22,7 +22,7 @@ $if(menu-items)$<span id="header-button" class="menu-button"><a href="" title="M
 $menu-items$
 </ul>
 $if(menu-items)$<script>
-if (localStorage['header-menu-open']) {
+if (localStorage['header-menu-open'] === 'true') {
   document.getElementById('header-menu-bar').classList.add('open');
   document.getElementById('header-menu').classList.add('open');
   document.getElementById('header-button').classList.add('open');
