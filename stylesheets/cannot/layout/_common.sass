@@ -254,11 +254,21 @@ section h2 a
 section.level3
   margin-top: ln(3/2)
 
+.rule-before-h3 section.level3
+  @include rule-before(rgba($object-color, 0.2), $top: ln(-1/2) - 1)
+  margin-top: ln(5/2)
+
 section h3
   color: $accent-color
+  font-size: em(5/4)
+  line-height: ln(2)
   font-weight: bold
-  padding-top: ln(1/2)
   margin-bottom: ln(1/2)
+  position: relative
+
+section h3 code
+  font-size: em((5/6) * (5/4))
+  word-wrap: break-word
 
 section h3 a
   @include no-underline
@@ -269,8 +279,12 @@ section h3 a
 section.level4
   margin-top: ln(1/2)
 
+section.level3 .backlink-button + section.level4
+  margin-top: 0
+
 section h4
   color: $accent-color
+  font-weight: bold
   padding-top: ln(1/2)
   margin-bottom: ln(1/2)
 
@@ -284,13 +298,13 @@ section.level5
   margin-top: ln(1/2)
 
 section h5
-  font-style: italic
+  color: $accent-color
   padding-top: ln(1/2)
   margin-bottom: ln(1/2)
 
 section h5 a
   @include no-underline
-  color: $object-color
+  color: $accent-color
   @include frob-when-frobbed
     color: $accent-color
 
@@ -298,6 +312,8 @@ section.level6
   margin-top: ln(1/2)
 
 section h6
+  color: $object-color
+  font-style: italic
   padding-top: ln(1/2)
   margin-bottom: ln(1/2)
 
