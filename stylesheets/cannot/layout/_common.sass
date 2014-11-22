@@ -30,7 +30,6 @@ code
   font-family: monospace
   font-size: em(5/6)
   line-height: ln(5/6)
-  word-wrap: break-word
 
 .small-caps
   font-variant: small-caps
@@ -89,10 +88,14 @@ section p
 
 section p > code, section li > code, section td > code
   color: $object-color
+  word-wrap: break-word
 
 section table
   table-layout: fixed
   width: 100%
+  margin-right: ln(1)
+  margin-top: ln(1/2)
+  margin-bottom: ln(1/2)
 
 section table thead
   width: 100%
@@ -221,6 +224,7 @@ section h1
 
 section h1 code
   font-size: em((5/6) * 2)
+  word-wrap: break-word
 
 section h1 a
   @include no-underline
@@ -242,6 +246,7 @@ section h2
 
 section h2 code
   font-size: em((5/6) * (3/2))
+  word-wrap: break-word
 
 section h2 a
   @include no-underline
@@ -282,7 +287,7 @@ section.level5
   margin-top: ln(1/2)
 
 section h5
-  font-weight: bold
+  font-style: italic
   padding-top: ln(1/2)
   margin-bottom: ln(1/2)
 
@@ -296,7 +301,6 @@ section.level6
   margin-top: ln(1/2)
 
 section h6
-  font-style: italic
   padding-top: ln(1/2)
   margin-bottom: ln(1/2)
 
