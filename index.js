@@ -295,7 +295,7 @@ exports.enableToggleButtons = function () {
       target.classList.toggle('open');
       var open = (localStorage[button.dataset.target] === 'true');
       if (open) {
-        localStorage.removeItem(button.dataset.target);
+        localStorage[button.dataset.target] = 'false';
       } else {
         localStorage[button.dataset.target] = 'true';
       }
@@ -303,6 +303,9 @@ exports.enableToggleButtons = function () {
     if (localStorage[button.dataset.target] === 'true') {
       button.classList.add('open');
       target.classList.add('open');
+    } else if (localStorage[button.dataset.target] === 'false') {
+      button.classList.remove('open');
+      target.classList.remove('open');
     }
   });
 };

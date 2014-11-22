@@ -45,4 +45,11 @@ a.toggle-button.open:after
   top: (ln(2) - $icon-stroke) / 2
 
 
+@mixin loc($lines)
+  &.open
+    height: ln($lines + 1)
+    &:before
+      height: ln($lines)
+
+
 @import "cannot/toggle-button-animation"
