@@ -284,7 +284,6 @@ exports.enableHeaderMenuButton = function () {
   exports.detectHairline();
   exports.disableTransitionsDuringResize();
   addEventListener('load', function () {
-    document.documentElement.classList.remove('no-transition');
     if (document.documentElement.classList.contains('add-section-toc')) {
       exports.addSectionToc();
     } else if (document.documentElement.classList.contains('add-main-toc')) {
@@ -296,5 +295,9 @@ exports.enableHeaderMenuButton = function () {
     }
     exports.enableHeaderMenuButton();
     easeScroll.applyToLocalLinks();
+    var onTimeout = function () {
+      document.documentElement.classList.remove('no-transition');
+    };
+    setTimeout(onTimeout, 100);
   });
 })();
