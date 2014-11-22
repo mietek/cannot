@@ -112,7 +112,7 @@ define pub-copy-optimized-css
 endef
 
 define dev-copy-optimized-jpg
-  jpegoptim --force --all-progressive -m80 --strip-all --quiet --stdout $< >$@
+  jpegoptim --force --all-normal -m80 --strip-all --quiet --stdout $< >$@
 endef
 pub-copy-optimized-jpg = $(dev-copy-optimized-jpg)
 
