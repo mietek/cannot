@@ -17,6 +17,11 @@ $ make
 ```
 
 
+### Support
+
+Please report any problems with _cannot_ on the [issue tracker](https://github.com/mietek/cannot/issues/).  There is a [separate issue tracker](https://github.com/mietek/cannot-website/issues/) for problems with the documentation.
+
+
 ### Examples
 
 Live                                              | GitHub
@@ -49,17 +54,13 @@ _cannot_ requires [GNU _make_](https://gnu.org/software/make/), [GNU _bash_](htt
 - [_pandoc_](http://johnmacfarlane.net/pandoc/)—generating pages
 - [Sass](http://sass-lang.com/) and [_clean-css_](https://github.com/jakubpawlowicz/clean-css/)—processing stylesheets
 - [_webpack_](https://webpack.github.io/)—bundling scripts
+- [_ease-scroll_](https://github.com/mietek/ease-scroll/)—for smooth scrolling
 - [Advance<span class="small-caps">Comp</span>](http://advancemame.sourceforge.net/comp-readme.html)—recompressing archives
 - [ImageMagick](http://imagemagick.org/), [_jpegoptim_](https://github.com/tjko/jpegoptim/), and [OptiPNG](http://optipng.sourceforge.net/)—optimising images
 - [Sketch](http://bohemiancoding.com/sketch/)—rebuilding images
 - [Icon Slate](http://kodlian.com/apps/icon-slate/)—rebuilding favicons
 - [_fswatch_](https://github.com/emcrisostomo/fswatch/) and [BrowserSync](http://browsersync.io/)—automatic reloading
 - [_s3cmd_](http://s3tools.org/)—publishing to Amazon S3
-
-
-### Support
-
-Please report any problems with _cannot_ on the [issue tracker](https://github.com/mietek/cannot/issues/).  There is a [separate issue tracker](https://github.com/mietek/cannot-website/issues/) for problems with the documentation.
 
 
 About
