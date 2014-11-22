@@ -12,11 +12,11 @@ $if(canonical-url)$<link rel="canonical" href="$canonical-url$$path$">$endif$
 $if(head)$$head$$endif$
 $if(page-head)$$page-head$$endif$
 </head>
-<body$if(body-class)$ class="$body-class$"$endif$>
+<body$if(body-class)$ class="$body-class$"$endif$$if(page-schema)$ itemscope itemtype="$page-schema$"$endif$>
 <header id="top"$if(header-class)$ class="$header-class$"$endif$>
 <div class="wrapper">
 <nav id="header-menu-bar" class="menu-bar">
-<h1 class="logotype"><a href="/">$project-title$</a></h1>
+<h1 class="logotype"$if(page-schema)$ itemprop="name"$endif$><a href="/"$if(page-schema)$ itemprop="url"$endif$>$project-title$</a></h1>
 $if(menu-items)$<span id="header-button" class="menu-button"><a href="" title="Menu">Menu</a></span>$endif$
 <ul id="header-menu" class="menu">
 $menu-items$
