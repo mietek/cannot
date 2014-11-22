@@ -15,21 +15,22 @@ body
   line-height: ln(1)
 
 aside
-  font-size: em(2/3)
-  padding-top: em(2/3) // To counter font-size
+  font-size: em(3/4)
+  padding-top: em(3/4) // To counter font-size
   p:first-of-type
     margin-top: 0
 
-em
+em, i
   font-style: italic
 
-strong
+strong, b
   font-weight: bold
 
 code
   font-family: monospace
   font-size: em(5/6)
   line-height: ln(5/6)
+  word-wrap: break-word
 
 .small-caps
   font-variant: small-caps
@@ -82,10 +83,11 @@ section span.backlink-button a
   @include smart-icon-after("up", $object-color-name, $accent-color-name)
 
 section p
-  max-width: 80ex
+  max-width: ln(28)
   margin-top: ln(1/2)
+  margin-bottom: ln(1/2)
 
-section p > code
+section p code, section li code
   color: $object-color
 
 section table
@@ -116,9 +118,6 @@ section table th:not(:first-of-type)
 section table td:not(:first-of-type)
   padding-left: ln(1)
 
-section table code
-  word-wrap: break-word
-
 section > table th:last-of-type
   padding-right: ln(1)
 
@@ -131,6 +130,7 @@ section ul
 section ul > li
   margin-left: ln(1)
   min-height: ln(1)
+  max-width: ln(28)
   position: relative
 
 section ul > li:before
@@ -147,6 +147,7 @@ section ol
 section ol > li
   margin-left: ln(1)
   min-height: ln(1)
+  max-width: ln(28)
   position: relative
 
 section ol > li:before
@@ -171,7 +172,7 @@ section blockquote a
     color: $accent-color
 
 section pre
-  background: linear-gradient(to bottom, rgba($subject-color, 0.05), rgba($subject-color, 0.01))
+  background-color: #fcfbfa
   color: $body-color
   padding-top: ln(1/2)
   padding-bottom: ln(1/2)
@@ -186,6 +187,7 @@ section pre + pre
   margin-top: ln(-1/2)
 
 section pre span.prompt
+  color: $object-color
   font-weight: bold
 
 section pre span.input
@@ -193,7 +195,7 @@ section pre span.input
 
 section ul
   margin-top: ln(1/2)
-  margin-bottom: ln(1)
+  margin-bottom: ln(1/2)
 
 section ul + ul
   margin-top: -ln(1/2)
@@ -326,7 +328,7 @@ footer nav
   @include rule-before(rgba($subject-color, 0.2))
 
 
-.error p
+.error section p
   font-style: italic
   text-indent: ln(-1)
   padding-left: ln(1)
