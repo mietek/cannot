@@ -8,26 +8,47 @@
   pointer-events: none
   content: ""
 
-@mixin button-link
+@mixin block-button
   @include text-button
   @include no-text
-  display: block
-  width: 100%
-  height: 100%
-
-@mixin button
-  @include button-link
-  @include smart-opacity(0.2, 1)
   @include smart-image-glow($accent-color)
   @include smart-icon-after("block", $object-color-name, $accent-color-name)
+  @include smart-opacity(0.2, 1)
   display: block
-  width: ln(2) + $icon-size
   height: ln(2)
+  line-height: ln(2)
+  width: ln(2) + $icon-size
+  transition: ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
   position: relative
   z-index: 2
-  transition: ease(opacity, 1, 0), ease(filter, 1, 0), ease(-webkit-filter, 1, 0)
   &:after
     @include button-icon
 
-span.button
-  @include button
+
+span.block-button
+  @include block-button
+
+
+a.pill-button
+  @include text-button
+  @include no-underline
+  @include smart-text-glow($white)
+  display: inline-block
+  font-size: em(3/4)
+  padding-bottom: em(3/4) // To counter font-size
+  height: ln(3/2)
+  line-height: ln(3/2)
+  padding-left: ln(1)
+  padding-right: ln(1)
+  background-color: $white
+  color: $object-color
+  border: 1px rgba($object-color, 0.4) solid
+  border-radius: 512px
+  transition: ease(background-color, 1, 0), ease(border-color, 1, 0), ease(color, 1, 0), ease(text-shadow, 1, 0)
+  @include frob-when-frobbed
+    background-color: $accent-color
+    color: $white
+    border-color: transparent
+
+.hairline a.pill-button
+  border-width: 0.5px
