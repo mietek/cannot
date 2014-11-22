@@ -16,9 +16,6 @@
   @if $size == 1px
     .hairline &:before
       border-bottom: 0.5px $color solid
-    .no-hairline &:before
-      @include hires
-        transform: scaleY(0.5)
 
 @mixin _rule-after($color, $bottom, $top, $size, $margin)
   @if $color == none
@@ -38,6 +35,3 @@
   @if $size == 1px
     .hairline &:after
       border-top: 0.5px $color solid
-    .no-hairline &:after
-      @include hires
-        transform: scaleY(0.5)
