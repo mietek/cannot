@@ -4,12 +4,11 @@
 <meta charset="utf-8">
 <title>$if(project-title)$$project-title$$endif$$if(title)$ — $title$$endif$</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes,minimal-ui">
-<base href="/">
 $if(canonical-url)$<link rel="canonical" href="$canonical-url$$path$">$endif$
-<link rel="icon" type="image/png" href="_images/favicon-48.png" sizes="48x48">
-<link rel="icon" type="image/png" href="_images/favicon-16.png" sizes="16x16">
-<link rel="icon" type="image/png" href="_images/favicon-32.png" sizes="32x32">
-<link rel="stylesheet" href="_stylesheets.css$if(pub)$$if(no-gzip)$$else$.gz$endif$$endif$">
+<link rel="icon" type="image/png" href="/_images/favicon-48.png" sizes="48x48">
+<link rel="icon" type="image/png" href="/_images/favicon-16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/_images/favicon-32.png" sizes="32x32">
+<link rel="stylesheet" href="/_stylesheets.css$if(pub)$$if(no-gzip)$$else$.gz$endif$$endif$">
 $if(head)$$head$$endif$
 $if(page-head)$$page-head$$endif$
 </head>
@@ -17,7 +16,7 @@ $if(page-head)$$page-head$$endif$
 <header id="top"$if(header-class)$ class="$header-class$"$endif$>
 <div class="wrapper">
 <nav id="header-menu-bar" class="menu-bar">
-<h1 class="logotype"><a href=".">$project-title$</a></h1>
+<h1 class="logotype"><a href="/">$project-title$</a></h1>
 $if(menu-items)$<span id="header-button" class="menu-button"><a href="" title="Menu">Menu</a></span>$endif$
 <ul id="header-menu" class="menu">
 $menu-items$
@@ -50,7 +49,7 @@ $body$
 <footer id="bottom"$if(footer-class)$ class="$footer-class$"$endif$>
 <div class="wrapper">
 <nav id="footer-menu-bar" class="menu-bar">
-<h1 class="logotype"><a href=".">$project-title$</a></h1>
+<h1 class="logotype"><a href="/">$project-title$</a></h1>
 <span id="footer-button"><a href="#top" title="Top">Top</a></span>
 <ul id="footer-menu" class="menu open">
 $menu-items$
@@ -69,6 +68,6 @@ $if(page-footer)$$page-footer$$endif$
 </div>
 </div>
 <![endif]-->
-<script async src="_scripts.js$if(pub)$$if(no-gzip)$$else$.gz$endif$$endif$"></script>
+<script async src="/_scripts.js$if(pub)$$if(no-gzip)$$else$.gz$endif$$endif$"></script>
 </body>
 </html>
