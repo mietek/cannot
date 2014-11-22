@@ -212,13 +212,16 @@ exports.addMainToc = function () {
 
 
 exports.tweakListings = function () {
-  var listings = document.querySelectorAll('pre');
+  var listings = document.querySelectorAll('pre:not(.textmate-source)');
   [].forEach.call(listings, function (listing) {
     var code = listing.firstChild;
     if (code.tagName === 'CODE') {
       var text = code.firstChild;
       var lineStart = text.textContent.indexOf('$ ');
       var lineEnd;
+      if (lineStart === -1) {
+        lineStart = text.textContent.indexOf('# ');
+      }
       if (lineStart === -1) {
         return;
       }
@@ -232,6 +235,9 @@ exports.tweakListings = function () {
       }
       while (true) {
         lineStart = text.textContent.indexOf('$ ');
+        if (lineStart === -1) {
+          lineStart = text.textContent.indexOf('# ');
+        }
         if (lineStart === -1) {
           break;
         }
