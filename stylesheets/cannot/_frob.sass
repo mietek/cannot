@@ -4,7 +4,7 @@
     @content
   .touch &:active
     @content
-  .no-touch &:hover
+  .no-touch &:hover, .no-touch &.hover
     @content
   .no-touch &:active
     @content
@@ -16,7 +16,7 @@
     @content
   .touch &:active
     @content
-  .no-touch &:hover
+  .no-touch &:hover, .no-touch &.hover
     @content
   .no-touch &:active
     @content
@@ -30,7 +30,7 @@
     @content
 
 @mixin frob-when-medium
-  .no-touch &:hover
+  .no-touch &:hover, .no-touch &.hover
     @content
 
 @mixin frob-when-high
