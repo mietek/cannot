@@ -88,16 +88,21 @@ exports.createBacklinkButton = function (target, title) {
 
 exports.insertBacklinkButton = function (section) {
   var level = parseInt(section.className.replace(/level/, ''));
-  if (!level || level < 2) {
+  var maxLevel = document.documentElement.dataset.maxBackLinkLevel || 2;
+  if (!level || level > maxLevel) {
     return;
   }
   var target, title;
-  if (level === 2) {
+  if (level <= 2) {
     target = 'top';
     title = 'Top';
   } else {
     target = section.parentElement.id;
-    title = section.parentElement.getElementsByTagName('h' + (level - 1))[0].textContent;
+    var parentHeading = section.parentElement.getElementsByTagName('h' + (level - 1))[0];
+    if (parentHeading === undefined) {
+      return;
+    }
+    title = parentHeading.textContent;
   }
   var backlinkButton = exports.createBacklinkButton(target, title);
   var heading = section.getElementsByTagName('h' + level)[0];
