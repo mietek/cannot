@@ -118,7 +118,7 @@ exports.addSectionLinks = function () {
   var minLevel = document.documentElement.dataset.minSectionLinkLevel || 2;
   var maxLevel = document.documentElement.dataset.maxSectionLinkLevel || 3;
   var levels = [];
-  for (var i = minLevel; i <= maxLevel; i += 1) {
+  for (var i = minLevel; i <= maxLevel; i++) {
     levels.push(i);
   }
   levels.forEach(function (level) {
