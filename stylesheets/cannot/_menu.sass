@@ -4,6 +4,9 @@ ul.menu li
   position: relative
 
 ul.menu li a
+  overflow-x: hidden
+
+ul.menu li a
   @include smart-opacity-after(0.2, 1)
   @include smart-image-glow-after($accent-color)
   @include smart-icon-after("right", $object-color-name, $accent-color-name)

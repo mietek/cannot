@@ -34,6 +34,10 @@ code
 .small-caps
   font-variant: small-caps
 
+img
+  max-width: 100%
+  height: auto
+
 
 // To get above main
 header
@@ -233,6 +237,10 @@ section.level2
   @include rule-before($accent-color, $top: ln(-1/2) - 1)
   margin-top: ln(4)
 
+section.level2.no-rule-before-h2
+  @include rule-before(none)
+  margin-top: ln(2)
+
 section h2
   color: $accent-color
   font-size: em(3/2)
@@ -323,7 +331,7 @@ section h6 a
   @include frob-when-frobbed
     color: $accent-color
 
-section.with-toc ul.toc
+section.with-toc nav > ul.toc
   margin-top: ln(1)
   margin-bottom: ln(1)
 
