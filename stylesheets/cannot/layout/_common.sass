@@ -89,7 +89,7 @@ section p
   margin-top: ln(1/2)
   margin-bottom: ln(1/2)
 
-section p > code, section li > code, section td code
+section p > code, section li > code, section td > code
   color: $object-color
   word-wrap: break-word
 
@@ -265,6 +265,9 @@ section.level3
 .rule-before-h3 section.level3
   @include rule-before(rgba($object-color, 0.2), $top: ln(-1/2) - 1)
   margin-top: ln(5/2)
+
+.hairline.rule-before-h3 section.level3:before
+  border-width: 0.5px
 
 section h3
   color: $accent-color
