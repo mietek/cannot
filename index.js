@@ -255,7 +255,7 @@ exports.addMainToc = function () {
 
 
 exports.tweakListings = function () {
-  var listings = document.querySelectorAll('pre:not(.textmate-source)');
+  var listings = document.querySelectorAll('pre:not(.textmate-source):not(.with-tweaks)');
   [].forEach.call(listings, function (listing) {
     var code = listing.firstChild;
     if (code.tagName === 'CODE') {
