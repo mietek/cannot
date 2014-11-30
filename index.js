@@ -88,7 +88,7 @@ exports.createBacklinkButton = function (target, title) {
 
 exports.insertBacklinkButton = function (section) {
   var level = parseInt(section.className.replace(/level/, ''));
-  var maxLevel = document.documentElement.dataset.maxBackLinkLevel || 2;
+  var maxLevel = parseInt(document.documentElement.dataset.maxBackLinkLevel) || 2;
   if (!level || level > maxLevel) {
     return;
   }
@@ -115,10 +115,10 @@ exports.insertBacklinkButton = function (section) {
 
 
 exports.addSectionLinks = function () {
-  var minLevel = document.documentElement.dataset.minSectionLinkLevel || 2;
-  var maxLevel = document.documentElement.dataset.maxSectionLinkLevel || 3;
+  var minLevel = parseInt(document.documentElement.dataset.minSectionLinkLevel) || 2;
+  var maxLevel = parseInt(document.documentElement.dataset.maxSectionLinkLevel) || 3;
   var levels = [];
-  for (var i = minLevel; i <= maxLevel; i++) {
+  for (var i = minLevel; i <= maxLevel; i += 1) {
     levels.push(i);
   }
   levels.forEach(function (level) {
@@ -151,7 +151,7 @@ exports.insertToc = function (section, tocItem, insertBefore) {
     return;
   }
   var level = parseInt(section.className.replace(/level/, ''));
-  var maxLevel = document.documentElement.dataset.maxSectionTocLevel || 2;
+  var maxLevel = parseInt(document.documentElement.dataset.maxSectionTocLevel) || 2;
   if (!level || level > maxLevel) {
     return;
   }
@@ -183,7 +183,7 @@ exports.insertToc = function (section, tocItem, insertBefore) {
 
 
 exports.addSectionToc = function () {
-  var minLevel = document.documentElement.dataset.minSectionTocLevel || 1;
+  var minLevel = parseInt(document.documentElement.dataset.minSectionTocLevel) || 1;
   var section1 = document.querySelectorAll('section.level' + minLevel)[0];
   exports.insertToc(section1, undefined, function (section, level, tocItem, toc) {
     var subsection = section.getElementsByClassName('level' + (level + 1))[0];
@@ -196,7 +196,7 @@ exports.addSectionToc = function () {
 
 
 exports.addMainToc = function () {
-  var minLevel = document.documentElement.dataset.minSectionTocLevel || 1;
+  var minLevel = parseInt(document.documentElement.dataset.minSectionTocLevel) || 1;
   var section1 = document.querySelectorAll('section.level' + minLevel)[0];
   exports.insertToc(section1, undefined, function (section, level, tocItem, toc) {
     if (!tocItem) {
