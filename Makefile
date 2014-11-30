@@ -198,7 +198,7 @@ endef
 $(foreach mode,dev pub,$(eval $(pages-macro)))
 
 .PHONY    : dev-pages pub-pages
-dev-pages : $(dev-pages) out/dev/sitemap.txt out/dev/robots.txt
+dev-pages : $(dev-pages)
 pub-pages : $(addsuffix $(gzip-suffix),$(pub-pages)) out/pub/sitemap.txt out/pub/robots.txt
 
 
