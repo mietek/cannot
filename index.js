@@ -54,6 +54,44 @@ exports.detectHairline = function () {
 };
 
 
+(function () {
+  var layout;
+  var fontSize;
+  var lineHeight;
+
+  // TODO: Re-use the same values as _layout.sass somehow.
+  var matchLayoutWidth = function () {
+    if (window.matchMedia('(max-width: 719px)').matches) {
+      layout = 'small';
+      fontSize = 18;
+      lineHeight = 24;
+    } else if (window.matchMedia('(min-width: 720px) and (max-width: 1519px)').matches) {
+      layout = 'medium';
+      fontSize = 18;
+      lineHeight = 24;
+    } else if (window.matchMedia('(min-width: 1520px)').matches) {
+      layout = 'large';
+      fontSize = 24;
+      lineHeight = 32;
+    }
+  };
+
+  matchLayoutWidth();
+  addEventListener('load', matchLayoutWidth);
+  addEventListener('resize', matchLayoutWidth);
+
+  exports.getLayout = function () {
+    return layout;
+  };
+  exports.getFontSize = function () {
+    return fontSize;
+  };
+  exports.getLineHeight = function () {
+    return lineHeight;
+  };
+})();
+
+
 exports.disableTransitionsDuringResize = function () {
   var lastResizeT;
   addEventListener('resize', function () {
