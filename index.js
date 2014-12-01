@@ -126,13 +126,15 @@ exports.createBacklinkButton = function (target, title) {
 
 exports.insertBacklinkButton = function (section) {
   var level = parseInt(section.className.replace(/level/, ''));
+  var minLevel = parseInt(document.documentElement.dataset.minBackLinkLevel) || 2;
   var maxLevel = parseInt(document.documentElement.dataset.maxBackLinkLevel) || 2;
-  if (!level || level > maxLevel) {
+  var h2Target = document.documentElement.dataset.h2BackLinkTarget || 'top';
+  if (!level || level < minLevel || level > maxLevel) {
     return;
   }
   var target, title;
   if (level <= 2) {
-    target = 'top';
+    target = h2Target;
     title = 'Top';
   } else {
     target = section.parentElement.id;
@@ -166,14 +168,8 @@ exports.addSectionLinks = function () {
       if (heading) {
         var link = document.createElement('a');
         link.className = 'section-link';
-        var target, title;
-        if (level === 1) {
-          target = 'top';
-          title = 'Top';
-        } else {
-          target = section.id;
-          title = heading.textContent;
-        }
+        var target = section.id;
+        var title = heading.textContent;
         link.href = '#' + target;
         link.title = title;
         link.appendChild(heading.replaceChild(link, heading.firstChild));
