@@ -154,7 +154,7 @@ exports.insertBacklinkButton = function (section) {
 
 exports.addSectionLinks = function () {
   var minLevel = parseInt(document.documentElement.dataset.minSectionLinkLevel) || 2;
-  var maxLevel = parseInt(document.documentElement.dataset.maxSectionLinkLevel) || 3;
+  var maxLevel = parseInt(document.documentElement.dataset.maxSectionLinkLevel) || 4;
   var levels = [];
   for (var i = minLevel; i <= maxLevel; i += 1) {
     levels.push(i);
