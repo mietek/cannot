@@ -66,6 +66,8 @@ pub-push : unwatch
 	git push origin master
 	rm -rf out/pub
 	$(MAKE) pub-build
+	# TODO: Add hooks
+	-[[ -f images/logo/logo.svg ]] && cp images/logo/logo.svg out/pub/logo.svg
 	$(pub-sync-zip)
 	$(pub-sync-all)
 
