@@ -29,26 +29,33 @@ span.block-button
   @include block-button
 
 
-a.pill-button
+@mixin pill-button
   @include text-button
   @include no-underline
   @include smart-text-glow($white)
   display: inline-block
   font-size: em(3/4)
   padding-bottom: em(3/4) // To counter font-size
+  font-weight: bold
   height: ln(3/2)
   line-height: ln(3/2)
   padding-left: ln(1)
   padding-right: ln(1)
   background-color: $white
-  color: $object-color
-  border: 1px rgba($object-color, 0.4) solid
+  color: $accent-color
+  border: 1px rgba($accent-color, 1) solid
   border-radius: 512px
   transition: ease(background-color, 1, 0), ease(border-color, 1, 0), ease(color, 1, 0), ease(text-shadow, 1, 0)
   @include frob-when-frobbed
     background-color: $accent-color
     color: $white
     border-color: transparent
+  code
+    font-size: em((5/6) * (5/6))
+    padding-bottom: em((5/6) * (5/6))
+  .hairline &
+    border-width: 0.5px
 
-.hairline a.pill-button
-  border-width: 0.5px
+
+a.pill-button
+  @include pill-button
