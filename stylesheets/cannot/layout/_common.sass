@@ -78,6 +78,38 @@ section > hr
   margin-left: 0
   margin-right: 0
 
+section aside
+  color: $object-color
+  font-size: em(3/4)
+  padding-bottom: em(1/8) // To counter font-size
+  line-height: ln(3/4)
+  position: relative
+
+section aside > *
+  margin-left: ln(11/4)
+
+section aside a.face
+  margin-left: 0
+  margin-top: ln(3/4)
+
+section aside a.face:first-of-type
+  margin-top: 0
+
+section aside blockquote
+  color: $object-color
+  text-indent: -1ex
+  margin-top: ln(3/4)
+
+section aside blockquote:first-of-type
+  margin-top: 0
+
+section aside p
+  margin-top: ln(1/4)
+  margin-bottom: 0
+
+section aside a
+  @include no-underline
+
 section span.backlink-button
   position: absolute // Referencing section
   top: 0
@@ -360,6 +392,22 @@ footer nav
   font-style: italic
   text-indent: ln(-1)
   padding-left: ln(1)
+
+
+.face
+  @include no-text
+  display: block
+  float: left
+  border: 1px $object-color solid
+  border-radius: 50%
+  margin-right: ln(1)
+  margin-bottom: ln(1)
+  .hairline &
+    border-width: 0.5px
+
+.micro.face
+  margin-right: ln(3/4)
+  margin-bottom: 0
 
 
 #what-browser
