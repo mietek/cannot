@@ -110,6 +110,15 @@ section aside p
 section aside a
   @include no-underline
 
+div.aside-like > *
+  margin-left: ln(5)
+
+div.aside-like a.face
+  margin-left: 0
+
+div.aside-like blockquote
+  color: $body-color
+
 section span.backlink-button
   position: absolute // Referencing section
   top: 0
@@ -124,7 +133,7 @@ section p
   margin-top: ln(1/2)
   margin-bottom: ln(1/2)
 
-section p > code, section em > code, section li > code, section td > code
+section p > code, section em > code, section li > code, section td > code, section td > a > code
   color: $object-color
   word-wrap: break-word
 
@@ -210,9 +219,20 @@ section blockquote a
   @include frob-when-frobbed
     color: $accent-color
 
+section div.pre-like
+  background-color: #fcfbfa
+  color: $object-color
+  padding-top: ln(1/2)
+  padding-bottom: ln(1/2)
+  padding-right: ln(1)
+  margin-left: 0
+  margin-right: 0
+  margin-top: ln(1/2)
+  margin-bottom: ln(1/2)
+
 section pre
   background-color: #fcfbfa
-  color: $body-color
+  color: $object-color
   padding-top: ln(1/2)
   padding-bottom: ln(1/2)
   padding-right: ln(1)
@@ -396,12 +416,14 @@ footer nav
 
 .face
   @include no-text
+  @include smart-opacity(1, 0.8)
   display: block
   float: left
   border: 1px $object-color solid
   border-radius: 50%
   margin-right: ln(1)
   margin-bottom: ln(1)
+  transition: ease(opacity, 1, 0)
   .hairline &
     border-width: 0.5px
 
