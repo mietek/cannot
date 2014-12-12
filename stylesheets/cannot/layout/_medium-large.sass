@@ -27,7 +27,7 @@ section div.toggle
 section div.toggle pre
   width: auto
 
-section aside
+section aside:not(.inline)
   position: absolute
   left: 0
   right: 0
@@ -35,6 +35,9 @@ section aside
   margin-left: ln(1)
   margin-right: (2/3) * 100%
   padding-right: ln(1)
+
+section aside.inline
+  margin-top: ln(1)
 
 section > table
   width: (2/3) * 100%
