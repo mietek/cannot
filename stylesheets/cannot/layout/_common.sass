@@ -265,7 +265,7 @@ section ul + ul
   margin-top: -ln(1/2)
 
 section hr
-  @include rule-after($accent-color)
+  @include rule-after(rgba($accent-color, 0.8))
   border: none
   height: ln(1/2)
   margin-top: ln(3)
@@ -277,7 +277,7 @@ section.level1
     margin-top: 0
 
 .rule-before-h1 section.level1
-  @include rule-before($accent-color)
+  @include rule-before(rgba($accent-color, 0.8))
   margin-top: ln(6)
 
 .hairline.rule-before-h1 section.level1:before
@@ -301,7 +301,7 @@ section h1 a
     color: $accent-color
 
 section.level2
-  @include rule-before($accent-color, $top: ln(-1/2) - 1)
+  @include rule-before(rgba($accent-color, 0.8), $top: ln(-1/2) - 1)
   margin-top: ln(4)
 
 section.level2.no-rule-before-h2
