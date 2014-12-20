@@ -27,6 +27,7 @@ exports.restartAnimation = function (target) {
 exports.detectTouch = function () {
   if ('ontouchstart' in window) {
     document.documentElement.classList.add('touch');
+    document.addEventListener('touchstart', function () {});
   } else {
     document.documentElement.classList.add('no-touch');
   }
