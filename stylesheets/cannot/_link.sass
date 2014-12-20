@@ -21,13 +21,14 @@
 
 // NOTE: Safari does not respect outline-color for the default focus ring, but Chrome does.
 
+*:focus
+  outline: 2px rgba($accent-color, 0.4) solid
+
 a
   @include text-button
   @include smart-text-glow($accent-color)
   color: $object-color
   transition: ease(box-shadow, 1, 0), ease(color, 1, 0), ease(text-shadow, 1, 0)
-  &:focus
-    outline-color: $accent-color
   @include frob-when-frobbed
     color: $accent-color
 
