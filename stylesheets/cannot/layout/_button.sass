@@ -29,11 +29,11 @@ span.block-button
   @include block-button
 
 
-@mixin pill-button
-  @include text-button
-  @include no-underline
-  @include smart-text-glow($white)
+@mixin common-field
   display: inline-block
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
   font-size: em(3/4)
   padding-bottom: em(3/4) // To counter font-size
   height: ln(3/2)
@@ -41,16 +41,60 @@ span.block-button
   padding-left: ln(1)
   padding-right: ln(1)
   background-color: $white
-  color: $accent-color
-  border: 1px rgba($accent-color, 1) solid
-  border-radius: 512px
+  color: $gray6
+  border: 1px rgba($gray6, 0.8) solid
+  .hairline &
+    border-width: 0.5px
+  &.disabled
+    cursor: none
+    pointer-events: none
+    color: $grayC
+    border-color: rgba($grayC, 0.8)
+
+
+@mixin common-button
+  @include common-field
+  @include text-button
+  @include no-underline
   transition: ease(background-color, 1, 0), ease(border-color, 1, 0), ease(color, 1, 0), ease(text-shadow, 1, 0)
+  text-align: center
   @include frob-when-frobbed
     background-color: $accent-color
     color: $white
     border-color: transparent
-  .hairline &
-    border-width: 0.5px
+  &.selected
+    color: $accent-color
+    border-color: rgba($accent-color, 0.8)
+    @include frob-when-frobbed
+      color: $white
+      border-color: transparent
+
+
+@mixin static-field
+  @include common-field
+  text-align: center
+  color: $gray9
+  border-color: rgba($gray9, 0.8)
+
+
+@mixin radio-button
+  @include common-button
+  @include smart-text-glow($white)
+  border: 1px rgba($gray6, 0.8) solid
+
+
+@mixin check-button
+  @include common-button
+  @include smart-text-glow($white)
+  border: 1px rgba($gray6, 0.8) solid
+
+
+@mixin pill-button
+  @include common-button
+  @include smart-text-glow($white)
+  color: $accent-color
+  border: 1px rgba($accent-color, 0.8) solid
+  border-radius: 512px
 
 
 a.pill-button
