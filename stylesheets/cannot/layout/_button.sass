@@ -38,13 +38,13 @@ span.block-button
   padding-bottom: em(3/4) // To counter font-size
   height: ln(3/2)
   line-height: ln(3/2)
-  padding-left: ln(1)
-  padding-right: ln(1)
   background-color: $white
   color: $gray6
   border: 1px rgba($gray6, 0.8) solid
   .hairline &
     border-width: 0.5px
+  &.meta
+    font-style: italic
   &.disabled
     cursor: none
     pointer-events: none
@@ -63,30 +63,29 @@ span.block-button
     color: $white
     border-color: transparent
   &.selected
+    font-weight: bold
     color: $accent-color
     border-color: rgba($accent-color, 0.8)
     @include frob-when-frobbed
       color: $white
       border-color: transparent
+  &.disabled.selected
+    color: rgba($accent-color, 0.4)
+    border-color: rgba($accent-color, 0.4 * 0.8)
 
 
 @mixin static-field
   @include common-field
   text-align: center
-  color: $gray9
-  border-color: rgba($gray9, 0.8)
+  color: $gray6
+  border-color: rgba($gray6, 0.4)
 
 
 @mixin radio-button
   @include common-button
   @include smart-text-glow($white)
   border: 1px rgba($gray6, 0.8) solid
-
-
-@mixin check-button
-  @include common-button
-  @include smart-text-glow($white)
-  border: 1px rgba($gray6, 0.8) solid
+  border-radius: ln(1/6)
 
 
 @mixin pill-button
@@ -95,6 +94,7 @@ span.block-button
   color: $accent-color
   border: 1px rgba($accent-color, 0.8) solid
   border-radius: 512px
+  width: ln(4)
 
 
 a.pill-button
