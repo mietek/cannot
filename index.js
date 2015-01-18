@@ -254,7 +254,7 @@ exports.addMainToc = function () {
 exports.tweakListings = function () {
   var bold = new RegExp('(?:\\*\\*)([^\n]*)(?:\\*\\*)', 'g');
   var link = new RegExp('(https?://[^ \n]*?)(?=[ \n]|$|\\.\\.\\.)', 'g');
-  var cmdLine = new RegExp('(^|\n)([\\$#]) ([^\n]*?)(?=\n|$)', 'g');
+  var cmdLine = new RegExp('(^|\n|~ )([\\$#λ]) ([^\n]*?)(?=\n|$)', 'g');
   var listings = document.querySelectorAll('pre:not(.textmate-source):not(.with-tweaks) code');
   [].forEach.call(listings, function (listing) {
     listing.innerHTML = listing.innerText
