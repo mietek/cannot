@@ -1,6 +1,6 @@
 ---
 title: Error
-page-class: error
+page-class: error-page
 ---
 
 
