@@ -3,17 +3,25 @@
 
 _cannot_ is not a web framework.
 
+See the [_cannot_ website](https://cannot.mietek.io/) for more information.
+
 
 Usage
 -----
 
 ```
-$ bower install cannot
-$ ln -s bower_components/cannot/Makefile .
 $ make
 ```
 
-For more information, please refer to the [_cannot_ website](https://cannot.mietek.io/).
+
+### Installation
+
+_cannot_ can be installed by cloning the [_git_ repository](https://github.com/mietek/cannot), or using [Bower](http://bower.io/):
+
+```
+$ bower install cannot
+$ ln -s bower_components/cannot/Makefile .
+```
 
 
 About
