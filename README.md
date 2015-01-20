@@ -16,12 +16,17 @@ $ make
 
 ### Installation
 
-_cannot_ can be installed by cloning the [_git_ repository](https://github.com/mietek/cannot), or using [Bower](http://bower.io/):
+_cannot_ can be installed with [Bower](http://bower.io/):
 
 ```
 $ bower install cannot
 $ ln -s bower_components/cannot/Makefile .
 ```
+
+
+### Documentation
+
+- Read the [_cannot_ source code](https://github.com/mietek/cannot) to understand how it works.
 
 
 About
