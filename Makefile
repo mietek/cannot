@@ -97,7 +97,7 @@ define watch-macro
     $(browsersync-off)
     fswatch --exclude='.*/out/.*' --one-per-batch --recursive $(fswatch-roots) --format-time pgrep/$(project-name) | xargs -n1 -I{} '$(MAKE)' $(mode)-build &
     ( while ps -p $$$${PPID} >/dev/null ; do sleep 1 ; done ; $(fswatch-off) ; $(browsersync-off) ) &
-    browser-sync start --no-online --files 'out/$(mode)/**/*' --server 'out/$(mode)' --no-ghost --no-notify --files pgrep/$(project-name)
+    browser-sync start --no-online --files 'out/$(mode)/**/*' --server 'out/$(mode)' --no-ghost-mode --no-notify --no-ui --files pgrep/$(project-name)
   endef
 
   .PHONY        : $(mode)-watch
