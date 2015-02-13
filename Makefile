@@ -79,8 +79,6 @@ pub-force-delete :
 # Watching
 # --------
 
-vpath %.js config bower_components/cannot/config
-
 fswatch-roots := $(patsubst %,'%',$(realpath . $(shell find . -type l)))
 
 fswatch-off     := pgrep -f 'fswatch.* --format-time pgrep/$(project-name)' | xargs kill
@@ -207,6 +205,7 @@ pub-pages : $(addsuffix $(gzip-suffix),$(pub-pages)) out/pub/sitemap.txt out/pub
 # Scripts
 # -------
 
+vpath %.js config bower_components/cannot/config
 vpath %.js scripts bower_components/cannot/scripts
 
 script-roots := scripts $(wildcard bower_components/*/scripts)
