@@ -11,7 +11,7 @@
 
 
 project-name  := $(notdir $(CURDIR))
-canonical-url := $(shell cat page-metadata/canonical-url.txt)
+canonical-url := $(shell cat page-metadata/canonical-url.txt 2>/dev/null)
 s3-bucket     := $(patsubst https://%/,%,$(canonical-url))
 
 SHELL := /usr/bin/env bash
