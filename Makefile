@@ -28,7 +28,7 @@ open   : ; open $(canonical-url)
 
 define cannot-macro
   .PHONY        : $(mode)-build
-  $(mode)-build : $(mode)-pages $(mode)-scripts $(mode)-stylesheets $(mode)-fonts $(mode)-images $(mode)-iconsheet
+  $(mode)-build : $(mode)-pages $(mode)-scripts $(mode)-stylesheets $(mode)-fonts $(mode)-images $(mode)-iconsheet ; -[[ -e overlay ]] && cp -R overlay/. out/$(mode)
   $(mode)-clean : unwatch ; rm -rf out/$(mode)
 
   out/$(mode) out/$(mode)/_fonts out/$(mode)/_images out/tmp/$(mode) : ; [ -d $$@ ] || mkdir -p $$@
@@ -66,8 +66,6 @@ pub-push : unwatch
 	git push origin master
 	rm -rf out/pub
 	$(MAKE) pub-build
-	# TODO: Add hooks
-	-[[ -f images/logo/logo.svg ]] && cp images/logo/logo.svg out/pub/logo.svg
 	$(pub-sync-zip)
 	$(pub-sync-all)
 
