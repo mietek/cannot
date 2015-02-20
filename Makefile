@@ -231,6 +231,7 @@ pub-scripts : $(addsuffix $(gzip-suffix),out/pub/_scripts.js)
 # -----------
 
 vpath %.sass stylesheets bower_components/cannot/stylesheets
+vpath %.scss stylesheets bower_components/cannot/stylesheets
 
 stylesheet-main := main.sass
 helper-roots    := stylesheets $(wildcard bower_components/*/stylesheets)
