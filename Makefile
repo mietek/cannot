@@ -28,7 +28,7 @@ open   : ; open $(canonical-url)
 
 define cannot-macro
   .PHONY        : $(mode)-build
-  $(mode)-build : $(mode)-pages $(mode)-scripts $(mode)-stylesheets $(mode)-fonts $(mode)-images $(mode)-iconsheet ; -[[ -e overlay ]] && cp -R overlay/. out/$(mode)
+  $(mode)-build : $(mode)-pages $(mode)-scripts $(mode)-stylesheets $(mode)-fonts $(mode)-images $(mode)-iconsheet ; -[[ -e overlay ]] && cp -LR overlay/. out/$(mode)
   $(mode)-clean : unwatch ; rm -rf out/$(mode)
 
   out/$(mode) out/$(mode)/_fonts out/$(mode)/_images out/tmp/$(mode) : ; [ -d $$@ ] || mkdir -p $$@
