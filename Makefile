@@ -28,10 +28,10 @@ open   : ; open $(canonical-url)
 
 define cannot-macro
   .PHONY        : $(mode)-build
-  $(mode)-build : $(mode)-pages $(mode)-scripts $(mode)-stylesheets $(mode)-fonts $(mode)-images $(mode)-iconsheet ; -[[ -e overlay ]] && cp -LR overlay/. out/$(mode)
+  $(mode)-build : $(mode)-pages $(mode)-scripts $(mode)-stylesheets $(mode)-images $(mode)-iconsheet ; -[[ -e overlay ]] && cp -LR overlay/. out/$(mode)
   $(mode)-clean : unwatch ; rm -rf out/$(mode)
 
-  out/$(mode) out/$(mode)/_fonts out/$(mode)/_images out/tmp/$(mode) : ; [ -d $$@ ] || mkdir -p $$@
+  out/$(mode) out/$(mode)/_images out/tmp/$(mode) : ; [ -d $$@ ] || mkdir -p $$@
 endef
 $(foreach mode,dev pub,$(eval $(cannot-macro)))
 
@@ -256,33 +256,6 @@ $(foreach mode,dev pub,$(eval $(stylesheets-macro)))
 .PHONY          : dev-stylesheets pub-stylesheets
 dev-stylesheets : out/dev/_stylesheets.css
 pub-stylesheets : $(addsuffix $(gzip-suffix),out/pub/_stylesheets.css)
-
-
-# Fonts
-# -----
-
-font-roots := fonts $(wildcard bower_components/*/fonts)
-font-dirs  := $(call find-dirs,$(font-roots),*)
-
-vpath %.woff $(font-dirs)
-
-out/tmp/dev/fonts.txt: out/tmp/dev/stylesheets.css | out/tmp/dev ; $(call extract-resources,_fonts)
-
-define fonts-macro
-  define $(mode)-echo-fonts
-    echo '$(mode)-font-names := $$$$(shell cat out/tmp/dev/fonts.txt)' >$$@
-    echo '$(mode)-fonts := $$$$(addprefix out/$(mode)/_fonts/,$$$$($(mode)-font-names))' >>$$@
-    echo '$(mode)-fonts : $$$$($(mode)-fonts)' >>$$@
-    echo '$$$$($(mode)-fonts) :' >>$$@
-  endef
-
-  .PHONY                   : $(mode)-fonts
-  out/tmp/$(mode)/fonts.mk : out/tmp/dev/fonts.txt | out/tmp/$(mode) ; $$($(mode)-echo-fonts)
-  -include out/tmp/$(mode)/fonts.mk
-
-  out/$(mode)/_fonts/% : % | out/$(mode)/_fonts ; cp $$< $$@
-endef
-$(foreach mode,dev pub,$(eval $(fonts-macro)))
 
 
 # Images
