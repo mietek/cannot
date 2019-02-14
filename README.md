@@ -1,3 +1,10 @@
+-------------------------------------------------------------------------------
+
+This project is no longer maintained.
+
+-------------------------------------------------------------------------------
+
+
 [_cannot_](https://cannot.mietek.io/)
 =====================================
 
@@ -32,4 +39,4 @@ $ ln -s bower_components/cannot/Makefile .
 About
 -----
 
-Made by [Miëtek Bak](https://mietek.io/).  Published under the [MIT X11 license](https://cannot.mietek.io/license/).
+Made by [Miëtek Bak](https://mietek.io/).  Published under the BSD license.
